@@ -1,0 +1,2 @@
+
+void mensajes(int codigo);
