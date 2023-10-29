@@ -17,13 +17,13 @@ private:
     unsigned int x;
     unsigned int y;
     unsigned int z;
-    std::string jugador;
+    std::string jugador; //determinar si conviene tener el nombre del jugador o un puntero hacia el jugador
     int tesoroId;
     int tiempoInhabilitado;
 
     /**
     * Pre: -
-    * Post: Aumenta en uno el tiempo que el registro está inhabilitado si el registro esta inhabilitado.
+    * Post: Aumenta en uno el tiempo que el registro estï¿½ inhabilitado si el registro esta inhabilitado.
     **/
     void contarTiempoInhabilitado();
 
@@ -42,7 +42,7 @@ public:
 
     /**
     * Pre: -
-    * Post: Devuelve true si el registro está libre; false sino.
+    * Post: Devuelve true si el registro estï¿½ libre; false sino.
     **/
     bool estaLibre();
 
@@ -66,13 +66,13 @@ public:
 
     /**
     * Pre: -
-    * Post: Devuelve el nombre del jugador que está usando el registro.
+    * Post: Devuelve el nombre del jugador que estï¿½ usando el registro.
     **/
     std::string obtenerJugador();
 
     /**
     * Pre: jugador no puede ser nulo.
-    * Post: Define al jugador que está usando el registro.
+    * Post: Define al jugador que estï¿½ usando el registro.
     **/
     void definirJugador(std::string jugador);
 

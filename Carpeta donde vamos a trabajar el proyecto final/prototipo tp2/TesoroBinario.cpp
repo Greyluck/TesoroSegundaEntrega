@@ -1,51 +1,72 @@
 #include "TesoroBinario.h"
 
-const std::string NOMBRE_JUEGO = "TESORO BINARIO";
+const std::string NOMBRE_JUEGO = "TESORO BINARIO"; 
 
-TesoroBinario::TesoroBinario(Tablero *tablero, 
-                             unsigned int cantidadDeJugadores){
-        if(!tablero){
-                throw "El tablero no puede ser nulo";
-        }
-        if(cantidadDeJugadores <= 1){
-                throw "Se necesitan 2 o más jugadores para jugar";
-        }
-        
-        this->tablero = tablero;
-
-        this->jugadores = new Jugador * [cantidadDeJugadores];
-        for(int i = 0; i < cantidadDeJugadores; i++){
-                this->jugadores[i] = new Jugador();
-        }
-
-        this->cantidadDeJugadores = cantidadDeJugadores; 
-}
-
-/*
-* pre: jugadores no puede ser nulo.
-* post: Presenta el juego y define la cantidad tanto de jugadores como tesoros tendrá el juego.
-*/
-//nose si esta función conviete tenerla como método de esta clase o que esté en un archivo a parte
-void mensajeBienvenida(int cantidadDeTesoros, int cantidadDeJugadores, Jugador **jugadores) {
-        if(!jugadores){
-                throw "Necesito el vector con los jugadores";
-        }
-
-	std::cout << "BIENVENIDOS A " << NOMBRE_JUEGO << std::endl << std::endl;
+void TesoroBinario::pedirDatosParaJugar(int &cantidadDeJugadores, int &cantidadDeTesoros, int &anchoTablero, int &altoTablero, int &largoTablero)
+{
         std::cout << "¿Cuantas personas jugarán? (ingrese un número mayor a 2)" << std::endl;
         std::cin >> cantidadDeJugadores;
         std::cout << "¿Cuantos tesoros tendrá cada jugador? (ingrese un número mayor a 0)" << std::endl;
         std::cin >> cantidadDeTesoros;
+        std::cout << "¿Cuál será el ancho, el alto y el largo del tablero?" << std::endl;
+        std::cout << "Ingrese el numero de cada uno por separado (el numero debe ser mayor que 0)" << std::endl;
+        while(anchoTablero <= 0 && altoTablero <= 0 && largoTablero <= 0){
+                std::cin >> anchoTablero >> altoTablero >> largoTablero; 
+        }
+}
 
-        std::cout << "Ingrese el nombre de cada jugador (ingreselos separados por un enter)" << std::endl;
-        for(int i = 0; i < cantidadDeJugadores; i++){
-                std::cout << "Ingrese el nombre del jugador " << i+1 << std::endl;
-                //tiene que haber una manera más prolija
-                std::string nombre;
-                std::cin >> nombre;
-                jugadores[i]->setNombre(nombre);
+void TesoroBinario::definirEstadoCasillero(int fila, int columna, int altura, EstadoRegistro estado, Jugador *jugador, int idTesoro)
+{
+        this->tablero->getCasillero(fila, columna, altura)->cambiarEstado(estado);
+        this->tablero->getCasillero(fila, columna, altura)->definirTesoroId(idTesoro);
+        this->tablero->getCasillero(fila, columna, altura)->definirJugador(jugador->getNombre());
+        jugador->escoderTesoro(idTesoro, fila, columna, altura);
+}
+
+void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTablero)
+{
+}
+
+TesoroBinario::TesoroBinario()
+{
+        int anchoTablero = 0, altoTablero = 0, largoTablero = 0;
+        int cantidadDeJugadores, cantidadDeTesoros;
+        std::string nombreJugador;
+
+        pedirDatosParaJugar(cantidadDeJugadores, cantidadDeTesoros, 
+                            anchoTablero, altoTablero, largoTablero);
+        
+        //crea el tablero con las dimensiones indicadas
+        this->tablero = new Tablero(anchoTablero, altoTablero, largoTablero);
+        //inicializa todos los casilleros del tablero en LIBRE.
+        for(int i = 0; i < this->tablero->getAncho(); i++){
+                for(int j = 0; j < this->tablero->getAlto(); j++){
+                        for(int k = 0; k < this->tablero->getLargo(); k++){
+                                this->tablero->getCasillero(i, j, k)->cambiarEstado(LIBRE);
+                        }
+                }
         }
 
+        //pide los nombre de cada jugador
+        std::cout << "Ingrese el nombre de cada jugador" << std::endl;
+        std::cout << "(ingreselos uno por uno, no todos juntos o separados con espacios)" << std::endl;
+        this->jugadores = new Jugador * [cantidadDeJugadores];
+        for(int i = 0; i < cantidadDeJugadores; i++){
+                std::cout << "Ingrese el nombre del jugador " << i+1 << std::endl;
+                std::cin >> nombreJugador;
+                this->jugadores[i] = new Jugador(nombreJugador, cantidadDeTesoros);
+        }
+
+        this->cantidadDeJugadores = cantidadDeJugadores;
+}
+
+/*
+* pre: -
+* post: Presenta el juego
+*/
+//nose si esta función conviete tenerla como método de esta clase o que esté en un archivo a parte
+void mensajeBienvenida(int cantidadDeTesoros, int cantidadDeJugadores) {
+	std::cout << "BIENVENIDOS A " << NOMBRE_JUEGO << std::endl << std::endl;
 	std::cout << "Reglas del juego: " << std::endl <<
 			"En primer lugar, cada jugador esconderá sus " << cantidadDeTesoros << " tesoros." << std::endl <<
 			"Luego, jugarán por turnos, intentando hallar los otros tesoros a través de sus espías." << std::endl <<
@@ -54,33 +75,27 @@ void mensajeBienvenida(int cantidadDeTesoros, int cantidadDeJugadores, Jugador *
                         //agregar una breve presentación de las cartas
 }
 
-bool pedirTesoro(Tablero *tablero, int idTesoro, int fila, int columna, int altura){
-        std::cout << "Tesoro " << idTesoro << std::endl;
-         
-}
+void TesoroBinario::inciarJuego(int cantidadDeTesoros){
 
-void TesoroBinario::inciarJuego(){
-
-        int cantidadDeJugadores, cantidadDeTesoros;
-        bool casilleroOcupado = true;
         int fila, columna, altura;
 
-        mensajeBienvenida(cantidadDeTesoros, cantidadDeJugadores, this->jugadores);
+        //presenta el juego a los jugadores
+        mensajeBienvenida(cantidadDeTesoros, this->cantidadDeJugadores);
 
         for(int numeroJugador = 0; numeroJugador < this->cantidadDeJugadores; numeroJugador++){
                 std::cout << this->jugadores[numeroJugador]->getNombre() << ": ingresá las posiciones de tus " << cantidadDeTesoros << " tesoros." << std::endl;
+                //esconde los tesoros de cada jugador en el tablero
                 for(int numeroTesoro = 0; numeroTesoro < cantidadDeTesoros; numeroTesoro++) {
-			while(casilleroOcupado) {
-				//casilleroOcupado = pedirTesoro(this->tablero, numeroTesoro + 1, fila, columna, altura);
-			}
-
-			this->jugadores[numeroJugador]->setCantidadDeTesoros(cantidadDeTesoros);
-                        //modificarJugador(*jugador, jugador->cantidadEspias, jugador->cantidadTesoros + 1, imprimir);
-
+                        std::cin >> fila >> columna >> altura;
+			while(this->tablero->getCasillero(fila, columna, altura)->estaLibre()){
+                                definirEstadoCasillero(fila, columna, altura,
+                                                       TESORO, this->jugadores[numeroJugador],
+                                                       numeroTesoro+1);
+                        }
 		}
+                //se exporta el estado del tablero al archivo del jugador
+                exportarEstadoTablero(jugadores[numeroJugador], jugadores[numeroJugador]->getEstadoTablero());
         }
-
-
 }
 
 TesoroBinario::~TesoroBinario(){
@@ -88,4 +103,6 @@ TesoroBinario::~TesoroBinario(){
                 delete this->jugadores[i];
         }
         delete [] this->jugadores;
+
+        delete tablero;
 }

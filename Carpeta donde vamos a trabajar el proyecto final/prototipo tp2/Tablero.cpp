@@ -1,26 +1,19 @@
-/*
- * Tablero.cpp
- *
- *  Created on: 05/10/2023
- *      Author: algo2
- */
-
 #include "Tablero.h"
 
-Tablero::Tablero(unsigned int ancho, unsigned int alto, unsigned int distancia) {
-	if(ancho <= 0 && alto <= 0 && distancia <= 0){
-        throw "La posición del tablero no puede ser negativa";
+Tablero::Tablero(unsigned int ancho, unsigned int alto, unsigned int largo) {
+	if(ancho <= 0 && alto <= 0 && largo <= 0){
+        throw "La posiciï¿½n del tablero no puede ser negativa";
     }
 
 	this->registros = new Lista<Lista<Lista<Registro*>*>*>();
 	this->alto = alto;
 	this->ancho = ancho;
-	this->distancia = distancia;
+	this->largo = largo;
 	for(unsigned int k = 1; k <= ancho; k++){
         Lista<Lista<Registro*>*> *algo = new Lista<Lista<Registro*>*>();
         for(unsigned int i=1; i <= alto; i++) {
             Lista<Registro*> * fila = new Lista<Registro*>();
-            for(unsigned int j=1; j <= distancia; j++) {
+            for(unsigned int j=1; j <= largo; j++) {
                 fila->agregar(new Registro(k, i, j));
             }
             algo->agregar(fila);
@@ -48,8 +41,11 @@ Tablero::~Tablero() {
 }
 
 Registro* Tablero::getCasillero(unsigned int x, unsigned int y, unsigned int z) {
-	if(x <= 0 && y <= 0 && z <= 0){
-        throw "La posición del tablero no puede ser negativa";
+	if(x < 0 && y < 0 && z < 0){
+        throw "La posiciï¿½n del tablero no puede ser negativa";
+    }
+    if(x > this->ancho && y > this->alto && z > this->largo){
+        throw "La posiciï¿½n debe estar dentro del tablero";
     }
 
 	return this->registros->obtener(x)->obtener(y)->obtener(z);
@@ -63,6 +59,6 @@ unsigned int Tablero::getAlto(){
 	return this->alto;
 }
 
-unsigned int Tablero::getDistancia(){
-    return this->distancia;
+unsigned int Tablero::getLargo(){
+    return this->largo;
 }

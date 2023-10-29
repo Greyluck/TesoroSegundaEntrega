@@ -16,13 +16,13 @@ private:
 	Lista<Lista<Lista<Registro*>*>*> *registros;
 	unsigned int ancho;
 	unsigned int alto;
-	unsigned int distancia;
+	unsigned int largo;
 public:
 	/**
 	 * pre: ancho, alto y distancia deben ser positivos.
 	 * post: Crea un tablero tridimensional de ancho*alto*profundidad
 	 */
-	Tablero(unsigned int ancho, unsigned int alto, unsigned int distancia);
+	Tablero(unsigned int ancho, unsigned int alto, unsigned int largo);
 
 	/**
 	 * pre: -
@@ -46,11 +46,11 @@ public:
 	 * pre: -
 	 * post: Devuelve la distancia del tablero
 	 */
-	unsigned int getDistancia();
+	unsigned int getLargo();
 
     /**
-	 * pre: x, y, z deben ser positivos y estar dentro del rango del tamaño del tablero.
-	 * post: Devuelve el registro que se encuentra la posición recibida por parámetro.
+	 * pre: x, y, z deben ser positivos y estar dentro del rango del tamaï¿½o del tablero.
+	 * post: Devuelve el registro que se encuentra la posiciï¿½n recibida por parï¿½metro.
 	 */
 	Registro* getCasillero(unsigned int x, unsigned int y, unsigned int z);
 };
