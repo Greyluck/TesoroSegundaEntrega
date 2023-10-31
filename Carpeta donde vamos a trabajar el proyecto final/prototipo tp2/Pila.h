@@ -21,7 +21,6 @@ public:
     void apilar(T nuevoDato){
         Nodo<T> *nuevoNodo = new Nodo<T>(nuevoDato);
         nuevoNodo->cambiarSiguiente(this->tope);
-        // nuevoNodo->setSiguiente(this->tope);
         this->tope = nuevoNodo;
     };
 
@@ -34,10 +33,8 @@ public:
             throw std::runtime_error("La pila esta vacia...");
         }
         T dato = this->tope->obtenerDato();
-        // T dato = this->tope->getValor();
         Nodo<T> *nodoAEliminar = this->tope;
         this->tope = this->tope->obtenerSiguiente();
-        // this->tope = this->tope->getSiguiente();
         delete nodoAEliminar;
         return dato;
     };

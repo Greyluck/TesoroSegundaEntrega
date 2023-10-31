@@ -11,8 +11,8 @@ private:
     void refill();
 public:
     /*
-    * pre: La cantidad de jugadores
-    * post: Crea un instancia de la clase Mazo, al crearse ya viene con 5*cantJugadores de cartas
+    * pre: La cantidad de jugadores debe ser > 2
+    * post: Crea un instancia de la clase Mazo, al crearse ya viene con 3*cantJugadores de cartas
     */
     Mazo(int cantJugadores);
 

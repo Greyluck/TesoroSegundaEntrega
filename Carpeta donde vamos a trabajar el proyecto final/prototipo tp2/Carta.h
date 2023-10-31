@@ -2,6 +2,7 @@
 #define TRABAJO_PRACTICO_2_CARTA_H
 
 #include <string>
+#include "Tablero.h"
 
 enum class TipoCarta {
     Blindaje,
@@ -16,11 +17,11 @@ private:
     std::string nombreCarta;
     int tiempoDeUso;
 
-    void blindaje();
+    void blindaje(Tablero*);
 
-    void radar();
+    void radar(Tablero*);
 
-    void partirTesoro();
+    void partirTesoro(Tablero*);
     //agregar otras tres
 public:
     /*
@@ -51,7 +52,7 @@ public:
      * pre: -
      * post: Aplica la carta segun del tipo que sea, luego de esto la carta se destruye
      */
-    void aplicarCarta();
+    void aplicarCarta(Tablero*);
 
 };
 
