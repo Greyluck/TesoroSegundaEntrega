@@ -39,10 +39,10 @@ void Carta::blindaje(Tablero *tablero) {
 void encontrarTesoros(Tablero* tablero, int x,int y,int z){
     int filas = tablero->getAncho();
     int columnas = tablero->getAlto();
-    int profundidad = tablero->getDistancia();
-    for (int fila = x-3; fila < x + 3 + 1; i++) {
-        for (int columna = y-3; columna < y + 3 + 1; j++) {
-            for (int distancia = z - 3; distancia < z + 3 + 1; k++) {
+    int profundidad = tablero->getLargo();
+    for (int fila = x-3; fila < x + 3 + 1; fila++) {
+        for (int columna = y-3; columna < y + 3 + 1; columna++) {
+            for (int distancia = z - 3; distancia < z + 3 + 1; distancia++) {
                 //chequea que este dentro del rango, y despues si hay un tesoro.
                 if ( 0 <= fila && fila < filas && 0 <= columna && columna < columnas && 0 <= distancia && distancia < profundidad){
                     if(tablero->getCasillero(fila,columna,distancia)->obtenerEstado() == TESORO){
