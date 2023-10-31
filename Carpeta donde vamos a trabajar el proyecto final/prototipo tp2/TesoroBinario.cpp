@@ -58,6 +58,7 @@ TesoroBinario::TesoroBinario()
         }
 
         this->cantidadDeJugadores = cantidadDeJugadores;
+        this->mazo = new Mazo(this->cantidadDeJugadores);
 }
 
 /*

@@ -9,6 +9,9 @@ void Mazo::refill() {
 }
 
 Mazo::Mazo(int cantJugadores) {
+    if (cantJugadores < 2){
+        throw "Los jugadores debe ser mas de dos!";
+    }
     Pila<Carta *> *pilaCartas = new Pila<Carta *>();
     this->mazo = pilaCartas;
     this->cantJugadores = cantJugadores;

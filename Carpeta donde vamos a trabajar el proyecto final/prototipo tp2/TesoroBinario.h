@@ -3,13 +3,13 @@
 
 #include "Tablero.h"
 #include "Jugador.h"
-//#include "Mazo.h"
+#include "Mazo.h"
 
 class TesoroBinario {
 private:
         Tablero *tablero;
         Jugador **jugadores; //vector dinámico de los jugadores que habrán en el juego
-        /*Mazo *mazo;*/ //definir como se obtiene el maso
+        Mazo *mazo
         unsigned int cantidadDeJugadores;
 
         /*

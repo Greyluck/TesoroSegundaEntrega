@@ -1,9 +1,11 @@
 // #include "TesoroBinario.h"
 #include "Tablero.h"
 #include <iostream>
-
+#include <cstdlib>
+#include <ctime>
 int main() {
-	
+	//agrego esto, que lo necesito para generar las cartas aleatorias
+	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	//prueba del juego
 	// TesoroBinario *tesoroBinario = new TesoroBinario();
 	// tesoroBinario->inciarJuego(2);
