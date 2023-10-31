@@ -36,15 +36,16 @@ void Carta::blindaje(Tablero *tablero) {
 }
 
 //Busca tesoros en 3 celdas a la redonda de donde aplico la carta el usuario.
-void encontrarTesoros(Tablero* tablero, int x,int y,int z){
-    int filas = tablero->getAncho();
-    int columnas = tablero->getAlto();
-    int profundidad = tablero->getLargo();
-    for (int fila = x-3; fila < x + 3 + 1; fila++) {
-        for (int columna = y-3; columna < y + 3 + 1; columna++) {
-            for (int distancia = z - 3; distancia < z + 3 + 1; distancia++) {
+void encontrarTesoros(Tablero* tablero, unsigned int x, unsigned int y,unsigned int z){
+    unsigned int filas = tablero->getAlto();
+    unsigned int columnas = tablero->getAncho();
+    unsigned int profundidad = tablero->getLargo();
+
+    for (unsigned int fila = x-3; fila < x + 3 + 1; fila++) {
+        for (unsigned int columna = y-3; columna < y + 3 + 1; columna++) {
+            for (unsigned int distancia = z - 3; distancia < z + 3 + 1; distancia++) {
                 //chequea que este dentro del rango, y despues si hay un tesoro.
-                if ( 0 <= fila && fila < filas && 0 <= columna && columna < columnas && 0 <= distancia && distancia < profundidad){
+                if (fila < filas && columna < columnas && distancia < profundidad){
                     if(tablero->getCasillero(fila,columna,distancia)->obtenerEstado() == TESORO){
                         std::cout << fila << "," << columna << "," << distancia << std::endl;
                     }
@@ -56,7 +57,7 @@ void encontrarTesoros(Tablero* tablero, int x,int y,int z){
 
 //Aplica la carta de radar.
 void Carta::radar(Tablero *tablero) {
-    int x,y,z;
+    unsigned int x,y,z;
     std::cout << "Esta utilizando la carta radar, a continuacion le pedire donde lo quiere colocar" << std::endl;
     std::cout << "Ingrese la fila: " << std::endl;
     std::cin >> x;
