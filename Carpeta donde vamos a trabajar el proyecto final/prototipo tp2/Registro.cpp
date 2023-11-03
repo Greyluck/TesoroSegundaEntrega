@@ -10,7 +10,7 @@ Registro::Registro(unsigned int x, unsigned int y, unsigned z){
     this->y = y;
     this->z = z;
     this->estado = LIBRE;
-    this->jugador = NOMBRE_VACIO;
+    this->jugador->getNombre() = NOMBRE_VACIO;
     this->tesoroId = ID_TESORO_NULO;
     this->tiempoInhabilitado = MIN_TIEMPO_INHABILITADO;
 }
@@ -19,7 +19,6 @@ Registro::~Registro(){
 }
 
 EstadoRegistro Registro::obtenerEstado(){
-    estaInhabilitado();
     return this->estado;
 }
 
@@ -28,38 +27,45 @@ bool Registro::estaLibre(){
 }
 
 bool Registro::estaInhabilitado(){
-    if(this->tiempoInhabilitado > MAX_TIEMPO_INHABILITADO){
-        this->tiempoInhabilitado = MIN_TIEMPO_INHABILITADO;
-        this->estado = LIBRE;
-    }
-    else if(this->tiempoInhabilitado > MIN_TIEMPO_INHABILITADO){
+    if(this->tiempoInhabilitado > MIN_TIEMPO_INHABILITADO){
         contarTiempoInhabilitado();
+    }
+    else
+    {
+        this->estado = LIBRE;
     }
 
     return (this->estado == NO_DISPONIBLE);
 }
 
+void Registro::inhabilitarRegistro(int tiempoInhabilitado)
+{
+    if(tiempoInhabilitado <= MIN_TIEMPO_INHABILITADO){
+        throw "El tiempo que el resgistro estÃ¡ inhabilitado debe ser mayor a 0";
+    }
+    
+    this->estado = NO_DISPONIBLE;
+    this->tiempoInhabilitado = tiempoInhabilitado;
+
+}
+
 void Registro::contarTiempoInhabilitado(){
-        this->tiempoInhabilitado++;
+        this->tiempoInhabilitado--;
 }
 
 void Registro::cambiarEstado(EstadoRegistro estado){
-    if(estaInhabilitado()){
-        throw "No se puede cambiar el estado del registro mientras está inhabilitado";
-    }
-    else{
-        this->estado = estado;
-        if(estaInhabilitado()){
-         contarTiempoInhabilitado();
-        }
-    }
+    this->estado = estado;
 }
 
-std::string Registro::obtenerJugador(){
+Jugador *Registro::obtenerJugador(){
     return this->jugador;
 }
 
-void Registro::definirJugador(std::string jugador){
+void Registro::definirJugador(Jugador *jugador){
+    if(!jugador){
+        throw "El jugador no puede ser nulo";
+    }
+    
     this->jugador = jugador;
 }
 

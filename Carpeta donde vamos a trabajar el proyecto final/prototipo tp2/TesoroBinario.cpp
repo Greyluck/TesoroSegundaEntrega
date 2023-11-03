@@ -19,7 +19,7 @@ void TesoroBinario::definirEstadoCasillero(int fila, int columna, int altura, Es
 {
         this->tablero->getCasillero(fila, columna, altura)->cambiarEstado(estado);
         this->tablero->getCasillero(fila, columna, altura)->definirTesoroId(idTesoro);
-        this->tablero->getCasillero(fila, columna, altura)->definirJugador(jugador->getNombre());
+        this->tablero->getCasillero(fila, columna, altura)->definirJugador(jugador);
         jugador->escoderTesoro(idTesoro, fila, columna, altura);
 }
 
@@ -38,15 +38,8 @@ TesoroBinario::TesoroBinario()
         
         //crea el tablero con las dimensiones indicadas
         this->tablero = new Tablero(anchoTablero, altoTablero, largoTablero);
-        //inicializa todos los casilleros del tablero en LIBRE.
-        for(int i = 0; i < this->tablero->getAncho(); i++){
-                for(int j = 0; j < this->tablero->getAlto(); j++){
-                        for(int k = 0; k < this->tablero->getLargo(); k++){
-                                this->tablero->getCasillero(i, j, k)->cambiarEstado(LIBRE);
-                        }
-                }
-        }
-
+        //Al crearse el teblero los registros se inicializan en LIBRE
+        
         //pide los nombre de cada jugador
         std::cout << "Ingrese el nombre de cada jugador" << std::endl;
         std::cout << "(ingreselos uno por uno, no todos juntos o separados con espacios)" << std::endl;
@@ -58,6 +51,7 @@ TesoroBinario::TesoroBinario()
         }
 
         this->cantidadDeJugadores = cantidadDeJugadores;
+        this->cantidadDeTesoros = cantidadDeTesoros;
         this->mazo = new Mazo(this->cantidadDeJugadores);
 }
 
@@ -76,17 +70,17 @@ void mensajeBienvenida(int cantidadDeTesoros, int cantidadDeJugadores) {
                         //agregar una breve presentación de las cartas
 }
 
-void TesoroBinario::inciarJuego(int cantidadDeTesoros){
+void TesoroBinario::inciarJuego(){
 
         int fila, columna, altura;
 
         //presenta el juego a los jugadores
-        mensajeBienvenida(cantidadDeTesoros, this->cantidadDeJugadores);
+        mensajeBienvenida(this->cantidadDeTesoros, this->cantidadDeJugadores);
 
         for(int numeroJugador = 0; numeroJugador < this->cantidadDeJugadores; numeroJugador++){
-                std::cout << this->jugadores[numeroJugador]->getNombre() << ": ingresá las posiciones de tus " << cantidadDeTesoros << " tesoros." << std::endl;
+                std::cout << this->jugadores[numeroJugador]->getNombre() << ": ingresá las posiciones de tus " << this->cantidadDeTesoros << " tesoros." << std::endl;
                 //esconde los tesoros de cada jugador en el tablero
-                for(int numeroTesoro = 0; numeroTesoro < cantidadDeTesoros; numeroTesoro++) {
+                for(int numeroTesoro = 0; numeroTesoro < this->cantidadDeTesoros; numeroTesoro++) {
                         std::cin >> fila >> columna >> altura;
 			while(this->tablero->getCasillero(fila, columna, altura)->estaLibre()){
                                 definirEstadoCasillero(fila, columna, altura,
@@ -105,5 +99,7 @@ TesoroBinario::~TesoroBinario(){
         }
         delete [] this->jugadores;
 
-        delete tablero;
+        delete this->mazo;
+        
+        delete this->tablero;
 }

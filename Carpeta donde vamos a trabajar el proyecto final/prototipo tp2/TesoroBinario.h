@@ -9,8 +9,9 @@ class TesoroBinario {
 private:
         Tablero *tablero;
         Jugador **jugadores; //vector dinámico de los jugadores que habrán en el juego
-        Mazo *mazo
+        Mazo *mazo;
         unsigned int cantidadDeJugadores;
+        unsigned int cantidadDeTesoros;
 
         /*
         * pre: -
@@ -42,10 +43,10 @@ public:
         TesoroBinario();
 
         /*
-        * pre: cantidadDeTesorsos debe ser mayor a 0.
+        * pre: -
         * post: Cada jugador esconde sus tesoros dentro por todo el tablero.
         * */
-        void inciarJuego(int cantidadDeJugadores);
+        void inciarJuego();
 
         /*
         * pre: -

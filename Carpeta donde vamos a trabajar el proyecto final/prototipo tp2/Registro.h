@@ -2,13 +2,15 @@
 #define REGISTRO_H_
 
 #include <iostream>
+#include "Jugador.h"
 
 enum EstadoRegistro{
     OCUPADA,
 	TESORO,
 	ESPIA,
 	NO_DISPONIBLE,
-	LIBRE
+	LIBRE,
+    MINA
 };
 
 class Registro{
@@ -17,13 +19,14 @@ private:
     unsigned int x;
     unsigned int y;
     unsigned int z;
-    std::string jugador; //determinar si conviene tener el nombre del jugador o un puntero hacia el jugador
+    //std::string jugador; //determinar si conviene tener el nombre del jugador o un puntero hacia el jugador
+    Jugador *jugador;
     int tesoroId;
     int tiempoInhabilitado;
 
     /**
     * Pre: -
-    * Post: Aumenta en uno el tiempo que el registro est� inhabilitado si el registro esta inhabilitado.
+    * Post: Reduce en uno el tiempo que el registro est� inhabilitado si el registro esta inhabilitado.
     **/
     void contarTiempoInhabilitado();
 
@@ -54,6 +57,12 @@ public:
 
     /**
     * Pre: -
+    * Post: Inhabilita el registro la cantidad de turnos indicada.
+    **/
+    void inhabilitarRegistro(int tiempoInhabilitado);
+
+    /**
+    * Pre: -
     * Post: Devuelve el estado del registro
     **/
     EstadoRegistro obtenerEstado();
@@ -68,13 +77,13 @@ public:
     * Pre: -
     * Post: Devuelve el nombre del jugador que est� usando el registro.
     **/
-    std::string obtenerJugador();
+    Jugador *obtenerJugador();
 
     /**
     * Pre: jugador no puede ser nulo.
     * Post: Define al jugador que est� usando el registro.
     **/
-    void definirJugador(std::string jugador);
+    void definirJugador(Jugador *jugador);
 
     /**
     * Pre: -
