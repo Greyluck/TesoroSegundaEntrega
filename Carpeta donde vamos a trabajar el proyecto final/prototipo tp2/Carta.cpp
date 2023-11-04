@@ -22,10 +22,21 @@ Carta::Carta() {
             this->nombreCarta = "Partir Tesoro";
             this->tiempoDeUso = 0;
             break;
-//        case 3:
-//        case 4:
-//        case 5:
-
+       case 3:
+            this->tipoDeCarta = BLINDAJE;
+            this->nombreCarta = "Blindaje";
+            this->tiempoDeUso = 3;
+            break;
+       case 4:
+            this->tipoDeCarta = RADAR;
+            this->nombreCarta = "Radar";
+            this->tiempoDeUso = 0;
+            break;
+       case 5:
+            this->tipoDeCarta = PARTIR_TESORO;
+            this->nombreCarta = "Partir Tesoro";
+            this->tiempoDeUso = 0;
+            break;
     }
 }
 
