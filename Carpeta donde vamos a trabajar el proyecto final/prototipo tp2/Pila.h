@@ -11,7 +11,7 @@ public:
     * post: Crea una instancia de la clase Pila, cuando se crea esta vacia
     */
     Pila(){
-        this->tope = nullptr;
+        this->tope = NULL;
     };
 
     /*
@@ -44,7 +44,7 @@ public:
     * post: Devuelve si esta vacia true -> vacia, false -> no vacia
     */
     bool estaVacia(){
-        return this->tope == nullptr;
+        return this->tope == NULL;
     };
 
     /*

@@ -1,16 +1,20 @@
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
 
+#include "Tesoro.h"
+// #include "Tablero.h"
 #include "Carta.h"
+#include "Mazo.h"
 
 class Jugador{
 private:
+        int id;
         std::string nombre;
         int cantidadDeTesoros; //definir si sólo debe ser mayor a 0 ó debe estar dentro de un rango.
-        //Tesoro **tesoros;
-        int cantidadTesorosDescubiertos;
+        Tesoro **tesoros;
+        // int cantidadTesorosDescubiertos;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
-        Carta *cartaActiva;
+        // Carta *cartaActiva;
         int cantidadCartasGuardadas;
         Carta **cartasGuardadas; //definir cuantas cartas guardadas puede tener un jugador durante el juego
         bool gano;
@@ -20,7 +24,7 @@ public:
         *       cantidadDeTesoros debe ser mayor a 0.
         * post: Crea una instancia de un jugador con el nombre y la cantidad de tesoros recibida por parámetro. 
         */
-        Jugador(std::string nombre, int cantidadDeTesoros);
+        Jugador(int id, std::string nombre, int cantidadDeTesoros);
 
         /*
         * pre: idTesoro debe estar dentro del rango 1 - cantidadDeTesoros inclusives.
@@ -35,6 +39,12 @@ public:
         * post: Coloca un espia en la fila, columna y altura indicadas.
         * */
         void ponerEspia(int fila, int columna, int altura);
+
+        /*
+        * pre: mazo no puede ser nulo.
+        * post: Saca una carta del mazo y la guarda en cartasGuardadas.
+        * */
+//        void sacarCartaDelMazo(Mazo *mazo);
 
         /*
         * pre: carta debe ser una carta válida dentro del juego.
@@ -87,6 +97,12 @@ public:
         * post: Devuelve el nombre del jugador.
         * */
         std::string getNombre();
+
+        /*
+        * pre: -
+        * post: Devuelve el id del jugador.
+        * */
+        int getId();
 
         /*
         * pre: -

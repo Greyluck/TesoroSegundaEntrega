@@ -2,7 +2,7 @@
 #define REGISTRO_H_
 
 #include <iostream>
-#include "Jugador.h"
+// #include "Jugador.h"
 
 enum EstadoRegistro{
     OCUPADA,
@@ -19,8 +19,8 @@ private:
     unsigned int x;
     unsigned int y;
     unsigned int z;
-    //std::string jugador; //determinar si conviene tener el nombre del jugador o un puntero hacia el jugador
-    Jugador *jugador;
+    // std::string jugador; //determinar si conviene tener el nombre del jugador o un puntero hacia el jugador
+    int jugadorId;
     int tesoroId;
     int tiempoInhabilitado;
 
@@ -75,15 +75,15 @@ public:
 
     /**
     * Pre: -
-    * Post: Devuelve el nombre del jugador que est� usando el registro.
+    * Post: Devuelve el id del jugador que está usando el registro.
     **/
-    Jugador *obtenerJugador();
+    int obtenerJugadorId();
 
     /**
     * Pre: jugador no puede ser nulo.
-    * Post: Define al jugador que est� usando el registro.
+    * Post: Define el id del jugador que está usando el registro.
     **/
-    void definirJugador(Jugador *jugador);
+    void definirJugadorId(int id);
 
     /**
     * Pre: -

@@ -1,6 +1,6 @@
 #include "Registro.h"
 
-static const std::string NOMBRE_VACIO = " ";
+static const int ID_JUGADOR_NULO = 0;
 static const int ID_TESORO_NULO = 0;
 static const int MIN_TIEMPO_INHABILITADO = 0;
 static const int MAX_TIEMPO_INHABILITADO = 5;
@@ -10,7 +10,7 @@ Registro::Registro(unsigned int x, unsigned int y, unsigned z){
     this->y = y;
     this->z = z;
     this->estado = LIBRE;
-    this->jugador->getNombre() = NOMBRE_VACIO;
+    this->jugadorId = ID_JUGADOR_NULO;
     this->tesoroId = ID_TESORO_NULO;
     this->tiempoInhabilitado = MIN_TIEMPO_INHABILITADO;
 }
@@ -57,16 +57,16 @@ void Registro::cambiarEstado(EstadoRegistro estado){
     this->estado = estado;
 }
 
-Jugador *Registro::obtenerJugador(){
-    return this->jugador;
+int Registro::obtenerJugadorId(){
+    return this->jugadorId;
 }
 
-void Registro::definirJugador(Jugador *jugador){
-    if(!jugador){
-        throw "El jugador no puede ser nulo";
+void Registro::definirJugadorId(int id){
+    if(id <= 0){
+        throw "El id del jugador tiene que ser mayor a 0";
     }
     
-    this->jugador = jugador;
+    this->jugadorId = jugadorId;
 }
 
 int Registro::obtenerTesoroId(){

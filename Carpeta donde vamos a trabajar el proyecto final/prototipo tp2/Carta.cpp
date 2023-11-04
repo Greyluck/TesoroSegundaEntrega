@@ -8,17 +8,17 @@ Carta::Carta() {
     int valorAleatorio = std::rand() % 6;
     switch (valorAleatorio) {
         case 0:
-            this->tipoDeCarta = TipoCarta::Blindaje;
+            this->tipoDeCarta = BLINDAJE;
             this->nombreCarta = "Blindaje";
             this->tiempoDeUso = 3;
             break;
         case 1:
-            this->tipoDeCarta = TipoCarta::Radar;
+            this->tipoDeCarta = RADAR;
             this->nombreCarta = "Radar";
             this->tiempoDeUso = 0;
             break;
         case 2:
-            this->tipoDeCarta = TipoCarta::PartirTesoro;
+            this->tipoDeCarta = PARTIR_TESORO;
             this->nombreCarta = "Partir Tesoro";
             this->tiempoDeUso = 0;
             break;
@@ -79,15 +79,15 @@ std::string Carta::getNombreCarta() {
 
 void Carta::aplicarCarta(Tablero* tablero) {
     switch (this->tipoDeCarta) {
-        case TipoCarta::Blindaje:
+        case BLINDAJE:
             this->blindaje(tablero);
             break;
 
-        case TipoCarta::Radar:
+        case RADAR:
             this->radar(tablero);
             break;
 
-        case TipoCarta::PartirTesoro:
+        case PARTIR_TESORO:
             this->partirTesoro(tablero);
             break;
     }

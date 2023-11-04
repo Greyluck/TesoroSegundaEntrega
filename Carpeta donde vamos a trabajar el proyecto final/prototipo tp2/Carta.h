@@ -4,10 +4,10 @@
 #include <string>
 #include "Tablero.h"
 
-enum class TipoCarta {
-    Blindaje,
-    Radar,
-    PartirTesoro,
+enum TipoCarta {
+    BLINDAJE,
+    RADAR,
+    PARTIR_TESORO
     //agregar
 };
 
@@ -34,7 +34,7 @@ public:
      * pre: -
      * post: Destruye una instancia de la clase carta.
      */
-    ~Carta();
+    virtual ~Carta();
 
     /*
     * pre: -

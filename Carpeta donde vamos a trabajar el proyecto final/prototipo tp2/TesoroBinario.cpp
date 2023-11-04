@@ -19,7 +19,7 @@ void TesoroBinario::definirEstadoCasillero(int fila, int columna, int altura, Es
 {
         this->tablero->getCasillero(fila, columna, altura)->cambiarEstado(estado);
         this->tablero->getCasillero(fila, columna, altura)->definirTesoroId(idTesoro);
-        this->tablero->getCasillero(fila, columna, altura)->definirJugador(jugador);
+        this->tablero->getCasillero(fila, columna, altura)->definirJugadorId(jugador->getId());
         jugador->escoderTesoro(idTesoro, fila, columna, altura);
 }
 
@@ -43,11 +43,11 @@ TesoroBinario::TesoroBinario()
         //pide los nombre de cada jugador
         std::cout << "Ingrese el nombre de cada jugador" << std::endl;
         std::cout << "(ingreselos uno por uno, no todos juntos o separados con espacios)" << std::endl;
-        this->jugadores = new Jugador * [cantidadDeJugadores];
+        this->jugadores = new Jugador * [cantidadDeJugadores]();
         for(int i = 0; i < cantidadDeJugadores; i++){
                 std::cout << "Ingrese el nombre del jugador " << i+1 << std::endl;
                 std::cin >> nombreJugador;
-                this->jugadores[i] = new Jugador(nombreJugador, cantidadDeTesoros);
+                this->jugadores[i] = new Jugador(i+1, nombreJugador, cantidadDeTesoros);
         }
 
         this->cantidadDeJugadores = cantidadDeJugadores;
@@ -77,10 +77,10 @@ void TesoroBinario::inciarJuego(){
         //presenta el juego a los jugadores
         mensajeBienvenida(this->cantidadDeTesoros, this->cantidadDeJugadores);
 
-        for(int numeroJugador = 0; numeroJugador < this->cantidadDeJugadores; numeroJugador++){
+        for(unsigned int numeroJugador = 0; numeroJugador < this->cantidadDeJugadores; numeroJugador++){
                 std::cout << this->jugadores[numeroJugador]->getNombre() << ": ingresá las posiciones de tus " << this->cantidadDeTesoros << " tesoros." << std::endl;
                 //esconde los tesoros de cada jugador en el tablero
-                for(int numeroTesoro = 0; numeroTesoro < this->cantidadDeTesoros; numeroTesoro++) {
+                for(unsigned int numeroTesoro = 0; numeroTesoro < this->cantidadDeTesoros; numeroTesoro++) {
                         std::cin >> fila >> columna >> altura;
 			while(this->tablero->getCasillero(fila, columna, altura)->estaLibre()){
                                 definirEstadoCasillero(fila, columna, altura,
@@ -94,7 +94,7 @@ void TesoroBinario::inciarJuego(){
 }
 
 TesoroBinario::~TesoroBinario(){
-        for(int i = 0; i < this->cantidadDeJugadores; i++){
+        for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
                 delete this->jugadores[i];
         }
         delete [] this->jugadores;
