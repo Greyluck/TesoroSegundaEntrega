@@ -9,6 +9,7 @@ int main() {
 	//prueba del juego
 	TesoroBinario *tesoroBinario = new TesoroBinario();
 	tesoroBinario->inciarJuego();
+	tesoroBinario->jugarJuego();
 	//se genera un segmetation fall luego de esconder tomar la pocision del
 	//primer tesoro del primer jugador
 	delete tesoroBinario;

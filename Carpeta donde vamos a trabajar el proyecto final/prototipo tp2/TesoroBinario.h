@@ -34,6 +34,18 @@ private:
         * post: exporta el estado del tablero de jugador a estadoTablero.
         * */
         void exportarEstadoTablero(Jugador *jugador, std::string estadoTablero);
+
+        /*
+        * pre: jugador no puede ser nulo.
+        * post: Realiza todas las operaciones que puede hacer un jugador durante su turno.
+        * */
+        void jugarTurno(Jugador *jugador);
+
+        /*
+        * pre: jugador no puede ser nulo.
+        * post: Saca una carta del mazo y la almacena en las cartas guardadas del jugador.
+        */
+        void sacarCartaDelMazo(Jugador *jugador);
 public:
         /*
         * pre: -
@@ -50,7 +62,7 @@ public:
 
         /*
         * pre: -
-        * post: Devuelve al ganador una vez que el resto de los jugadores se quedaron sin tesoros.
+        * post: Devuelve el id del ganador una vez que el resto de los jugadores se quedaron sin tesoros.
         * */
         int jugarJuego();
 

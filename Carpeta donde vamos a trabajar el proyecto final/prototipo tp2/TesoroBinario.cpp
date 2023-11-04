@@ -11,7 +11,12 @@ void TesoroBinario::pedirDatosParaJugar(int &cantidadDeJugadores, int &cantidadD
         std::cout << "¿Cuál será el ancho, el alto y el largo del tablero?" << std::endl;
         std::cout << "Ingrese el numero de cada uno por separado (el numero debe ser mayor que 0)" << std::endl;
         while(anchoTablero <= 0 && altoTablero <= 0 && largoTablero <= 0){
-                std::cin >> anchoTablero >> altoTablero >> largoTablero; 
+                std::cout << "Ingrese el ancho: " << std::endl;
+                std::cin >> anchoTablero;
+                std::cout << "Ingrese el alto: " << std::endl;
+                std::cin >> altoTablero;
+                std::cout << "Ingrese el largo: " << std::endl;
+                std::cin >> largoTablero;
         }
 }
 
@@ -25,6 +30,32 @@ void TesoroBinario::definirEstadoCasillero(int fila, int columna, int altura, Es
 
 void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTablero)
 {
+}
+
+/*
+* pre: jugador no puede ser nulo.
+* post: Saca una carta del mazo y la almacena en las cartas guardadas del jugador.
+*/
+// definir si es metódo de esta clase o queda en un archivo a parte
+void TesoroBinario::sacarCartaDelMazo(Jugador *jugador)
+{
+        std::string respuesta;
+
+        jugador->guardarCarta(this->mazo->desapilarCarta());
+        std::cout << "Has sacado una carta del mazo" << std::endl;
+        jugador->verCartasGuardadas();
+        std::cout << "Desea usar una carta? [s/n]" << std::endl;
+        std::cin >> respuesta;
+
+        if(respuesta == "s"){
+                jugador->usarCarta(jugador->elegirCartaAUsar(), this->tablero);
+        }
+}
+
+void TesoroBinario::jugarTurno(Jugador * jugador)
+{
+        std::cout << "\nTe toca jugar " << jugador->getNombre() << std::endl;
+        sacarCartaDelMazo(jugador);
 }
 
 TesoroBinario::TesoroBinario()
@@ -91,6 +122,21 @@ void TesoroBinario::inciarJuego(){
                 //se exporta el estado del tablero al archivo del jugador
                 exportarEstadoTablero(jugadores[numeroJugador], jugadores[numeroJugador]->getEstadoTablero());
         }
+}
+
+int TesoroBinario::jugarJuego()
+{
+        int idJugadorGanador = 0;
+
+        while(idJugadorGanador == 0){
+                for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
+                        jugarTurno(this->jugadores[i]);
+                }
+
+                idJugadorGanador = 1;
+        }
+
+        return 0;
 }
 
 TesoroBinario::~TesoroBinario(){

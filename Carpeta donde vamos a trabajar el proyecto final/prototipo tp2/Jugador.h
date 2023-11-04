@@ -2,7 +2,7 @@
 #define JUGADOR_H_
 
 #include "Tesoro.h"
-// #include "Tablero.h"
+#include "Tablero.h"
 #include "Carta.h"
 #include "Mazo.h"
 
@@ -14,7 +14,7 @@ private:
         Tesoro **tesoros;
         // int cantidadTesorosDescubiertos;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
-        // Carta *cartaActiva;
+        Carta *cartaActiva;
         int cantidadCartasGuardadas;
         Carta **cartasGuardadas; //definir cuantas cartas guardadas puede tener un jugador durante el juego
         bool gano;
@@ -41,23 +41,35 @@ public:
         void ponerEspia(int fila, int columna, int altura);
 
         /*
-        * pre: mazo no puede ser nulo.
-        * post: Saca una carta del mazo y la guarda en cartasGuardadas.
+        * pre: carta no puede ser nula.
+        * post: Guarda la carta recibida en cartasGuardadas y aumenta la cantidad de cartas guardadas.
         * */
-//        void sacarCartaDelMazo(Mazo *mazo);
+        void guardarCarta(Carta *carta);
 
         /*
         * pre: carta debe ser una carta válida dentro del juego.
         * post: Activa la carta recibida por parámetro.
         * */
-        void usarCarta(Carta* carta);
+        void usarCarta(Carta* carta, Tablero *tablero);
+
+        /*
+        * pre: -
+        * post: Elige una carta de las que están guardadas y luego la devuelve.
+        * */
+        Carta *elegirCartaAUsar();
 
         /*
         * pre: carta debe ser una carta válida dentro del juego.
         * post: Descarta la carta recibida por parámetro de las cartas 
-        *       guardadas si ya fue activada.
+        *       guardadas, y reduce la cantidad, si ya fue activada.
         * */
         void descartaCartaUsada(Carta* carta);
+
+        /*
+        * pre: -
+        * post: Muestra al jugador el nombre de las cartas que tiene guardadas.
+        * */
+        void verCartasGuardadas();
 
         /*
         * pre: fila, columna y altura deben estar dentro de los limites del tablero.
