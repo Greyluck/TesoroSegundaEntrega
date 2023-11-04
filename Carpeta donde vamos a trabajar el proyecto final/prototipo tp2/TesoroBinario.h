@@ -37,15 +37,24 @@ private:
 
         /*
         * pre: jugador no puede ser nulo.
+        * post: Saca una carta del mazo y la almacena en las cartas guardadas del jugador.
+        */
+        void sacarCartaDelMazo(Jugador *jugador);
+
+        /*
+        * pre: jugador no puede ser nulo.
+        * post: Posiciona una mina en un casillero del tablero, si no tiene un tesoro.
+        *       En caso de haber un tesoro deja inhabilitado el casillero tanto
+        *       turnos como el poder de la mina.
+        */
+        void atacarCasillero(Jugador *jugador);
+
+        /*
+        * pre: jugador no puede ser nulo.
         * post: Realiza todas las operaciones que puede hacer un jugador durante su turno.
         * */
         void jugarTurno(Jugador *jugador);
 
-        /*
-        * pre: jugador no puede ser nulo.
-        * post: Saca una carta del mazo y la almacena en las cartas guardadas del jugador.
-        */
-        void sacarCartaDelMazo(Jugador *jugador);
 public:
         /*
         * pre: -

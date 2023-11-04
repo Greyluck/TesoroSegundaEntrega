@@ -1,5 +1,7 @@
 #include "Jugador.h"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 // definir cantidad maxima de cartas guardadas definitiva.
 const int CANTIDAD_MAXIMA_CARTAS_GUARDADAS = 3;
@@ -79,6 +81,18 @@ void Jugador::verCartasGuardadas()
         for(int i = 0; i < this->cantidadCartasGuardadas; i++){
                 std::cout << i+1 << ": " << this->cartasGuardadas[i]->getNombreCarta() << std::endl;
         }
+}
+
+int Jugador::usarMina()
+{
+        int poderMina = (std::rand() % 6) + 1;
+        return poderMina;
+}
+
+void Jugador::descartarTesoro(int idTesoro)
+{
+        this->tesoros[idTesoro-1]->cambiarEstado(ENCONTRADO);
+        this->cantidadDeTesoros--;
 }
 
 bool Jugador::encontroEspia(int fila, int columna, int altura)

@@ -72,6 +72,19 @@ public:
         void verCartasGuardadas();
 
         /*
+        * pre: -
+        * post: Devuelve el poder de la mina que el jugador usará.
+        * */
+        int usarMina();
+
+        /*
+        * pre: idTesoro debe estar entre 1 y la cantidad de tesoros.
+        * post: Marca al tesoro idTesoro como ENCONTRADO.
+        *       Disminuye en uno la cantidad de tesoros.
+        * */
+        void descartarTesoro(int idTesoro);
+
+        /*
         * pre: fila, columna y altura deben estar dentro de los limites del tablero.
         * post: Devuelve true si hay un espia en la fila, columna y altura 
         *       indicadas; false sino.

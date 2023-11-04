@@ -52,10 +52,34 @@ void TesoroBinario::sacarCartaDelMazo(Jugador *jugador)
         }
 }
 
+void TesoroBinario::atacarCasillero(Jugador * jugador)
+{
+        int fila, columna, altura;
+
+        int poderMina = jugador->usarMina();
+        std::cout << "\nIngrese la posición dondre pondrá la mina" << std::endl;
+        std::cin >> fila >> columna >> altura;
+        if(this->tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
+                int idVictima = this->tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
+                int idTesoroVictima = this->tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
+                Jugador *victima = this->jugadores[idVictima-1];
+                std::cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " ha sido destruido" << std::endl;
+                victima->descartarTesoro(idTesoroVictima);
+                this->tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
+        }else
+        {
+                this->tablero->getCasillero(fila, columna, altura)->cambiarEstado(MINA);
+                std::cout << "La mina ha sido colocada... vayan con cuidado" << std::endl;
+        }
+        //Definir si el jugador pierde el turno al queres una mina donde había
+        //una o cambia la mina actual en el casillero por la suya
+}
+
 void TesoroBinario::jugarTurno(Jugador * jugador)
 {
         std::cout << "\nTe toca jugar " << jugador->getNombre() << std::endl;
         sacarCartaDelMazo(jugador);
+        atacarCasillero(jugador);
 }
 
 TesoroBinario::TesoroBinario()
