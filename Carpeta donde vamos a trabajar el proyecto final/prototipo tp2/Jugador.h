@@ -6,10 +6,17 @@
 #include "Carta.h"
 #include "Mazo.h"
 
+enum EstadoJugador {
+        NORMAL,
+        PERDIO_TURNO, //definir si tiene este nombre o se lo cambia por otro
+        ELIMINADO
+};
+
 class Jugador{
 private:
         int id;
         std::string nombre;
+        EstadoJugador estado;
         int cantidadDeTesoros; //definir si sólo debe ser mayor a 0 ó debe estar dentro de un rango.
         Tesoro **tesoros;
         // int cantidadTesorosDescubiertos;
@@ -22,23 +29,31 @@ public:
         /*
         * pre: nombre no puede ser nulo.
         *       cantidadDeTesoros debe ser mayor a 0.
-        * post: Crea una instancia de un jugador con el nombre y la cantidad de tesoros recibida por parámetro. 
+        * post: Crea una instancia de un jugador con el nombre y la cantidad de tesoros recibida por parámetro.
+        *       El estado del jugador se inicializa en NORMAL. 
         */
         Jugador(int id, std::string nombre, int cantidadDeTesoros);
 
         /*
         * pre: idTesoro debe estar dentro del rango 1 - cantidadDeTesoros inclusives.
         *      fila, columna y altura deben estar dentro de los limites del tablero.
+        *      tablero no puede ser nulo.
         * post: Esconde el tesoro con el id recibido en la fila, columna y
         *       altura indicadas por parámetro
         * */
-        void escoderTesoro(int idTesoro, int fila, int columna, int altura);
+        void escoderTesoro(int idTesoro, int fila, int columna, int altura, Tablero *tablero);
 
         /*
         * pre: fila, columna y altura deben estar dentro de los limites del tablero.
         * post: Coloca un espia en la fila, columna y altura indicadas.
         * */
         void ponerEspia(int fila, int columna, int altura);
+
+        /*
+        * pre: mazo y tablero no pueden ser nulos.
+        * post: Saca una carta del mazo y la almacena en cartasGuardadas.
+        * */
+       void sacarCartaDelMazo(Mazo *mazo, Tablero *tablero);
 
         /*
         * pre: carta no puede ser nula.
@@ -70,6 +85,15 @@ public:
         * post: Muestra al jugador el nombre de las cartas que tiene guardadas.
         * */
         void verCartasGuardadas();
+
+        /*
+        * pre: tablero no puede ser nulo.
+        * post: Posiciona una mina en un casillero del tablero, si no tiene un tesoro.
+        *       En caso de haber un tesoro deja inhabilitado el casillero tanto
+        *       turnos como el poder de la mina.
+        *       Si ya había una mina en esa posición, el jugador que la encontró pierde un turno.
+        * */
+       void atacarCasillero(Tablero *tablero, int &idTesoroVictima, int &idVictima);
 
         /*
         * pre: -
@@ -122,6 +146,18 @@ public:
         * post: Devuelve el nombre del jugador.
         * */
         std::string getNombre();
+
+        /*
+        * pre: -
+        * post: Devuelve el estado del jugador.
+        * */
+        EstadoJugador getEstado();
+
+        /*
+        * pre: estado debe ser NORMAL, PERDIO_TURNO ó ELIMINADO.
+        * post: Devuelve el estado del jugador.
+        * */
+        void setEstado(EstadoJugador estado);
 
         /*
         * pre: -

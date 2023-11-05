@@ -15,6 +15,7 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
 
         this->id = id;
         this->nombre = nombre;
+        this->estado = NORMAL;
         
         this->cantidadDeTesoros = cantidadDeTesoros;
         this->tesoros = new Tesoro*[cantidadDeTesoros]();
@@ -33,17 +34,37 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
         this->gano = false;
 }
 
-void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura)
+void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura, Tablero * tablero)
 {
         if(idTesoro <= 0){
                 throw "El id del tesoro debe ser mayor a 0";
         }
 
         this->tesoros[idTesoro-1]->definirPosicion(fila, columna, altura);
+
+        tablero->getCasillero(fila, columna, altura)->cambiarEstado(TESORO);
+        tablero->getCasillero(fila, columna, altura)->definirTesoroId(idTesoro);
+        tablero->getCasillero(fila, columna, altura)->definirJugadorId(this->id);
+        std::cout << this->id << std::endl;
 }
 
 void Jugador::ponerEspia(int fila, int columna, int altura)
 {
+}
+
+void Jugador::sacarCartaDelMazo(Mazo *mazo, Tablero *tablero)
+{
+        std::string respuesta;
+
+        guardarCarta(mazo->desapilarCarta());
+        std::cout << "Has sacado una carta del mazo" << std::endl;
+        verCartasGuardadas();
+        std::cout << "Desea usar una carta? [s/n]" << std::endl;
+        std::cin >> respuesta;
+
+        if(respuesta == "s"){
+                usarCarta(elegirCartaAUsar(), tablero);
+        }
 }
 
 void Jugador::guardarCarta(Carta * carta)
@@ -83,6 +104,38 @@ void Jugador::verCartasGuardadas()
         }
 }
 
+void Jugador::atacarCasillero(Tablero * tablero, int & idTesoroVictima, int & idVictima)
+{
+        int fila, columna, altura;
+        int poderMina = usarMina();
+        
+        std::cout << "\nIngrese la posición dondre pondrá la mina" << std::endl;
+        std::cout << "Ingrese la fila: " << std::endl;
+        std::cin >> fila;
+        std::cout << "Ingrese la columna: " << std::endl;
+        std::cin >> columna;
+        std::cout << "Ingrese la distancia: " << std::endl;
+        std::cin >> altura;
+        
+        if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
+                idVictima = tablero->getCasillero(fila, columna, altura)->obtenerJugadorId();
+                idTesoroVictima = tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
+                std::cout << idVictima << idTesoroVictima << std::endl;
+                tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
+        }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
+                setEstado(PERDIO_TURNO);
+                std::cout << "Encontraste una mina de otro jugador" << std::endl;
+                std::cout << "Perdiste un turno" << std::endl;
+                //definir si al encontrar una mina el casillero vuelve a estar disponible o sigue inhabilitado
+        }else
+        {
+                tablero->getCasillero(fila, columna, altura)->cambiarEstado(MINA);
+                std::cout << "La mina ha sido colocada... vayan con cuidado" << std::endl;
+        }
+        //Definir si el jugador pierde el turno al querer colocar una mina donde había
+        //una o cambia la mina actual en el casillero por la suya
+}
+
 int Jugador::usarMina()
 {
         int poderMina = (std::rand() % 6) + 1;
@@ -117,6 +170,16 @@ void Jugador::setCantidadDeTesoros(int cantidadActual)
 std::string Jugador::getNombre()
 {
         return this->nombre;
+}
+
+void Jugador::setEstado(EstadoJugador estado)
+{
+        this->estado = estado;
+}
+
+EstadoJugador Jugador::getEstado()
+{
+        return this->estado;
 }
 
 int Jugador::getId()

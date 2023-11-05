@@ -66,7 +66,7 @@ void Registro::definirJugadorId(int id){
         throw "El id del jugador tiene que ser mayor a 0";
     }
     
-    this->jugadorId = jugadorId;
+    this->jugadorId = id;
 }
 
 int Registro::obtenerTesoroId(){

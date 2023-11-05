@@ -25,9 +25,9 @@ private:
         * post: Define el estado que tendrá el casillero en la posición (fila, columna, altura).
         *       Si idTesoro es mayor a 0 indica que el tesoro con ese id del jugador está en ese casillero.
         */
-        void definirEstadoCasillero(int fila, int columna, int altura,
-                                    EstadoRegistro estado, Jugador *jugador,
-                                    int idTesoro);
+        // void definirEstadoCasillero(int fila, int columna, int altura,
+        //                             EstadoRegistro estado, Jugador *jugador,
+        //                             int idTesoro);
 
         /*
         * pre:
@@ -39,7 +39,7 @@ private:
         * pre: jugador no puede ser nulo.
         * post: Saca una carta del mazo y la almacena en las cartas guardadas del jugador.
         */
-        void sacarCartaDelMazo(Jugador *jugador);
+        // void sacarCartaDelMazo(Jugador *jugador);
 
         /*
         * pre: jugador no puede ser nulo.
@@ -47,7 +47,14 @@ private:
         *       En caso de haber un tesoro deja inhabilitado el casillero tanto
         *       turnos como el poder de la mina.
         */
-        void atacarCasillero(Jugador *jugador);
+        // void atacarCasillero(Jugador *jugador);
+
+        /*
+        * pre: idTesoroVictima y idVictima deben ser mayor a 0.
+        * post: Marca el tesoro idTesoroVictima del jugador idVictima como
+        *       ENCONTRADO y lo descuenta de la cantidad de tesoros del jugador.
+        * */
+       void destruirTesoro(int idTesoroVictima, int idVictima);
 
         /*
         * pre: jugador no puede ser nulo.

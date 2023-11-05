@@ -20,66 +20,27 @@ void TesoroBinario::pedirDatosParaJugar(int &cantidadDeJugadores, int &cantidadD
         }
 }
 
-void TesoroBinario::definirEstadoCasillero(int fila, int columna, int altura, EstadoRegistro estado, Jugador *jugador, int idTesoro)
-{
-        this->tablero->getCasillero(fila, columna, altura)->cambiarEstado(estado);
-        this->tablero->getCasillero(fila, columna, altura)->definirTesoroId(idTesoro);
-        this->tablero->getCasillero(fila, columna, altura)->definirJugadorId(jugador->getId());
-        jugador->escoderTesoro(idTesoro, fila, columna, altura);
-}
-
 void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTablero)
 {
 }
 
-/*
-* pre: jugador no puede ser nulo.
-* post: Saca una carta del mazo y la almacena en las cartas guardadas del jugador.
-*/
-// definir si es metódo de esta clase o queda en un archivo a parte
-void TesoroBinario::sacarCartaDelMazo(Jugador *jugador)
+void TesoroBinario::destruirTesoro(int idTesoroVictima, int idVictima)
 {
-        std::string respuesta;
-
-        jugador->guardarCarta(this->mazo->desapilarCarta());
-        std::cout << "Has sacado una carta del mazo" << std::endl;
-        jugador->verCartasGuardadas();
-        std::cout << "Desea usar una carta? [s/n]" << std::endl;
-        std::cin >> respuesta;
-
-        if(respuesta == "s"){
-                jugador->usarCarta(jugador->elegirCartaAUsar(), this->tablero);
-        }
-}
-
-void TesoroBinario::atacarCasillero(Jugador * jugador)
-{
-        int fila, columna, altura;
-
-        int poderMina = jugador->usarMina();
-        std::cout << "\nIngrese la posición dondre pondrá la mina" << std::endl;
-        std::cin >> fila >> columna >> altura;
-        if(this->tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
-                int idVictima = this->tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
-                int idTesoroVictima = this->tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
-                Jugador *victima = this->jugadores[idVictima-1];
-                std::cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " ha sido destruido" << std::endl;
-                victima->descartarTesoro(idTesoroVictima);
-                this->tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
-        }else
-        {
-                this->tablero->getCasillero(fila, columna, altura)->cambiarEstado(MINA);
-                std::cout << "La mina ha sido colocada... vayan con cuidado" << std::endl;
-        }
-        //Definir si el jugador pierde el turno al queres una mina donde había
-        //una o cambia la mina actual en el casillero por la suya
+        Jugador *victima = this->jugadores[idVictima-1];
+        std::cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " ha sido destruido" << std::endl;
+        victima->descartarTesoro(idTesoroVictima);
 }
 
 void TesoroBinario::jugarTurno(Jugador * jugador)
 {
+        int idTesoroVictima = 0, idVictima = 0;
+
         std::cout << "\nTe toca jugar " << jugador->getNombre() << std::endl;
-        sacarCartaDelMazo(jugador);
-        atacarCasillero(jugador);
+        jugador->sacarCartaDelMazo(this->mazo, this->tablero);
+        jugador->atacarCasillero(this->tablero, idTesoroVictima, idVictima);
+        if(idTesoroVictima > 0 && idVictima > 0){
+                destruirTesoro(idTesoroVictima, idVictima);
+        }
 }
 
 TesoroBinario::TesoroBinario()
@@ -138,9 +99,8 @@ void TesoroBinario::inciarJuego(){
                 for(unsigned int numeroTesoro = 0; numeroTesoro < this->cantidadDeTesoros; numeroTesoro++) {
                         std::cin >> fila >> columna >> altura;
 			while(this->tablero->getCasillero(fila, columna, altura)->estaLibre()){
-                                definirEstadoCasillero(fila, columna, altura,
-                                                       TESORO, this->jugadores[numeroJugador],
-                                                       numeroTesoro+1);
+                                this->jugadores[numeroJugador]->escoderTesoro(numeroTesoro+1, fila,
+                                                                              columna, altura, this->tablero);
                         }
 		}
                 //se exporta el estado del tablero al archivo del jugador

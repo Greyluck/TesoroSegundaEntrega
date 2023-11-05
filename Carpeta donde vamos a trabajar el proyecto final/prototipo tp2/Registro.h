@@ -80,7 +80,7 @@ public:
     int obtenerJugadorId();
 
     /**
-    * Pre: jugador no puede ser nulo.
+    * Pre: id debe ser mayor a 0.
     * Post: Define el id del jugador que está usando el registro.
     **/
     void definirJugadorId(int id);
@@ -93,7 +93,7 @@ public:
     int obtenerTesoroId();
 
     /**
-    * Pre: id deber positivo.
+    * Pre: id debe ser mayor a 0.
     * Post: Define el id del tesoro que tiene el registro.
     **/
     void definirTesoroId(int id);
