@@ -41,6 +41,10 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
         if(idTesoroVictima > 0 && idVictima > 0){
                 destruirTesoro(idTesoroVictima, idVictima);
         }
+        jugador->ponerEspia(this->tablero, idTesoroVictima, idVictima);
+        if(idTesoroVictima > 0 && idVictima > 0){
+                destruirTesoro(idTesoroVictima, idVictima);
+        }
 }
 
 TesoroBinario::TesoroBinario()

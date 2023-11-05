@@ -3,7 +3,6 @@
 static const int ID_JUGADOR_NULO = 0;
 static const int ID_TESORO_NULO = 0;
 static const int MIN_TIEMPO_INHABILITADO = 0;
-static const int MAX_TIEMPO_INHABILITADO = 5;
 
 Registro::Registro(unsigned int x, unsigned int y, unsigned z){
     this->x = x;
@@ -74,7 +73,7 @@ int Registro::obtenerTesoroId(){
 }
 
 void Registro::definirTesoroId(int id){
-    if(id < 0){
+    if(id <= 0){
         throw "El id debe ser positivo.";
     }
 

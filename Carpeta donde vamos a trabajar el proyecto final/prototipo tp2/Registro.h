@@ -68,7 +68,7 @@ public:
     EstadoRegistro obtenerEstado();
 
     /**
-    * Pre: estado debe ser OCUPADA,	TESORO, ESPIA, NO_DISPONIBLE o LIBRE
+    * Pre: estado debe ser OCUPADA,	TESORO, ESPIA, NO_DISPONIBLE, LIBRE ó MINA
     * Post: Cambia el estado del registro.
     **/
     void cambiarEstado(EstadoRegistro estado);

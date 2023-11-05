@@ -44,10 +44,12 @@ public:
         void escoderTesoro(int idTesoro, int fila, int columna, int altura, Tablero *tablero);
 
         /*
-        * pre: fila, columna y altura deben estar dentro de los limites del tablero.
+        * pre: tablero no puede ser nulo.
         * post: Coloca un espia en la fila, columna y altura indicadas.
+        *       En caso de haber un tesoro deja inhabilitado el casillero
+        *       durante 5 turnos.
         * */
-        void ponerEspia(int fila, int columna, int altura);
+        void ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima);
 
         /*
         * pre: mazo y tablero no pueden ser nulos.

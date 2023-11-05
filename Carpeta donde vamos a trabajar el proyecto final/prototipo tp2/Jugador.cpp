@@ -6,6 +6,7 @@
 // definir cantidad maxima de cartas guardadas definitiva.
 const int CANTIDAD_MAXIMA_CARTAS_GUARDADAS = 3;
 const std::string ARCHIVO = "estadoTablero.bmp";
+const int TIEMPO_RECUPERANDO_TESORO = 5;
 
 Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
 {
@@ -45,11 +46,37 @@ void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura, Tab
         tablero->getCasillero(fila, columna, altura)->cambiarEstado(TESORO);
         tablero->getCasillero(fila, columna, altura)->definirTesoroId(idTesoro);
         tablero->getCasillero(fila, columna, altura)->definirJugadorId(this->id);
-        std::cout << this->id << std::endl;
 }
 
-void Jugador::ponerEspia(int fila, int columna, int altura)
+void Jugador::ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima)
 {
+        int fila, columna, altura;
+        
+        std::cout << "\nIngrese la posición dondre pondrá al espía" << std::endl;
+        std::cout << "Ingrese la fila: " << std::endl;
+        std::cin >> fila;
+        std::cout << "Ingrese la columna: " << std::endl;
+        std::cin >> columna;
+        std::cout << "Ingrese la distancia: " << std::endl;
+        std::cin >> altura;
+        
+        if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
+                idVictima = tablero->getCasillero(fila, columna, altura)->obtenerJugadorId();
+                idTesoroVictima = tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
+                tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
+        }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == ESPIA){
+                std::cout << "Encontraste un espia de otro jugador" << std::endl;
+                std::cout << "Ambos espias fueron eliminados" << std::endl;
+                tablero->getCasillero(fila, columna, altura)->cambiarEstado(LIBRE);
+        }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
+                setEstado(PERDIO_TURNO);
+                std::cout << "Encontraste una mina de otro jugador" << std::endl;
+                std::cout << "Perdiste un turno" << std::endl;
+        }else
+        {
+                tablero->getCasillero(fila, columna, altura)->cambiarEstado(ESPIA);
+                std::cout << "El espía ha sido colocado en la posición indicada" << std::endl;
+        }
 }
 
 void Jugador::sacarCartaDelMazo(Mazo *mazo, Tablero *tablero)
@@ -120,7 +147,6 @@ void Jugador::atacarCasillero(Tablero * tablero, int & idTesoroVictima, int & id
         if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
                 idVictima = tablero->getCasillero(fila, columna, altura)->obtenerJugadorId();
                 idTesoroVictima = tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
-                std::cout << idVictima << idTesoroVictima << std::endl;
                 tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
         }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
                 setEstado(PERDIO_TURNO);
@@ -138,7 +164,8 @@ void Jugador::atacarCasillero(Tablero * tablero, int & idTesoroVictima, int & id
 
 int Jugador::usarMina()
 {
-        int poderMina = (std::rand() % 6) + 1;
+        //Devuelve un valor random entre 1 y 5.
+        int poderMina = (std::rand() % 5) + 1;
         return poderMina;
 }
 
