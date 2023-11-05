@@ -48,11 +48,17 @@ public:
 	 */
 	unsigned int getLargo();
 
-    /**
-	 * pre: x, y, z deben ser positivos y estar dentro del rango del tama�o del tablero.
-	 * post: Devuelve el registro que se encuentra la posici�n recibida por par�metro.
-	 */
+	/**
+	* pre: x, y, z deben ser positivos y estar dentro del rango del tamaño del tablero.
+	* post: Devuelve el registro que se encuentra la posición recibida por parámetro.
+	*/
 	Registro* getCasillero(unsigned int x, unsigned int y, unsigned int z);
+
+	/*
+	* pre: x, y, z deben ser positivos y estar dentro del rango del tamaño del tablero.
+	* post: Devuelve true si la posición (x, y,z) está dentro del tablero o false en caso contrario.
+	*/
+	bool esPoscionValida(unsigned int x, unsigned int y, unsigned int z);
 };
 
 #endif /* TABLERO_H_ */

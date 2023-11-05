@@ -30,6 +30,21 @@ EstadoTesoro Tesoro::obtenerEstado()
         return this->estado;
 }
 
+unsigned int Tesoro::getColumna()
+{
+        return this->columna;
+}
+
+unsigned int Tesoro::getAltura()
+{
+        return this->altura;
+}
+
+unsigned int Tesoro::getFila()
+{
+        return this->fila;
+}
+
 Tesoro::~Tesoro()
 {
 }

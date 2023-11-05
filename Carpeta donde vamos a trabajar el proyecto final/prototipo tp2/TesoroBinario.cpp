@@ -11,11 +11,11 @@ void TesoroBinario::pedirDatosParaJugar(int &cantidadDeJugadores, int &cantidadD
         std::cout << "¿Cuál será el ancho, el alto y el largo del tablero?" << std::endl;
         std::cout << "Ingrese el numero de cada uno por separado (el numero debe ser mayor que 0)" << std::endl;
         while(anchoTablero <= 0 && altoTablero <= 0 && largoTablero <= 0){
-                std::cout << "Ingrese el ancho: " << std::endl;
+                std::cout << "Ingrese el ancho: ";
                 std::cin >> anchoTablero;
-                std::cout << "Ingrese el alto: " << std::endl;
+                std::cout << "Ingrese el alto: ";
                 std::cin >> altoTablero;
-                std::cout << "Ingrese el largo: " << std::endl;
+                std::cout << "Ingrese el largo: ";
                 std::cin >> largoTablero;
         }
 }
@@ -45,6 +45,7 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
         if(idTesoroVictima > 0 && idVictima > 0){
                 destruirTesoro(idTesoroVictima, idVictima);
         }
+        jugador->moverTesoro(this->tablero, idTesoroVictima, idVictima);
 }
 
 TesoroBinario::TesoroBinario()

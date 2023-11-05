@@ -8,6 +8,61 @@ const int CANTIDAD_MAXIMA_CARTAS_GUARDADAS = 3;
 const std::string ARCHIVO = "estadoTablero.bmp";
 const int TIEMPO_RECUPERANDO_TESORO = 5;
 
+void Jugador::definirNuevaPosicionTesoro(int idTesoro, unsigned int &fila,
+                                         unsigned int &columna, unsigned int &altura)
+{
+        unsigned int filaAnterior = this->tesoros[idTesoro-1]->getFila();
+        unsigned int columnaAnterior = this->tesoros[idTesoro-1]->getColumna();
+        unsigned int AlturaAnterior = this->tesoros[idTesoro-1]->getAltura();
+        int direccion;
+
+        // Consulta la nueva cordenada basada en la anterior
+        std::cout << " Se esta moviendo el cofre en la posicion ("<< filaAnterior <<"|"<< columnaAnterior << "|" << AlturaAnterior << ")"<< std::endl;
+        std::cout << " - Hacia donde movera el tesoro" << std::endl;
+        std::cout << " (1) Arriba (2) Abajo (3) Izquierda (4) Derecha (5) Atras (6) Adelante: ";
+        std::cin >> direccion;
+        switch(direccion) {
+                case 1:     // Arriba
+                std::cout << " - Se desea mover hacia arriba";
+                fila = filaAnterior;
+                columna = columnaAnterior;
+                altura = AlturaAnterior+1;
+                break;
+                case 2:     // Abajo
+                std::cout << " - Se desea mover abajo";
+                fila = filaAnterior;
+                columna = columnaAnterior;
+                altura = AlturaAnterior-1;
+                break;
+                case 3:     // Izq
+                std::cout << " - Se desea mover la izquierda";
+                fila = filaAnterior;
+                columna = columnaAnterior-1;
+                altura = AlturaAnterior;
+                break;
+                case 4:     // Der
+                std::cout << " - Se desea mover hacia la derecha";
+                fila = filaAnterior;
+                columna = columnaAnterior+1;
+                altura = AlturaAnterior;
+                break;
+                case 5: //Atras
+                std::cout << " - Se desea mover hacia atras";
+                fila = filaAnterior-1;
+                columna = columnaAnterior;
+                altura = AlturaAnterior;
+                break;
+                case 6: //Adelante
+                std::cout << " - Se desea mover hacia adelante";
+                fila = filaAnterior+1;
+                columna = columnaAnterior;
+                altura = AlturaAnterior;
+                break;
+                default:    // Default
+                break;
+        }        
+}
+
 Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
 {
         if(id <= 0){
@@ -50,15 +105,16 @@ void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura, Tab
 
 void Jugador::ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima)
 {
-        int fila, columna, altura;
-        
-        std::cout << "\nIngrese la posición dondre pondrá al espía" << std::endl;
-        std::cout << "Ingrese la fila: " << std::endl;
-        std::cin >> fila;
-        std::cout << "Ingrese la columna: " << std::endl;
-        std::cin >> columna;
-        std::cout << "Ingrese la distancia: " << std::endl;
-        std::cin >> altura;
+        int fila = 0, columna = 0, altura = 0;
+        while(!tablero->esPoscionValida(fila, columna, altura)){
+                std::cout << "\nIngrese la posición donde pondrá al espía" << std::endl;
+                std::cout << "Ingrese la fila: ";
+                std::cin >> fila;
+                std::cout << "Ingrese la columna: ";
+                std::cin >> columna;
+                std::cout << "Ingrese la distancia: ";
+                std::cin >> altura;
+        }
         
         if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
                 idVictima = tablero->getCasillero(fila, columna, altura)->obtenerJugadorId();
@@ -76,6 +132,46 @@ void Jugador::ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima)
         {
                 tablero->getCasillero(fila, columna, altura)->cambiarEstado(ESPIA);
                 std::cout << "El espía ha sido colocado en la posición indicada" << std::endl;
+        }
+}
+
+void Jugador::moverTesoro(Tablero * tablero, int & idTesoroVictima, int & idVictima)
+{
+        int idTesoro;
+        unsigned int nuevaFila, nuevaColumna, nuevaAltura;
+
+        std::cout << "\nIngrese el id del tesoro que moverá" << std::endl;
+        std::cin >> idTesoro;
+
+        unsigned int filaAnterior = this->tesoros[idTesoro-1]->getFila();
+        unsigned int columnaAnterior = this->tesoros[idTesoro-1]->getColumna();
+        unsigned int AlturaAnterior = this->tesoros[idTesoro-1]->getAltura();
+
+        bool tesoroMovido = false;
+        while(!tesoroMovido){
+                definirNuevaPosicionTesoro(idTesoro, nuevaFila, nuevaColumna, nuevaAltura);                
+                std::cout << " desde ("<< filaAnterior <<"|"<< columnaAnterior << "|" << AlturaAnterior << ") --> (" << nuevaFila <<"|"<< nuevaColumna <<  "|" << nuevaAltura <<")."<< std::endl;
+
+                // Verifica que la nueva posición este dentro del tablero. Sino lo esta, pregunta de nuevo.
+                if (tablero->esPoscionValida(nuevaFila, nuevaColumna, nuevaAltura)){
+                        if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == TESORO){
+                        std::cout<<"Encontró un tesoro en la posición ("<<nuevaFila<<", "<<nuevaColumna<<", "<<nuevaAltura<<")"<<std::endl;         
+                        tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->cambiarEstado(OCUPADA);
+                        }else if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == MINA){
+                                std::cout << "Encontraste una mina de otro jugador" << std::endl;
+                                std::cout << "Perdiste un turno" << std::endl;
+                                setEstado(PERDIO_TURNO);
+                        }
+                        else{
+                                std::cout << "Se movio el cofre hacia "<< "(" << nuevaFila <<"|"<< nuevaColumna <<  "|" << nuevaAltura <<")."<< std::endl;
+                                tablero->getCasillero(filaAnterior, columnaAnterior, AlturaAnterior)->cambiarEstado(LIBRE);
+                                escoderTesoro(idTesoro, nuevaFila, nuevaColumna, nuevaAltura, tablero);
+                        }
+                        tesoroMovido = true;
+                }
+                else{
+                	std::cout << "Esa posicion esta fuera del tablero.\n"<< std::endl;
+                }
         }
 }
 
@@ -133,16 +229,18 @@ void Jugador::verCartasGuardadas()
 
 void Jugador::atacarCasillero(Tablero * tablero, int & idTesoroVictima, int & idVictima)
 {
-        int fila, columna, altura;
+        int fila = 0, columna = 0, altura = 0;
         int poderMina = usarMina();
         
-        std::cout << "\nIngrese la posición dondre pondrá la mina" << std::endl;
-        std::cout << "Ingrese la fila: " << std::endl;
-        std::cin >> fila;
-        std::cout << "Ingrese la columna: " << std::endl;
-        std::cin >> columna;
-        std::cout << "Ingrese la distancia: " << std::endl;
-        std::cin >> altura;
+        while(!tablero->esPoscionValida(fila, columna, altura)){
+                std::cout << "\nIngrese la posición donde pondrá la mina" << std::endl;
+                std::cout << "Ingrese la fila: ";
+                std::cin >> fila;
+                std::cout << "Ingrese la columna: ";
+                std::cin >> columna;
+                std::cout << "Ingrese la distancia: ";
+                std::cin >> altura;
+        }
         
         if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
                 idVictima = tablero->getCasillero(fila, columna, altura)->obtenerJugadorId();

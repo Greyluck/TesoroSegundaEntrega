@@ -36,11 +36,29 @@ public:
         */
        void cambiarEstado(EstadoTesoro estado);
 
-       /*
+        /*
         * pre: -
         * post: Devuelve el estado del tesoro.
         */
-       EstadoTesoro obtenerEstado();
+        EstadoTesoro obtenerEstado();
+
+        /*
+        * pre: -
+        * post: Devuelve la fila en donde está el tesoro.
+        * */
+        unsigned int getFila();
+
+        /*
+        * pre: -
+        * post: Devuelve la columna en donde está el tesoro.
+        * */
+        unsigned int getColumna();
+
+        /*
+        * pre: -
+        * post: Devuelve la altura en donde está el tesoro.
+        * */
+        unsigned int getAltura();
 
        /*
         * pre: -

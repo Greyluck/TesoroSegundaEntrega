@@ -51,6 +51,15 @@ Registro* Tablero::getCasillero(unsigned int x, unsigned int y, unsigned int z) 
 	return this->registros->obtener(x)->obtener(y)->obtener(z);
 }
 
+bool Tablero::esPoscionValida(unsigned int x, unsigned int y, unsigned int z)
+{
+    if(x > 0 && y > 0 && z > 0 && x <= this->ancho && y <= this->alto && z <= this->largo){
+        return true;
+    }
+
+    return false;
+}
+
 unsigned int Tablero::getAncho(){
 	return this->ancho;
 }

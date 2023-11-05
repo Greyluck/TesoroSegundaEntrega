@@ -25,6 +25,13 @@ private:
         int cantidadCartasGuardadas;
         Carta **cartasGuardadas; //definir cuantas cartas guardadas puede tener un jugador durante el juego
         bool gano;
+
+        /*
+        * pre: idTesoro debe ser mayor a 0.
+        * post: Define una nueva posición tomando como referencia la del tesoro idTesoro.
+        * */
+       void definirNuevaPosicionTesoro(int idTesoro, unsigned int &fila,
+                                       unsigned int &columna, unsigned int &altura);
 public:
         /*
         * pre: nombre no puede ser nulo.
@@ -45,11 +52,21 @@ public:
 
         /*
         * pre: tablero no puede ser nulo.
-        * post: Coloca un espia en la fila, columna y altura indicadas.
+        * post: Coloca un espia en la posición indicada por el jugador.
         *       En caso de haber un tesoro deja inhabilitado el casillero
         *       durante 5 turnos.
+        *       En caso de haber un espía ambos son eliminados dejando el
+        *       casillero libre de nuevo.
         * */
         void ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima);
+
+        /*
+        * pre: tablero no puede ser nulo.
+        * post: Mueve un tesoro del jugador a la posición indicada por el jugador.
+        *       En caso de haber un tesoro le avisa que hay un tesoro para que
+        *       lo recupere en el siguiente turno.
+        * */
+       void moverTesoro(Tablero *tablero, int &idTesoroVictima, int &idVictima);
 
         /*
         * pre: mazo y tablero no pueden ser nulos.
@@ -156,7 +173,7 @@ public:
         EstadoJugador getEstado();
 
         /*
-        * pre: estado debe ser NORMAL, PERDIO_TURNO ó ELIMINADO.
+        * pre: estado debe ser NORMAL, PERDIO_TURNO o ELIMINADO.
         * post: Devuelve el estado del jugador.
         * */
         void setEstado(EstadoJugador estado);
