@@ -5,6 +5,7 @@
 template <class T> class Pila {
 private:
     Nodo<T> *tope;
+    unsigned int tamanio;
 public:
     /*
     * pre: -
@@ -55,7 +56,7 @@ public:
         if (this->estaVacia()){
             throw std::runtime_error("La pila no puede estar vacia...");
         }
-        return this->tope->getValor();
+        return this->tope->obtenerDato();
     };
 
     /*
@@ -63,9 +64,8 @@ public:
     * post: Destruye una instancia de la clase Pila
     */
     ~Pila(){
-        while(this->estaVacia()){
-            T dato = this->desapilar();
-            delete dato;
+        while(!this->estaVacia()){
+            this->desapilar();
         }
     };
 };

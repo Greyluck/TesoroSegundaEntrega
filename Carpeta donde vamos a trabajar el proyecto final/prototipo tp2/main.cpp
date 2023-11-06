@@ -1,5 +1,7 @@
 #include "TesoroBinario.h"
 // #include "Tablero.h"
+// #include "Pila.h"
+// #include "Mazo.h"
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -13,6 +15,51 @@ int main() {
 	//se genera un segmetation fall luego de esconder tomar la pocision del
 	//primer tesoro del primer jugador
 	delete tesoroBinario;
+
+	// // prueba de mazo para resover pérdida de memoria
+	// std::cout << "Se crea un mazo pra 2 jugadores (tiene 6 cartas)" << std::endl;
+	// Mazo *mazo = new Mazo(2);
+	// std::cout << "Cada jugador toma una carta" << std::endl;
+	// Carta *miCarta1 = mazo->desapilarCarta();
+	// Carta *miCarta2 = mazo->desapilarCarta();
+
+	// std::cout << "Se usan las cartas" << std::endl;
+	// std::cout << "Carta 1: " << miCarta1->getNombreCarta() << std::endl;
+	// std::cout << "Carta 2: " << miCarta2->getNombreCarta() << std::endl;
+
+	// std::cout << "Se eliminan las cartas de los jugadores" << std:: endl;
+	// delete miCarta1;
+	// delete miCarta2;
+
+	// std::cout << "Se elimina el mazo y no queda memoria colgada" << std::endl;
+	// delete mazo;
+
+	// //prueba de la pila para arreglar perdida de memoria
+	// Pila<int*> *ptrosInt = new Pila<int*>();
+	// //se agregan 5 elementos a la pila.
+	// std::cout << "Se agrega 1 a la pila" << std::endl;
+	// ptrosInt->apilar((int*)1);
+	// std::cout << "Se agrega 2 a la pila" << std::endl;
+	// ptrosInt->apilar((int*)2);
+	// std::cout << "Se agrega 3 a la pila" << std::endl;
+	// ptrosInt->apilar((int*)3);
+	// std::cout << "Se agrega 4 a la pila" << std::endl;
+	// ptrosInt->apilar((int*)4);
+	// std::cout << "Se agrega 5 a la pila" << std::endl;
+	// ptrosInt->apilar((int*)5);
+
+	// //se remueven 2 enlementos de la pila
+	// std::cout << "Se desapila el elemento " << ptrosInt->desapilar() << std::endl;
+	// std::cout << "Se desapila el elemento " << ptrosInt->desapilar() << std::endl;
+
+	// //se muestran todos lo elementos de la pila y luego se desapilan.
+	// while(!ptrosInt->estaVacia()){
+	// 	std::cout << "Elemento "<< ": " << ptrosInt->verTope() << std::endl;
+	// 	std::cout << "Se desapila el elemento " << ptrosInt->desapilar() << std::endl;
+	// }
+
+	// //se elimina la pila y no debe quedar memoria colgada.
+	// delete ptrosInt;
 
 	return 0;
 

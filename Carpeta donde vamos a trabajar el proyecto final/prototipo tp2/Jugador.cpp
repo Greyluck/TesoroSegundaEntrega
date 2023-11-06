@@ -141,6 +141,7 @@ void Jugador::moverTesoro(Tablero * tablero, int & idTesoroVictima, int & idVict
         unsigned int nuevaFila, nuevaColumna, nuevaAltura;
 
         std::cout << "\nIngrese el id del tesoro que moverá" << std::endl;
+        std::cout << "Debe estar entre 1 y" << this->cantidadDeTesoros << std::endl;
         std::cin >> idTesoro;
 
         unsigned int filaAnterior = this->tesoros[idTesoro-1]->getFila();

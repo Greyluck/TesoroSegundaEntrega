@@ -6,7 +6,7 @@
 class Mazo {
 private:
     Pila<Carta*> *mazo;
-    int cantJugadores;
+    int cantidadCartas;
     //se encarga de refillear la cantidad de cartas,
     void refill();
 public:
