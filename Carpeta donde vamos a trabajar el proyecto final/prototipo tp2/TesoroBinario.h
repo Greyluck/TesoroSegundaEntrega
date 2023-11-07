@@ -5,13 +5,21 @@
 #include "Jugador.h"
 #include "Mazo.h"
 
+enum EstadoJuego {
+        JUGABLE,
+        FINALIZADO
+};
+
 class TesoroBinario {
 private:
         Tablero *tablero;
         Jugador **jugadores; //vector dinámico de los jugadores que habrán en el juego
         Mazo *mazo;
         unsigned int cantidadDeJugadores;
+        unsigned int cantidadDeJugadoresJugando;
         unsigned int cantidadDeTesoros;
+        EstadoJuego estado;
+        int idGanador;
 
         /*
         * pre: -
@@ -62,11 +70,33 @@ private:
         * */
         void jugarTurno(Jugador *jugador);
 
+        /*
+        * pre: -
+        * post: Devuelve el estado del juego
+        * */
+        EstadoJuego getEstado();
+
+        /*
+        * pre: estado debe ser JUGABLE O FINALIZADO
+        * post: Cambia el estado actual del juego al recibido por parámetro.
+        * */
+        void setEstado(EstadoJuego estado);
+
+        /*
+        * pre:- 
+        * post: Define si se puede seguir jugando. En caso de que no se pueda
+        *       almacena el id del jugador ganador en idGandor y marca a estado
+        *       como FINALIZADO.
+        * */
+        void revisarJuego();
+
 public:
         /*
         * pre: -
         * post: Crea una instancia del TDA TesoroBinario con el tablero 
-        *       y los jugadores recibido por parámetro
+        *       y los jugadores recibido por parámetro.
+        *       El estado se inicializa en JUGABLE.
+        *       idGandor se inicializa en 0.
         */
         TesoroBinario();
 
@@ -84,7 +114,8 @@ public:
 
         /*
         * pre: -
-        * post: -
+        * post: En caso de haber un ganador lo felicita e informa que el juego
+        *       ha finalizado correctamente. Caso contrario informa que juego de forma inesperada.  
         * */
         void finalizarJuego();
 

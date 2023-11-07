@@ -7,8 +7,8 @@
 #include "Mazo.h"
 
 enum EstadoJugador {
-        NORMAL,
-        PERDIO_TURNO, //definir si tiene este nombre o se lo cambia por otro
+        JUGANDO,
+        SUSPENDIDO, //definir si tiene este nombre o se lo cambia por otro
         ELIMINADO
 };
 
@@ -18,6 +18,7 @@ private:
         std::string nombre;
         EstadoJugador estado;
         int cantidadDeTesoros; //definir si sólo debe ser mayor a 0 ó debe estar dentro de un rango.
+        int cantidadDeTesorosDisponibles;
         Tesoro **tesoros;
         // int cantidadTesorosDescubiertos;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
@@ -37,7 +38,8 @@ public:
         * pre: nombre no puede ser nulo.
         *       cantidadDeTesoros debe ser mayor a 0.
         * post: Crea una instancia de un jugador con el nombre y la cantidad de tesoros recibida por parámetro.
-        *       El estado del jugador se inicializa en NORMAL. 
+        *       El estado del jugador se inicializa en JUGANDO.
+        *       cantidadDeTesorosDisponibles se inicializa en cantidadDeTesoros. 
         */
         Jugador(int id, std::string nombre, int cantidadDeTesoros);
 

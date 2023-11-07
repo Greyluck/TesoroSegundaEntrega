@@ -12,8 +12,7 @@ int main() {
 	TesoroBinario *tesoroBinario = new TesoroBinario();
 	tesoroBinario->inciarJuego();
 	tesoroBinario->jugarJuego();
-	//se genera un segmetation fall luego de esconder tomar la pocision del
-	//primer tesoro del primer jugador
+	tesoroBinario->finalizarJuego();
 	delete tesoroBinario;
 
 	// // prueba de mazo para resover pérdida de memoria

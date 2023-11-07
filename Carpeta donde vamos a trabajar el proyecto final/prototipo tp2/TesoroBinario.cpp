@@ -10,7 +10,7 @@ void TesoroBinario::pedirDatosParaJugar(int &cantidadDeJugadores, int &cantidadD
         std::cin >> cantidadDeTesoros;
         std::cout << "¿Cuál será el ancho, el alto y el largo del tablero?" << std::endl;
         std::cout << "Ingrese el numero de cada uno por separado (el numero debe ser mayor que 0)" << std::endl;
-        while(anchoTablero <= 0 && altoTablero <= 0 && largoTablero <= 0){
+        while(anchoTablero <= 0 || altoTablero <= 0 || largoTablero <= 0){
                 std::cout << "Ingrese el ancho: ";
                 std::cin >> anchoTablero;
                 std::cout << "Ingrese el alto: ";
@@ -35,17 +35,19 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
 {
         int idTesoroVictima = 0, idVictima = 0;
 
-        std::cout << "\nTe toca jugar " << jugador->getNombre() << std::endl;
-        jugador->sacarCartaDelMazo(this->mazo, this->tablero);
-        jugador->atacarCasillero(this->tablero, idTesoroVictima, idVictima);
-        if(idTesoroVictima > 0 && idVictima > 0){
-                destruirTesoro(idTesoroVictima, idVictima);
+        if(jugador->getEstado() == JUGANDO){
+                std::cout << "\nTe toca jugar " << jugador->getNombre() << std::endl;
+                jugador->sacarCartaDelMazo(this->mazo, this->tablero);
+                jugador->atacarCasillero(this->tablero, idTesoroVictima, idVictima);
+                if(idTesoroVictima > 0 && idVictima > 0){
+                        destruirTesoro(idTesoroVictima, idVictima);
+                }
+                jugador->ponerEspia(this->tablero, idTesoroVictima, idVictima);
+                if(idTesoroVictima > 0 && idVictima > 0){
+                        destruirTesoro(idTesoroVictima, idVictima);
+                }
+                jugador->moverTesoro(this->tablero, idTesoroVictima, idVictima);
         }
-        jugador->ponerEspia(this->tablero, idTesoroVictima, idVictima);
-        if(idTesoroVictima > 0 && idVictima > 0){
-                destruirTesoro(idTesoroVictima, idVictima);
-        }
-        jugador->moverTesoro(this->tablero, idTesoroVictima, idVictima);
 }
 
 TesoroBinario::TesoroBinario()
@@ -72,8 +74,11 @@ TesoroBinario::TesoroBinario()
         }
 
         this->cantidadDeJugadores = cantidadDeJugadores;
+        this->cantidadDeJugadoresJugando = cantidadDeJugadores;
         this->cantidadDeTesoros = cantidadDeTesoros;
         this->mazo = new Mazo(this->cantidadDeJugadores);
+        this->estado = JUGABLE;
+        this->idGanador = 0;
 }
 
 /*
@@ -115,17 +120,55 @@ void TesoroBinario::inciarJuego(){
 
 int TesoroBinario::jugarJuego()
 {
-        int idJugadorGanador = 0;
-
-        while(idJugadorGanador == 0){
+        
+        while(getEstado() == JUGABLE){
                 for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
                         jugarTurno(this->jugadores[i]);
                 }
 
-                idJugadorGanador = 1;
+                revisarJuego();
         }
 
-        return 0;
+        return this->idGanador;
+}
+
+EstadoJuego TesoroBinario::getEstado(){
+        return this->estado;
+}
+
+void TesoroBinario::setEstado(EstadoJuego estado){
+        this->estado = estado;
+}
+
+void TesoroBinario::revisarJuego(){
+        // verifica si hay jugadores eliminados y los descuentan de la cantidad que está jugando
+        for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
+                if(this->jugadores[i]->getEstado() == ELIMINADO){
+                        this->cantidadDeJugadoresJugando--;
+                }
+        }
+
+        if(this->cantidadDeJugadoresJugando == 1){
+                // Busca al jugador que todavía está jugando.
+                for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
+                        if(this->jugadores[i]->getEstado() != ELIMINADO){
+                                this->idGanador = this->jugadores[i]->getId();
+                        }
+                }
+                setEstado(FINALIZADO);
+        }
+}
+
+void TesoroBinario::finalizarJuego(){
+        if(this->idGanador > 0){
+                std::cout << "¡FELICITACIONES " << this->jugadores[idGanador-1]->getNombre() << "!" << std::endl;
+                std::cout << "Ganaste el juego " << NOMBRE_JUEGO << std::endl;
+                std::cout << "El juego ha finalizado con éxito" << std::endl;
+        }else
+        {
+                // definir si agregar esto en caso de que haya ocurrrido en error durante la ejecución del programa
+                std::cout << "El juego se cortó de manera inesperada" << std::endl;
+        }
 }
 
 TesoroBinario::~TesoroBinario(){

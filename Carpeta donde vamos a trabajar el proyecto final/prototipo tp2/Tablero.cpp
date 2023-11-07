@@ -2,7 +2,7 @@
 
 Tablero::Tablero(unsigned int ancho, unsigned int alto, unsigned int largo) {
 	if(ancho <= 0 && alto <= 0 && largo <= 0){
-        throw "La posici�n del tablero no puede ser negativa";
+        throw std::runtime_error("El tamaño del tablero no puede ser negativo");
     }
 
 	this->registros = new Lista<Lista<Lista<Registro*>*>*>();
