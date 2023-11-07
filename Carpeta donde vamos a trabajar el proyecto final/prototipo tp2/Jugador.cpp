@@ -5,7 +5,7 @@
 
 // definir cantidad maxima de cartas guardadas definitiva.
 const int CANTIDAD_MAXIMA_CARTAS_GUARDADAS = 3;
-const std::string ARCHIVO = "estadoTablero.bmp";
+const std::string ARCHIVO = "estadoTablero.txt";
 const int TIEMPO_RECUPERANDO_TESORO = 5;
 
 void Jugador::definirNuevaPosicionTesoro(int idTesoro, unsigned int &fila,

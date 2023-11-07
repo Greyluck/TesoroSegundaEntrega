@@ -15,6 +15,9 @@ int main() {
 	tesoroBinario->finalizarJuego();
 	delete tesoroBinario;
 
+	return 0;
+
+
 	// // prueba de mazo para resover pérdida de memoria
 	// std::cout << "Se crea un mazo pra 2 jugadores (tiene 6 cartas)" << std::endl;
 	// Mazo *mazo = new Mazo(2);
@@ -32,6 +35,7 @@ int main() {
 
 	// std::cout << "Se elimina el mazo y no queda memoria colgada" << std::endl;
 	// delete mazo;
+
 
 	// //prueba de la pila para arreglar perdida de memoria
 	// Pila<int*> *ptrosInt = new Pila<int*>();
@@ -60,7 +64,6 @@ int main() {
 	// //se elimina la pila y no debe quedar memoria colgada.
 	// delete ptrosInt;
 
-	return 0;
 
 	//caso de tablero tridimensional con listas
 	// Tablero *tablero = new Tablero(1, 1, 1);

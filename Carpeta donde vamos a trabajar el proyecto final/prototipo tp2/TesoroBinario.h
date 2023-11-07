@@ -30,12 +30,9 @@ private:
 
         /*
         * pre: estado y jugador no pueden ser nulos. 
-        * post: Define el estado que tendrá el casillero en la posición (fila, columna, altura).
-        *       Si idTesoro es mayor a 0 indica que el tesoro con ese id del jugador está en ese casillero.
+        * post: Devuelve como se verá el casillero según estado.
         */
-        // void definirEstadoCasillero(int fila, int columna, int altura,
-        //                             EstadoRegistro estado, Jugador *jugador,
-        //                             int idTesoro);
+        std::string definirEstadoCasillero(EstadoRegistro estado);
 
         /*
         * pre:
