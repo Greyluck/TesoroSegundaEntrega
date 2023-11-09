@@ -20,12 +20,19 @@ private:
         int cantidadDeTesoros; //definir si sólo debe ser mayor a 0 ó debe estar dentro de un rango.
         int cantidadDeTesorosDisponibles;
         Tesoro **tesoros;
-        // int cantidadTesorosDescubiertos;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
         Carta *cartaActiva;
         int cantidadCartasGuardadas;
         Carta **cartasGuardadas; //definir cuantas cartas guardadas puede tener un jugador durante el juego
+        int tiempoSuspendido;
         bool gano;
+
+        	/*
+	* pre: -
+	* post: Pide al jugador una posición que esté en el tablero.
+	* */
+	void pedirPosicion(Tablero *tablero, int &fila, int &columna, int &altura);
+
 
         /*
         * pre: idTesoro debe ser mayor a 0.
@@ -117,6 +124,15 @@ public:
        void atacarCasillero(Tablero *tablero, int &idTesoroVictima, int &idVictima);
 
         /*
+        * pre: tablero no puede ser nulo.
+        * post: Posiciona una mina o un espia según estado en un casillero del tablero, si no tiene un tesoro.
+        *       En caso de haber un tesoro deja inhabilitado el casillero tanto
+        *       turnos como el poder de la mina.
+        *       Si ya había una mina en esa posición, el jugador que la encontró pierde un turno.
+        * */
+       void atacarCasillero(EstadoRegistro estado, Tablero *tablero, int &idTesoroVictima, int &idVictima);
+
+        /*
         * pre: -
         * post: Devuelve el poder de la mina que el jugador usará.
         * */
@@ -191,6 +207,15 @@ public:
         * post: Devuelve el archivo que contiene el estado del tablero del jugador.
         * */
         std::string getEstadoTablero();
+
+        /*
+        * pre: -
+        * post: Devuelve true si el estdo del jugador es SUSPENDIDO y disminuye
+        *       su tiempo de suspension.
+        *       Caso contrario devuelve false.
+        *       Si tiempoSuspendido es igual a 0 vuelve habilitar al jugador.
+        * */
+        bool estaSuspendido();
 
         /*
         * pre: -

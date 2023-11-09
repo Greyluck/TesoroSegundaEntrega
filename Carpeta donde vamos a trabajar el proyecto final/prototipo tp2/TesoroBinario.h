@@ -4,6 +4,7 @@
 #include "Tablero.h"
 #include "Jugador.h"
 #include "Mazo.h"
+#include "Interfaz.h"
 
 enum EstadoJuego {
         JUGABLE,
@@ -20,13 +21,7 @@ private:
         unsigned int cantidadDeTesoros;
         EstadoJuego estado;
         int idGanador;
-
-        /*
-        * pre: -
-        * post: Pide al usuario los datos necesarios para configurar el juego.
-        */
-        void pedirDatosParaJugar(int &cantidadDeJugadores, int &cantidadDeTesoros,
-                                 int &anchoTablero, int &altoTablero, int &largoTablero);
+        Interfaz *interfaz; //Interfaz que interactuará con los jugadores
 
         /*
         * pre: estado y jugador no pueden ser nulos. 
@@ -39,27 +34,6 @@ private:
         * post: exporta el estado del tablero de jugador a estadoTablero.
         * */
         void exportarEstadoTablero(Jugador *jugador, std::string estadoTablero);
-
-        /*
-        * pre: jugador no puede ser nulo.
-        * post: Saca una carta del mazo y la almacena en las cartas guardadas del jugador.
-        */
-        // void sacarCartaDelMazo(Jugador *jugador);
-
-        /*
-        * pre: jugador no puede ser nulo.
-        * post: Posiciona una mina en un casillero del tablero, si no tiene un tesoro.
-        *       En caso de haber un tesoro deja inhabilitado el casillero tanto
-        *       turnos como el poder de la mina.
-        */
-        // void atacarCasillero(Jugador *jugador);
-
-        /*
-        * pre: idTesoroVictima y idVictima deben ser mayor a 0.
-        * post: Marca el tesoro idTesoroVictima del jugador idVictima como
-        *       ENCONTRADO y lo descuenta de la cantidad de tesoros del jugador.
-        * */
-       void destruirTesoro(int idTesoroVictima, int idVictima);
 
         /*
         * pre: jugador no puede ser nulo.
