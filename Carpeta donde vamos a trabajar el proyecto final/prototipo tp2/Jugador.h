@@ -7,9 +7,9 @@
 #include "Mazo.h"
 
 enum EstadoJugador {
-        JUGANDO,
-        SUSPENDIDO, //definir si tiene este nombre o se lo cambia por otro
-        ELIMINADO
+        NORMAL,
+        PERDIO_TURNO, //definir si tiene este nombre o se lo cambia por otro
+        ELIMINADOx1
 };
 
 class Jugador{
@@ -18,7 +18,6 @@ private:
         std::string nombre;
         EstadoJugador estado;
         int cantidadDeTesoros; //definir si sólo debe ser mayor a 0 ó debe estar dentro de un rango.
-        int cantidadDeTesorosDisponibles;
         Tesoro **tesoros;
         // int cantidadTesorosDescubiertos;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
@@ -38,8 +37,7 @@ public:
         * pre: nombre no puede ser nulo.
         *       cantidadDeTesoros debe ser mayor a 0.
         * post: Crea una instancia de un jugador con el nombre y la cantidad de tesoros recibida por parámetro.
-        *       El estado del jugador se inicializa en JUGANDO.
-        *       cantidadDeTesorosDisponibles se inicializa en cantidadDeTesoros. 
+        *       El estado del jugador se inicializa en NORMAL. 
         */
         Jugador(int id, std::string nombre, int cantidadDeTesoros);
 
@@ -191,6 +189,30 @@ public:
         * post: Devuelve el archivo que contiene el estado del tablero del jugador.
         * */
         std::string getEstadoTablero();
+
+        /*
+        * pre: -
+        * post: Devuelve la cantidad de tesoros que tiene el jugador
+        * */
+        int getCantidadTesoros();
+
+        /*
+        * pre: -
+        * post: Devuelve el array de los tesoros
+        * */
+        Tesoro** getTesoros();
+
+        /*
+        * pre: -
+        * post: Setea el array pasado por parametro como atributo de tesoros
+        * */
+        void setTesoros(Tesoro** nuevoArrayTesoros);
+
+        /*
+        * pre: idTesoro debe estar en el rango de 0- cantTesoros
+        * post: Devuelve un puntero al tesoro con el id pasado por parametro
+        * */
+        Tesoro* getTesoro(int idTesoro);
 
         /*
         * pre: -

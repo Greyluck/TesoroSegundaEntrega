@@ -5,7 +5,7 @@
 
 // definir cantidad maxima de cartas guardadas definitiva.
 const int CANTIDAD_MAXIMA_CARTAS_GUARDADAS = 3;
-const std::string ARCHIVO = "estadoTablero.txt";
+const std::string ARCHIVO = "estadoTablero.bmp";
 const int TIEMPO_RECUPERANDO_TESORO = 5;
 
 void Jugador::definirNuevaPosicionTesoro(int idTesoro, unsigned int &fila,
@@ -71,14 +71,13 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
 
         this->id = id;
         this->nombre = nombre;
-        this->estado = JUGANDO;
+        this->estado = NORMAL;
         
         this->cantidadDeTesoros = cantidadDeTesoros;
         this->tesoros = new Tesoro*[cantidadDeTesoros]();
         for(int i = 0; i < this->cantidadDeTesoros; i++){
                 this->tesoros[i] = new Tesoro(i+1);
         }
-        this->cantidadDeTesorosDisponibles = cantidadDeTesoros;
         
         this->cartaActiva = NULL;
         this->cantidadCartasGuardadas = 0;
@@ -126,7 +125,7 @@ void Jugador::ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima)
                 std::cout << "Ambos espias fueron eliminados" << std::endl;
                 tablero->getCasillero(fila, columna, altura)->cambiarEstado(LIBRE);
         }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
-                setEstado(SUSPENDIDO);
+                setEstado(PERDIO_TURNO);
                 std::cout << "Encontraste una mina de otro jugador" << std::endl;
                 std::cout << "Perdiste un turno" << std::endl;
         }else
@@ -138,47 +137,40 @@ void Jugador::ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima)
 
 void Jugador::moverTesoro(Tablero * tablero, int & idTesoroVictima, int & idVictima)
 {
-        if(this->estado == JUGANDO){
-                int idTesoro;
-                unsigned int nuevaFila, nuevaColumna, nuevaAltura;
+        int idTesoro;
+        unsigned int nuevaFila, nuevaColumna, nuevaAltura;
 
-                std::cout << "\nIngrese el id del tesoro que moverá" << std::endl;
-                std::cout << "Debe estar entre 1 y " << this->cantidadDeTesoros << std::endl;
-                std::cin >> idTesoro;
+        std::cout << "\nIngrese el id del tesoro que moverá" << std::endl;
+        std::cin >> idTesoro;
 
-                unsigned int filaAnterior = this->tesoros[idTesoro-1]->getFila();
-                unsigned int columnaAnterior = this->tesoros[idTesoro-1]->getColumna();
-                unsigned int AlturaAnterior = this->tesoros[idTesoro-1]->getAltura();
+        unsigned int filaAnterior = this->tesoros[idTesoro-1]->getFila();
+        unsigned int columnaAnterior = this->tesoros[idTesoro-1]->getColumna();
+        unsigned int AlturaAnterior = this->tesoros[idTesoro-1]->getAltura();
 
-                bool tesoroMovido = false;
-                while(!tesoroMovido){
-                        definirNuevaPosicionTesoro(idTesoro, nuevaFila, nuevaColumna, nuevaAltura);                
-                        std::cout << " desde ("<< filaAnterior <<"|"<< columnaAnterior << "|" << AlturaAnterior << ") --> (" << nuevaFila <<"|"<< nuevaColumna <<  "|" << nuevaAltura <<")."<< std::endl;
+        bool tesoroMovido = false;
+        while(!tesoroMovido){
+                definirNuevaPosicionTesoro(idTesoro, nuevaFila, nuevaColumna, nuevaAltura);                
+                std::cout << " desde ("<< filaAnterior <<"|"<< columnaAnterior << "|" << AlturaAnterior << ") --> (" << nuevaFila <<"|"<< nuevaColumna <<  "|" << nuevaAltura <<")."<< std::endl;
 
-                        // Verifica que la nueva posición este dentro del tablero. Sino lo esta, pregunta de nuevo.
-                        if (tablero->esPoscionValida(nuevaFila, nuevaColumna, nuevaAltura)){
-                                if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == TESORO){
-                                std::cout<<"Encontró un tesoro en la posición ("<<nuevaFila<<", "<<nuevaColumna<<", "<<nuevaAltura<<")"<<std::endl;         
-                                tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->cambiarEstado(OCUPADA);
-                                }else if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == MINA){
-                                        std::cout << "Encontraste una mina de otro jugador" << std::endl;
-                                        std::cout << "Perdiste un turno" << std::endl;
-                                        setEstado(SUSPENDIDO);
-                                }else if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == ESPIA){
-                                        std::cout << "El tesoro fue encontrado por un espía de otro jugador" << std::endl;
-                                        descartarTesoro(idTesoro);
-                                        tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
-                                }
-                                else{
-                                        std::cout << "Se movio el cofre hacia "<< "(" << nuevaFila <<"|"<< nuevaColumna <<  "|" << nuevaAltura <<")."<< std::endl;
-                                        tablero->getCasillero(filaAnterior, columnaAnterior, AlturaAnterior)->cambiarEstado(LIBRE);
-                                        escoderTesoro(idTesoro, nuevaFila, nuevaColumna, nuevaAltura, tablero);
-                                }
-                                tesoroMovido = true;
+                // Verifica que la nueva posición este dentro del tablero. Sino lo esta, pregunta de nuevo.
+                if (tablero->esPoscionValida(nuevaFila, nuevaColumna, nuevaAltura)){
+                        if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == TESORO){
+                        std::cout<<"Encontró un tesoro en la posición ("<<nuevaFila<<", "<<nuevaColumna<<", "<<nuevaAltura<<")"<<std::endl;         
+                        tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->cambiarEstado(OCUPADA);
+                        }else if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == MINA){
+                                std::cout << "Encontraste una mina de otro jugador" << std::endl;
+                                std::cout << "Perdiste un turno" << std::endl;
+                                setEstado(PERDIO_TURNO);
                         }
                         else{
-                                std::cout << "Esa posicion esta fuera del tablero.\n"<< std::endl;
+                                std::cout << "Se movio el cofre hacia "<< "(" << nuevaFila <<"|"<< nuevaColumna <<  "|" << nuevaAltura <<")."<< std::endl;
+                                tablero->getCasillero(filaAnterior, columnaAnterior, AlturaAnterior)->cambiarEstado(LIBRE);
+                                escoderTesoro(idTesoro, nuevaFila, nuevaColumna, nuevaAltura, tablero);
                         }
+                        tesoroMovido = true;
+                }
+                else{
+                	std::cout << "Esa posicion esta fuera del tablero.\n"<< std::endl;
                 }
         }
 }
@@ -255,7 +247,7 @@ void Jugador::atacarCasillero(Tablero * tablero, int & idTesoroVictima, int & id
                 idTesoroVictima = tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
                 tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
         }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
-                setEstado(SUSPENDIDO);
+                setEstado(PERDIO_TURNO);
                 std::cout << "Encontraste una mina de otro jugador" << std::endl;
                 std::cout << "Perdiste un turno" << std::endl;
                 //definir si al encontrar una mina el casillero vuelve a estar disponible o sigue inhabilitado
@@ -278,13 +270,7 @@ int Jugador::usarMina()
 void Jugador::descartarTesoro(int idTesoro)
 {
         this->tesoros[idTesoro-1]->cambiarEstado(ENCONTRADO);
-        this->cantidadDeTesorosDisponibles--;
-
-        //si el jugador se queda sin tesoros queda eliminado del juego
-        if(this->cantidadDeTesorosDisponibles == 0){
-                std::cout << this->getNombre() << " te has quedado sin tesoros disponibles, fuiste eliminado" << std::endl;
-                setEstado(ELIMINADO);
-        }
+        this->cantidadDeTesoros--;
 }
 
 bool Jugador::encontroEspia(int fila, int columna, int altura)
@@ -329,6 +315,25 @@ int Jugador::getId()
 std::string Jugador::getEstadoTablero()
 {
         return this->estadoTablero;
+}
+
+int Jugador::getCantidadTesoros() {
+    return this->cantidadDeTesoros;
+}
+
+Tesoro **Jugador::getTesoros() {
+    return this->tesoros;
+}
+
+void Jugador::setTesoros(Tesoro **nuevoArrayTesoros) {
+    this->tesoros = nuevoArrayTesoros;
+}
+
+Tesoro *Jugador::getTesoro(int idTesoro) {
+    if (idTesoro < 0 || idTesoro > this->cantidadDeTesoros){
+        throw "El id del tesoro no esta dentro del rango de tesoros";
+    }
+    return this->tesoros[idTesoro-1];
 }
 
 Jugador::~Jugador()
