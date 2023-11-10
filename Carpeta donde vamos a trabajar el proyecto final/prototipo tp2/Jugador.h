@@ -6,9 +6,12 @@
 #include "Carta.h"
 #include "Mazo.h"
 
+class Carta;
+class Mazo;
+
 enum EstadoJugador {
         JUGANDO,
-        SUSPENDIDO, //definir si tiene este nombre o se lo cambia por otro
+        SUSPENDIDO,
         ELIMINADO
 };
 
@@ -45,8 +48,7 @@ public:
         * pre: nombre no puede ser nulo.
         *       cantidadDeTesoros debe ser mayor a 0.
         * post: Crea una instancia de un jugador con el nombre y la cantidad de tesoros recibida por parámetro.
-        *       El estado del jugador se inicializa en JUGANDO.
-        *       cantidadDeTesorosDisponibles se inicializa en cantidadDeTesoros. 
+        *       El estado del jugador se inicializa en NORMAL. 
         */
         Jugador(int id, std::string nombre, int cantidadDeTesoros);
 
@@ -78,10 +80,11 @@ public:
        void moverTesoro(Tablero *tablero, int &idTesoroVictima, int &idVictima);
 
         /*
-        * pre: mazo y tablero no pueden ser nulos.
+        * pre: mazo, tablero y jugaadores no pueden ser nulos.
         * post: Saca una carta del mazo y la almacena en cartasGuardadas.
         * */
-       void sacarCartaDelMazo(Mazo *mazo, Tablero *tablero);
+       void sacarCartaDelMazo(Mazo *mazo, Tablero *tablero, 
+                              Jugador **jugadores, int cantidadDeJugadores);
 
         /*
         * pre: carta no puede ser nula.
@@ -93,7 +96,8 @@ public:
         * pre: carta debe ser una carta válida dentro del juego.
         * post: Activa la carta recibida por parámetro.
         * */
-        void usarCarta(Carta* carta, Tablero *tablero);
+        void usarCarta(Carta* carta, Tablero *tablero,
+                       Jugador **jugadores, int cantidadJugadores);
 
         /*
         * pre: -
@@ -166,13 +170,6 @@ public:
         bool ganoElJuego();
 
         /*
-        * pre: nombre no puede ser nulo.
-        * post: modifica el nombre del jugador.
-        * 
-        void setNombre(std::string nombre);
-        */
-
-        /*
         * pre: cantidadActual debe ser mayor o igual a 0;
         * post: Modifica la cantidad de tesoros que tiene el jugador a la actual.
         * */
@@ -216,6 +213,30 @@ public:
         *       Si tiempoSuspendido es igual a 0 vuelve habilitar al jugador.
         * */
         bool estaSuspendido();
+
+        /*
+        * pre: -
+        * post: Devuelve la cantidad de tesoros que tiene el jugador
+        * */
+        int getCantidadTesoros();
+
+        /*
+        * pre: -
+        * post: Devuelve el array de los tesoros
+        * */
+        Tesoro** getTesoros();
+
+        /*
+        * pre: -
+        * post: Setea el array pasado por parametro como atributo de tesoros
+        * */
+        void setTesoros(Tesoro** nuevoArrayTesoros);
+
+        /*
+        * pre: idTesoro debe estar en el rango de 0- cantTesoros
+        * post: Devuelve un puntero al tesoro con el id pasado por parametro
+        * */
+        Tesoro* getTesoro(int idTesoro);
 
         /*
         * pre: -

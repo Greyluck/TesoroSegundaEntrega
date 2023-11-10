@@ -3,6 +3,8 @@
 #include "Pila.h"
 #include "Carta.h"
 
+class Carta;
+
 class Mazo {
 private:
     Pila<Carta*> *mazo;

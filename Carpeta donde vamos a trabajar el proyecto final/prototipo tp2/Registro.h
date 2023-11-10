@@ -2,7 +2,6 @@
 #define REGISTRO_H_
 
 #include <iostream>
-// #include "Jugador.h"
 
 enum EstadoRegistro{
     OCUPADA,

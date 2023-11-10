@@ -3,12 +3,22 @@
 
 #include <string>
 #include "Tablero.h"
+#include "Jugador.h"
+
+class Tablero;
+class Jugador;
 
 enum TipoCarta {
     BLINDAJE,
     RADAR,
-    PARTIR_TESORO
-    //agregar
+    PARTIR_TESORO,
+    TELETRANSPORTACION,
+    CONGELACION,
+};
+
+enum EstadoCarta{
+    USADA,
+    NO_USADA,
 };
 
 class Carta {
@@ -16,12 +26,18 @@ private:
     TipoCarta tipoDeCarta;
     std::string nombreCarta;
     int tiempoDeUso;
+    EstadoCarta estadoCarta;
 
-    void blindaje(Tablero*);
+    void blindaje(Tablero*, Jugador*);
 
     void radar(Tablero*);
 
-    void partirTesoro(Tablero*);
+    void partirTesoro(Tablero*,Jugador* jugador);
+
+    void teletransportacion(Tablero*, int idJugador, Jugador** jugadores);
+
+    void congelacion(int idJugador, Jugador** jugadores);
+
     //agregar otras tres
 public:
     /*
@@ -52,7 +68,14 @@ public:
      * pre: -
      * post: Aplica la carta segun del tipo que sea, luego de esto la carta se destruye
      */
-    void aplicarCarta(Tablero*);
+    void aplicarCarta(Tablero* tablero, int idJugador, Jugador** jugadores, int cantJugadores);
+
+
+    /*
+     * pre: -
+     * post: Devuelve el estado de la carta, si esta usada o no
+     */
+    EstadoCarta checkEstadoCarta();
 
 };
 

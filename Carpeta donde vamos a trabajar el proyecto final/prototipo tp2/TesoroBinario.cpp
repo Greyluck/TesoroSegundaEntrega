@@ -69,7 +69,8 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
 
         if(jugador->getEstado() != ELIMINADO && (!jugador->estaSuspendido())){
                 std::cout << "\nTe toca jugar " << jugador->getNombre() << std::endl;
-                jugador->sacarCartaDelMazo(this->mazo, this->tablero);
+                jugador->sacarCartaDelMazo(this->mazo, this->tablero,
+                                           this->jugadores, this->cantidadDeJugadores);
                 jugador->atacarCasillero(MINA, this->tablero, idTesoroVictima, idVictima);
                 if(idTesoroVictima > 0 && idVictima > 0){
                         this->interfaz->destruirTesoro(this->jugadores[idTesoroVictima-1],
