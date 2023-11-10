@@ -40,23 +40,24 @@ Carta::Carta() {
 
 //Protege un tesoro para que no pueda ser agarrado por el rival
 void Carta::blindaje(Tablero *tablero,Jugador* jugador) {
-    int fila,columna,distancia,idTesoro;
+    int x,y,z,idTesoro;
     while(true){
-        std::cout << "Ingrese la fila del tesoro que quiere proteger" << std::endl;
-        std::cin >> fila;
-        std::cout << "Ingrese la columna del tesoro que quiere proteger" << std::endl;
-        std::cin >> columna;
-        std::cout << "Ingrese la distancia del tesoro que quiere proteger" << std::endl;
-        std::cin >> distancia;
-        if (tablero->getCasillero(fila,columna,distancia)->obtenerJugadorId() == jugador->getId() && tablero->getCasillero(fila,columna,distancia)->obtenerEstado() == TESORO){
-            idTesoro = tablero->getCasillero(fila,columna,distancia)->obtenerTesoroId();
+        std::cout << "Ingrese las coordenadas (x, y, z) del tesoro que quiere proteger." << std::endl;
+        std::cout << "x: ";
+        std::cin >> x;
+        std::cout << "y: ";
+        std::cin >> y;
+        std::cout << "z: ";
+        std::cin >> z;
+        if (tablero->getCasillero(x,y,z)->obtenerJugadorId() == jugador->getId() && tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO){
+            idTesoro = tablero->getCasillero(x,y,z)->obtenerTesoroId();
             break;
         }
     }
     //metodo getter para los tesoro
     Tesoro* tesoro = jugador->getTesoro(idTesoro);
     tesoro->cambiarEstado(PROTEGIDO);
-    std::cout<< "El tesoro" << fila << "," << columna << "," << distancia << " se ha protegido correctamente" << std::endl;
+    std::cout<< "El tesoro " << x << "," << y << "," << z << " se ha protegido correctamente" << std::endl;
 }
 
 //Busca tesoros en 3 celdas a la redonda de donde aplico la carta el usuario.
@@ -121,19 +122,21 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
 //Aplica la carta teletransportacion (puede mover el tesoro donde quiera), en caso de que donde quiera mover haya un espia
 // o una mina, se le pide otras coordenadas
 void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadores) {
-    int fila,columna,distancia,idTesoro;
+    int x,y,z,idTesoro;
     //chequear que ingrese un tesoro a mover valido
     while(true){
-        std::cout << "Ingrese la fila del tesoro que quiere mover" << std::endl;
-        std::cin >> fila;
-        std::cout << "Ingrese la columna del tesoro que quiere mover" << std::endl;
-        std::cin >> columna;
-        std::cout << "Ingrese la distancia del tesoro que quiere mover" << std::endl;
-        std::cin >> distancia;
-        if (tablero->getCasillero(fila,columna,distancia)->obtenerEstado() == TESORO && tablero->getCasillero(fila,columna,distancia)->obtenerJugadorId() == idJugador){
-            idTesoro = tablero->getCasillero(fila,columna,distancia)->obtenerTesoroId();
+        std::cout << "Ingrese las coordenadas (x, y, z) del tesoro que quiere mover" << std::endl;
+        std::cout << "x: ";
+        std::cin >> x;
+        std::cout << "y: ";
+        std::cin >> y;
+        std::cout << "z: ";
+        std::cin >> z;
+        if (tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador && tablero->esPoscionValida(x, y, z)){
+            idTesoro = tablero->getCasillero(x,y,z)->obtenerTesoroId();
             break;
         }
+
     }
 
     int filaAMover = 0, columnaAMover = 0, distanciaAmover = 0;

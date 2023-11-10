@@ -51,7 +51,7 @@ public:
 	* pre: x, y, z deben ser positivos y estar dentro del rango del tamaño del tablero.
 	* post: Devuelve true si la posición (x, y,z) está dentro del tablero o false en caso contrario.
 	*/
-	bool esPoscionValida(unsigned int x, unsigned int y, unsigned int z);
+	bool esPosicionValida(unsigned int x, unsigned int y, unsigned int z);
 };
 
 #endif /* TABLERO_H_ */
