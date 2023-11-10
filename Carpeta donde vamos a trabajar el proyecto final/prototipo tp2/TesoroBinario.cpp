@@ -127,11 +127,15 @@ void TesoroBinario::inciarJuego(){
         }
 }
 
+
+
 int TesoroBinario::jugarJuego()
 {
         while(getEstado() == JUGABLE){
                 for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
                         jugarTurno(this->jugadores[i]);
+                        jugadores[i]->aumentarTurnosBlindaje();
+                        jugadores[i]->disminuirTurnoCongelado()
                 }
 
                 revisarJuego();

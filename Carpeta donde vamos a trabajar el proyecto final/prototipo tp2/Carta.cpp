@@ -40,6 +40,11 @@ Carta::Carta() {
 
 //Protege un tesoro para que no pueda ser agarrado por el rival
 void Carta::blindaje(Tablero *tablero,Jugador* jugador) {
+    //si el usuario ya tiene un tesoro blindado, no hago nada y la carta no se gasta.
+    if (jugador->getTesoroBlindado() != nullptr){
+        this->estadoCarta = NO_USADA;
+        return;
+    }
     int x,y,z,idTesoro;
     while(true){
         std::cout << "Ingrese las coordenadas (x, y, z) del tesoro que quiere proteger." << std::endl;
@@ -57,6 +62,7 @@ void Carta::blindaje(Tablero *tablero,Jugador* jugador) {
     //metodo getter para los tesoro
     Tesoro* tesoro = jugador->getTesoro(idTesoro);
     tesoro->cambiarEstado(PROTEGIDO);
+    tesoro->setCantidadTurnosBlinadado(this->tiempoDeUso);
     std::cout<< "El tesoro " << x << "," << y << "," << z << " se ha protegido correctamente" << std::endl;
 }
 
@@ -111,11 +117,30 @@ Tesoro** reedimensionarArray(Tesoro** arrayAReedimensionar, int cantTesoros,Teso
 
 //Parte un tesoro, es decir, se le suma un tesoro mas al jugador que la utilizo
 void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
+    int x,y,z;
     int cantTesoros = jugador->getCantidadTesoros();
     Tesoro* tesoroNuevo = new Tesoro(cantTesoros+1);
     Tesoro** tesoros = reedimensionarArray(jugador->getTesoros(), cantTesoros, tesoroNuevo);
     jugador->setTesoros(tesoros);
     jugador->setCantidadDeTesoros(cantTesoros+1);
+    bool tesoroMovido = false;
+    while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+            && !tesoroMovido)){
+        std::cout << "Ingrese las coordenadas (x, y, z) de donde quiere colocar el nuevo tesoro" << std::endl;
+        std::cout << "x: ";
+        std::cin >> x;
+        std::cout << "y: ";
+        std::cin >> y;
+        std::cout << "z: ";
+        std::cin >> z;
+        //chequear que no haya un espia para mover o una mina
+        if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != MINA
+        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != ESPIA
+        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() != idJugador){
+            std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
+            break;
+        }
+    }
     std::cout << "Se ha partido un tesoro de manera existosa.";
 }
 
@@ -166,9 +191,31 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
     }
 }
 
-//necesito ver como preguntarle a que jugador le quisiera aplicar la congelacion
-void Carta::congelacion(int idJugador, Jugador **jugadores) {
-
+//La carta congelacion, congela a un usuario que tenga como estado NORMAL, y no le deja usar cartas, durante 5 turnos
+//Puse que solamente se le pueda aplicar a jugadores con estado NORMAL, para no crear conflictos con otros estados mas importantes como
+//suspendido, etc.
+void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
+    std::cout << "Elija a quien le quiere aplicar la carta congelacion";
+    for (int i = 0; i < cantJugadores; i++) {
+        Jugador* jugador = jugadores[i];
+        std::cout << jugador->getNombre() << ":" << jugador->getId();
+    }
+    int entrada;
+    //ver que pasaria si todos los jugadores tienen un estado != normal.
+    while(true){
+        std::cout << "Elija una jugador colocando su id: ";
+        std::cin >> entrada;
+        if (entrada > 0 && entrada < cantJugadores){
+            Jugador* jugadorAfectado = jugadores[entrada-1];
+            if(jugadorAfectado->getEstado() == NORMAL){
+                jugadorAfectado->setEstado(CONGELADO);
+                jugadorAfectado->setTiempoCongelado(this->tiempoDeUso);
+                break;
+            }else{
+                continue;
+            }
+        }
+    }
 }
 
 std::string Carta::getNombreCarta() {
@@ -195,7 +242,7 @@ void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, in
             break;
 
         case CONGELACION:
-            this->congelacion(idJugador,jugadores);
+            this->congelacion(idJugador,jugadores, cantJugadores);
             break;
     }
 }

@@ -205,7 +205,11 @@ void Jugador::guardarCarta(Carta * carta)
 void Jugador::usarCarta(Carta *carta, Tablero *tablero, 
                         Jugador **jugadores, int cantidadDeJugadores)
 {
-        carta->aplicarCarta(tablero, this->id, jugadores, cantidadDeJugadores);
+        if(this->estado == CONGELADO){
+                std::cout << "No puedes utilizar cartas, porque esta congelado."
+        }else{
+                carta->aplicarCarta(tablero, this->id, jugadores, cantidadDeJugadores);
+        }
 }
 
 Carta * Jugador::elegirCartaAUsar()
@@ -382,6 +386,43 @@ Tesoro *Jugador::getTesoro(int idTesoro) {
     return this->tesoros[idTesoro-1];
 }
 
+void Jugador::setTesoroBlindado(Tesoro *tesoro) {
+    this->tesoroBlindado = tesoro;
+}
+
+Tesoro *Jugador::getTesoroBlindado() {
+    return this->tesoroBlindado;
+}
+
+void Jugador::setTiempoCongelado(int tiempo){
+        if (tiempoCongelado < 0){
+                throw "El tiempo no puede ser negativo";
+        }
+        this->tiempoCongelado = tiempo;
+}
+
+void Jugador::disminuirTurnoCongelado(){
+        if(this->estado == CONGELADO){
+                if (this->tiempoCongelado != 0){
+                        this->tiempoCongelado--;
+                }
+                else{
+                        this->tiempoCongelado = 0;
+                        this->estado = NORMAL;
+                }
+        }
+}
+
+void Jugador::aumentarTurnosBlindaje(){
+        if(this->getTesoroBlindado != nullptr){
+                if(this->getTesoroBlindado()->getCantidadTurnosBLindado() != 0){
+                        this->getTesoroBlindado()->disminuirCantTurnosBlindado();
+                }else{
+                        this->getTesoroBlindado()->cambiarEstado(NEUTRO);
+                        this->setTesoroBlindado(nullptr);
+                }
+        }
+}
 Jugador::~Jugador()
 {
         for(int i = 0; i < CANTIDAD_MAXIMA_CARTAS_GUARDADAS; i++){

@@ -36,7 +36,7 @@ private:
 
     void teletransportacion(Tablero*, int idJugador, Jugador** jugadores);
 
-    void congelacion(int idJugador, Jugador** jugadores);
+    void congelacion(int idJugador, Jugador** jugadores,int cantJugadores);
 
     //agregar otras tres
 public:

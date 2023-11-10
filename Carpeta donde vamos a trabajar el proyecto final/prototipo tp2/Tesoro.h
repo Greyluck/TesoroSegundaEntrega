@@ -15,6 +15,7 @@ private:
         unsigned int fila;
         unsigned int columna;
         unsigned int altura;
+        unsigned int tiempoBlindado;
 
 public:
         /*
@@ -59,6 +60,24 @@ public:
         * post: Devuelve la altura en donde está el tesoro.
         * */
         unsigned int getAltura();
+
+        /*
+        * pre: -
+        * post: Devuelve a la cantidad de turnos que todavia esta blindado
+        * */
+        int getCantidadTurnosBlindado();
+
+        /*
+        * pre: cantTurnos > 0
+        * post: Setea el atributo tiempoBlindado con el pasado por parametro
+        * */
+        void setCantidadTurnosBlinadado(int cantTurnos);
+
+        /*
+        * pre: -
+        * post: Disminuye el tiempoBlindado en 1
+        * */
+        void disminuirCantTurnosBlindado();
 
        /*
         * pre: -
