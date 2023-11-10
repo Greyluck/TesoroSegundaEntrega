@@ -8,7 +8,7 @@ const int TIEMPO_RECUPERANDO_TESORO = 5;
 
 void Jugador::pedirPosicion(Tablero * tablero, int & x, int & y, int & z)
 {
-        while(!tablero->esPoscionValida(x, y, z)){
+        while(!tablero->esPosicionValida(x, y, z)){
                 std::cout << "Ingrese las coordenadas (x, y, z)." << std::endl;
                 std::cout << "x:";
                 std::cin >> x;
@@ -145,7 +145,7 @@ void Jugador::moverTesoro(Tablero * tablero, int & idTesoroVictima, int & idVict
                 std::cout << " desde ("<< filaAnterior <<"|"<< columnaAnterior << "|" << alturaAnterior << ") --> (" << nuevaFila <<"|"<< nuevaColumna <<  "|" << nuevaAltura <<")."<< std::endl;
 
                 // Verifica que la nueva posición este dentro del tablero. Sino lo esta, pregunta de nuevo.
-                if (tablero->esPoscionValida(nuevaFila, nuevaColumna, nuevaAltura)){
+                if (tablero->esPosicionValida(nuevaFila, nuevaColumna, nuevaAltura)){
                         if(tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->obtenerEstado() == TESORO){
                         std::cout<<"Encontró un tesoro en la posición ("<<nuevaFila<<"|"<<nuevaColumna<<"|"<<nuevaAltura<<")"<<std::endl;         
                         tablero->getCasillero(nuevaFila, nuevaColumna, nuevaAltura)->cambiarEstado(OCUPADA);
