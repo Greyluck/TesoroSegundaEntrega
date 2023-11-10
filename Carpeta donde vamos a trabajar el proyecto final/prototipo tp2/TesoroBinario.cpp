@@ -1,5 +1,5 @@
 #include "TesoroBinario.h"
-#include <fstream>
+#include "Bibliotecas.h"
 
 static const std::string CELDA_LIBRE = "-";
 static const std::string CELDA_TESORO = "T";

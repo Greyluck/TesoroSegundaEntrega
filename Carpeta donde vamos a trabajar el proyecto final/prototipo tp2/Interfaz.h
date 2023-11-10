@@ -1,7 +1,7 @@
 #ifndef INTERFAZ_H_
 #define INTERFAZ_H_
 
-#include <iostream>
+#include "Bibliotecas.h"
 #include "Tablero.h"
 #include "Jugador.h"
 

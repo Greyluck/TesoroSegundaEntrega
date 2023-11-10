@@ -1,7 +1,7 @@
 #ifndef TRABAJO_PRACTICO_2_CARTA_H
 #define TRABAJO_PRACTICO_2_CARTA_H
 
-#include <string>
+#include "Bibliotecas.h"
 #include "Tablero.h"
 #include "Jugador.h"
 
@@ -14,11 +14,12 @@ enum TipoCarta {
     PARTIR_TESORO,
     TELETRANSPORTACION,
     CONGELACION,
+    SUSPENCION_INDISCRIMINADA
 };
 
 enum EstadoCarta{
     USADA,
-    NO_USADA,
+    NO_USADA
 };
 
 class Carta {
@@ -37,6 +38,8 @@ private:
     void teletransportacion(Tablero*, int idJugador, Jugador** jugadores);
 
     void congelacion(int idJugador, Jugador** jugadores, int cantidadJugadores);
+
+    void suspensionIndiscriminada(Jugador** jugadores, int cantidadJugadores);
 
     //agregar otras tres
 public:

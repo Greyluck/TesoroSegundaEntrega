@@ -57,19 +57,25 @@ void Interfaz::esconderTesorosInciales(Jugador *jugador,
                 throw string("La cantidad de tesoros debe ser mayor a 0");
         }
 
-        int fila, columna, altura;
+        int x, y, z;
 
         cout << jugador->getNombre() << ": ingresá las posiciones de tus " << cantidadDeTesoros << " tesoros." << endl;
         for(int i = 0; i < cantidadDeTesoros; i++){
                 cout << "\nTesoro " << i+1 << ": " << endl;
-                cin >> fila >> columna >> altura;
-                while(!tablero->esPoscionValida(fila, columna, altura)){
+                cin >> x >> y >> z;
+                while(!tablero->esPosicionValida(x, y, z)){
                         cout << "Esa posición no es válida, pruebe con otra" << endl;
-                        cin >> fila >> columna >> altura;
+                        cout << "x: ";
+                        cin >> x;
+                        cout << "y: ";
+                        cin >> y;
+                        cout << "z: ";
+                        cin >> z;
+
                 }
-                while(tablero->getCasillero(fila, columna, altura)->estaLibre()){
-                        jugador->escoderTesoro(i+1, fila, columna,
-                                                altura, tablero);
+                while(tablero->getCasillero(x, y, z)->estaLibre()){
+                        jugador->escoderTesoro(i+1, x, y,
+                                                z, tablero);
                 }
         }
 }
