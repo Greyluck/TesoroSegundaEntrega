@@ -30,8 +30,8 @@ Carta::Carta() {
             this->tiempoDeUso = 5;
             break;
        case 5:
-            this->tipoDeCarta = PARTIR_TESORO;
-            this->nombreCarta = "Partir Tesoro";
+            this->tipoDeCarta = SUSPENCION;
+            this->nombreCarta = "Suspencion";
             this->tiempoDeUso = 0;
             break;
     }
@@ -41,7 +41,7 @@ Carta::Carta() {
 //Protege un tesoro para que no pueda ser agarrado por el rival
 void Carta::blindaje(Tablero *tablero,Jugador* jugador) {
     //si el usuario ya tiene un tesoro blindado, no hago nada y la carta no se gasta.
-    if (jugador->getTesoroBlindado() != nullptr){
+    if (jugador->getTesoroBlindado() != NULL){
         this->estadoCarta = NO_USADA;
         return;
     }
@@ -108,9 +108,9 @@ Tesoro** reedimensionarArray(Tesoro** arrayAReedimensionar, int cantTesoros,Teso
     }
     nuevoArray[cantTesoros] = TesoroNuevo;
     //liberar memoria del viejo array
-    for (int i = 0; i < cantTesoros; i++) {
-        delete arrayAReedimensionar[i];
-    }
+    // for (int i = 0; i < cantTesoros; i++) {
+    //     delete arrayAReedimensionar[i];
+    // }
     delete[] arrayAReedimensionar;
     return nuevoArray;
 }
@@ -124,7 +124,7 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
     jugador->setTesoros(tesoros);
     jugador->setCantidadDeTesoros(cantTesoros+1);
     bool tesoroMovido = false;
-    while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+    while (!(tablero->esPosicionValida(x, y, z)
             && !tesoroMovido)){
         std::cout << "Ingrese las coordenadas (x, y, z) de donde quiere colocar el nuevo tesoro" << std::endl;
         std::cout << "x: ";
@@ -134,9 +134,9 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
         std::cout << "z: ";
         std::cin >> z;
         //chequear que no haya un espia para mover o una mina
-        if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != MINA
-        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != ESPIA
-        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() != idJugador){
+        if(tablero->getCasillero(x,y,z)->obtenerEstado() != MINA
+        || tablero->getCasillero(x,y,z)->obtenerEstado() != ESPIA
+        || tablero->getCasillero(x,y,z)->obtenerJugadorId() != jugador->getId()){
             std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
             break;
         }
@@ -157,7 +157,7 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
         std::cin >> y;
         std::cout << "z: ";
         std::cin >> z;
-        if (tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador && tablero->esPoscionValida(x, y, z)){
+        if (tablero->esPosicionValida(x, y, z) && tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador){
             idTesoro = tablero->getCasillero(x,y,z)->obtenerTesoroId();
             break;
         }
@@ -166,7 +166,7 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
 
     int filaAMover = 0, columnaAMover = 0, distanciaAmover = 0;
     bool tesoroMovido = false;
-    while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+    while (!(tablero->esPosicionValida(filaAMover, columnaAMover, distanciaAmover)
             && !tesoroMovido)){
         std::cout << "Ingrese la fila de a donde quiere mover el tesoro" << std::endl;
         std::cin >> filaAMover;
@@ -180,6 +180,10 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
         || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() != idJugador){
             std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
             break;
+            tesoroMovido = false;
+        }else
+        {
+            tesoroMovido = true;
         }
     }
     if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != TESORO){
@@ -207,7 +211,7 @@ void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
         std::cin >> entrada;
         if (entrada > 0 && entrada < cantJugadores){
             Jugador* jugadorAfectado = jugadores[entrada-1];
-            if(jugadorAfectado->getEstado() == NORMAL){
+            if(jugadorAfectado->getEstado() == JUGANDO){
                 jugadorAfectado->setEstado(CONGELADO);
                 jugadorAfectado->setTiempoCongelado(this->tiempoDeUso);
                 break;
@@ -218,11 +222,21 @@ void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
     }
 }
 
+void Carta::suspension(Jugador **jugadores, int cantidadJugadores) {
+
+    // define un número al azar entre 0 y cantidadJugadores y le suma 1
+    // para estar en el rango 1 - cantidad de jugadores
+    int idJugadorCongelado = ((std::rand() % cantidadJugadores) + 1);
+    
+    std::cout << "El jugador " << jugadores[idJugadorCongelado-1]->getNombre() << " ha sido suspendido." << std::endl;
+    jugadores[idJugadorCongelado-1]->setEstado(SUSPENDIDO);
+}
+
 std::string Carta::getNombreCarta() {
     return this->nombreCarta;
 }
 
-void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, int cantJugadores) {
+void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, int cantidadJugadores) {
     this->estadoCarta = USADA;
     switch (this->tipoDeCarta) {
         case BLINDAJE:
@@ -242,8 +256,11 @@ void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, in
             break;
 
         case CONGELACION:
-            this->congelacion(idJugador,jugadores, cantJugadores);
+            this->congelacion(idJugador,jugadores, cantidadJugadores);
             break;
+
+        case SUSPENCION:
+        this->suspension(jugadores, cantidadJugadores);
     }
 }
 
@@ -258,4 +275,3 @@ int Carta::getTiempoDeUso() {
 EstadoCarta Carta::checkEstadoCarta() {
     return this->estadoCarta;
 }
-

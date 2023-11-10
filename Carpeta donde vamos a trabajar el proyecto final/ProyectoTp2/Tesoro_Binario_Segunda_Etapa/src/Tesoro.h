@@ -68,16 +68,16 @@ public:
         int getCantidadTurnosBlindado();
 
         /*
-        * pre: cantTurnos > 0
+        * pre: cantidadTurnos > 0
         * post: Setea el atributo tiempoBlindado con el pasado por parametro
         * */
-        void setCantidadTurnosBlinadado(int cantTurnos);
+        void setCantidadTurnosBlinadado(int cantidadTurnos);
 
         /*
         * pre: -
         * post: Disminuye el tiempoBlindado en 1
         * */
-        void disminuirCantTurnosBlindado();
+        void disminuirCantidadTurnosBlindado();
 
        /*
         * pre: -

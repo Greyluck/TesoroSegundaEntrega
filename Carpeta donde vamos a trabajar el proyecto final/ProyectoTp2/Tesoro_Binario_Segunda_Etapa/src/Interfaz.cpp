@@ -45,7 +45,6 @@ void Interfaz::mensajeBienvenida(int cantidadDeTesoros, int cantidadDeJugadores)
                         "Luego, jugarán por turnos, intentando hallar los otros tesoros a través de sus espías." << endl <<
                         "La cantidad de jugadores permitida es " << cantidadDeJugadores << "." << endl <<
                         "Ahora sí, ¡BUENA SUERTE!" << endl << endl;
-                        //agregar una breve presentación de las cartas
 }
 
 void Interfaz::esconderTesorosInciales(Jugador *jugador, 
@@ -74,8 +73,7 @@ void Interfaz::esconderTesorosInciales(Jugador *jugador,
 
                 }
                 while(tablero->getCasillero(x, y, z)->estaLibre()){
-                        jugador->escoderTesoro(i+1, x, y,
-                                                z, tablero);
+                        jugador->escoderTesoro(i+1, x, y, z, tablero);
                 }
         }
 }

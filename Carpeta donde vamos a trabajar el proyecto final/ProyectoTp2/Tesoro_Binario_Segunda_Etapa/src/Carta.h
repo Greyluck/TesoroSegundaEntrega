@@ -13,7 +13,8 @@ enum TipoCarta {
     RADAR,
     PARTIR_TESORO,
     TELETRANSPORTACION,
-    CONGELACION
+    CONGELACION,
+    SUSPENCION
 };
 
 enum EstadoCarta{
@@ -36,9 +37,9 @@ private:
 
     void teletransportacion(Tablero*, int idJugador, Jugador** jugadores);
 
-    void congelacion(int idJugador, Jugador** jugadores,int cantJugadores);
+    void congelacion(int idJugador, Jugador** jugadores,int cantidadJugadores);
 
-    //agregar otras tres
+    void suspension(Jugador** jugadores, int cantidadJugadores);
 public:
     /*
      * pre: -
@@ -65,11 +66,11 @@ public:
     int getTiempoDeUso();
 
     /*
-     * pre: -
+     * pre: tablero y jugadores no pueden ser nulos.
+     *      idJugador y cantidadJugadores deben ser mayor a 0.
      * post: Aplica la carta segun del tipo que sea, luego de esto la carta se destruye
      */
-    void aplicarCarta(Tablero* tablero, int idJugador, Jugador** jugadores, int cantJugadores);
-
+    void aplicarCarta(Tablero* tablero, int idJugador, Jugador** jugadores, int cantidadJugadores);
 
     /*
      * pre: -
