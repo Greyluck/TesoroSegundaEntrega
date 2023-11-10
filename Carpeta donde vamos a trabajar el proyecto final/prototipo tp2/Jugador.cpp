@@ -9,11 +9,12 @@ const int TIEMPO_RECUPERANDO_TESORO = 5;
 void Jugador::pedirPosicion(Tablero * tablero, int & x, int & y, int & z)
 {
         do{
-                std::cout << "Ingrese la fila: ";
+                std::cout << "Ingrese las coordenadas (x, y, z)." << std::endl;
+                std::cout << "x:";
                 std::cin >> x;
-                std::cout << "Ingrese la columna: ";
+                std::cout << "y: ";
                 std::cin >> y;
-                std::cout << "Ingrese la distancia: ";
+                std::cout << "z: ";
                 std::cin >> z;
         }while(!tablero->esPosicionValida(x, y, z));
 }
@@ -90,6 +91,7 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
                 this->tesoros[i] = new Tesoro(i+1);
         }
         this->cantidadDeTesorosDisponibles = cantidadDeTesoros;
+        this->tesoroBlindado = NULL;
         this->cartaActiva = NULL;
         this->cantidadCartasGuardadas = 0;
         this->cartasGuardadas = new Carta*[CANTIDAD_MAXIMA_CARTAS_GUARDADAS]();
@@ -432,13 +434,13 @@ void Jugador::disminuirTurnoCongelado(){
                 }
                 else{
                         this->tiempoCongelado = 0;
-                        this->estado = NORMAL;
+                        this->estado = JUGANDO;
                 }
         }
 }
 
 void Jugador::aumentarTurnosBlindaje(){
-        if(this->getTesoroBlindado != nullptr){
+        if(this->getTesoroBlindado != NULL){
                 if(this->getTesoroBlindado()->getCantidadTurnosBLindado() != 0){
                         this->getTesoroBlindado()->disminuirCantTurnosBlindado();
                 }else{

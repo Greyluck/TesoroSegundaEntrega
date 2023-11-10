@@ -123,7 +123,25 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
     Tesoro** tesoros = reedimensionarArray(jugador->getTesoros(), cantTesoros, tesoroNuevo);
     jugador->setTesoros(tesoros);
     jugador->setCantidadDeTesoros(cantTesoros+1);
-    std::cout << "Se ha partido un tesoro de manera existosa." << std::endl;
+    bool tesoroMovido = false;
+    while (!(tablero->esPosicionValida(x, y, z)
+            && !tesoroMovido)){
+        std::cout << "Ingrese las coordenadas (x, y, z) de donde quiere colocar el nuevo tesoro" << std::endl;
+        std::cout << "x: ";
+        std::cin >> x;
+        std::cout << "y: ";
+        std::cin >> y;
+        std::cout << "z: ";
+        std::cin >> z;
+        //chequear que no haya un espia para mover o una mina
+        if(tablero->getCasillero(x,y,z)->obtenerEstado() != MINA
+        || tablero->getCasillero(x,y,z)->obtenerEstado() != ESPIA
+        || tablero->getCasillero(x,y,z)->obtenerJugadorId() != jugador->getId()){
+            std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
+            break;
+        }
+    }
+    std::cout << "Se ha partido un tesoro de manera existosa.";
     //esconde el tesoro nuevo
     jugador->escoderTesoro(cantTesoros+1, 0, 0, 0, tablero);
 }
