@@ -104,9 +104,9 @@ Tesoro** reedimensionarArray(Tesoro** arrayAReedimensionar, int cantTesoros,Teso
     }
     nuevoArray[cantTesoros] = TesoroNuevo;
     //liberar memoria del viejo array
-    for (int i = 0; i < cantTesoros; i++) {
-        delete arrayAReedimensionar[i];
-    }
+    // for (int i = 0; i < cantTesoros; i++) {
+    //     delete arrayAReedimensionar[i];
+    // }
     delete[] arrayAReedimensionar;
     return nuevoArray;
 }
@@ -118,64 +118,70 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
     Tesoro** tesoros = reedimensionarArray(jugador->getTesoros(), cantTesoros, tesoroNuevo);
     jugador->setTesoros(tesoros);
     jugador->setCantidadDeTesoros(cantTesoros+1);
-    std::cout << "Se ha partido un tesoro de manera existosa.";
+    std::cout << "Se ha partido un tesoro de manera existosa." << std::endl;
+    //esconde el tesoro nuevo
+    jugador->escoderTesoro(cantTesoros+1, 0, 0, 0, tablero);
 }
 
 //Aplica la carta teletransportacion (puede mover el tesoro donde quiera), en caso de que donde quiera mover haya un espia
 // o una mina, se le pide otras coordenadas
 void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadores) {
-    int fila,columna,distancia,idTesoro;
+    int idTesoro;
+    int filaAMover = 1, columnaAMover = 1, distanciaAmover = 1;
+    bool tesoroMovido = false;
+    
     //chequear que ingrese un tesoro a mover valido
     while(true){
-        std::cout << "Ingrese la fila del tesoro que quiere mover" << std::endl;
-        std::cin >> fila;
-        std::cout << "Ingrese la columna del tesoro que quiere mover" << std::endl;
-        std::cin >> columna;
-        std::cout << "Ingrese la distancia del tesoro que quiere mover" << std::endl;
-        std::cin >> distancia;
-        if (tablero->getCasillero(fila,columna,distancia)->obtenerEstado() == TESORO && tablero->getCasillero(fila,columna,distancia)->obtenerJugadorId() == idJugador){
-            idTesoro = tablero->getCasillero(fila,columna,distancia)->obtenerTesoroId();
-            break;
+        std::cout << "Ingrese el id del tesoro que quiere mover" << std::endl;
+        std::cin >> idTesoro;
+        std::cout << "cantidad de tesoros: " << jugadores[idJugador-1]->getCantidadTesoros() << std::endl;
+        if(idTesoro > 0 && idTesoro <= jugadores[idJugador-1]->getCantidadTesoros()){
+            while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+                    && !tesoroMovido)){
+                std::cout << "Ingrese la fila de a donde quiere mover el tesoro" << std::endl;
+                std::cin >> filaAMover;
+                std::cout << "Ingrese la columna de a donde quiere mover el tesoro" << std::endl;
+                std::cin >> columnaAMover;
+                std::cout << "Ingrese la distancia de a donde quiere mover el tesoro" << std::endl;
+                std::cin >> distanciaAmover;
+                //chequear que no haya un espia para mover o una mina
+                if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() == MINA
+                    || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() == ESPIA
+                    || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() == idJugador){
+                    std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
+                    tesoroMovido = false;
+                }else
+                {
+                    tesoroMovido = true;
+                }
+            }
+                
+            if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != TESORO){
+                jugadores[idJugador-1]->escoderTesoro(idTesoro,filaAMover,columnaAMover,distanciaAmover,tablero);
+            }else{
+                tablero->getCasillero(filaAMover, columnaAMover, distanciaAmover)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
+            }
+            break;        
         }
-    }
-
-    int filaAMover = 0, columnaAMover = 0, distanciaAmover = 0;
-    bool tesoroMovido = false;
-    while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
-            && !tesoroMovido)){
-        std::cout << "Ingrese la fila de a donde quiere mover el tesoro" << std::endl;
-        std::cin >> filaAMover;
-        std::cout << "Ingrese la columna de a donde quiere mover el tesoro" << std::endl;
-        std::cin >> columnaAMover;
-        std::cout << "Ingrese la distancia de a donde quiere mover el tesoro" << std::endl;
-        std::cin >> distanciaAmover;
-        //chequear que no haya un espia para mover o una mina
-        if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != MINA
-        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != ESPIA
-        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() != idJugador){
-            std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
-            break;
-        }
-    }
-    if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != TESORO){
-        jugadores[idJugador-1]->escoderTesoro(idTesoro,filaAMover,columnaAMover,distanciaAmover,tablero);
-        tesoroMovido = true;
-    }else{
-        tablero->getCasillero(filaAMover, columnaAMover, distanciaAmover)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
-        tesoroMovido = true;
-    }
+    }        
 }
 
 //necesito ver como preguntarle a que jugador le quisiera aplicar la congelacion
-void Carta::congelacion(int idJugador, Jugador **jugadores) {
+void Carta::congelacion(int idJugador, Jugador **jugadores, int cantidadJugadores) {
 
+    // define un número al azar entre 0 y cantidadJugadores-1 y le suma 1, para estar en el rango 1 - cantidadJugadores.
+    int idJugadorCongelado = ((std::rand() % cantidadJugadores) + 1);
+    
+    std::cout << "id jugador congelado: " << idJugadorCongelado << std::endl;
+    jugadores[idJugadorCongelado-1]->setEstado(SUSPENDIDO);
+    std::cout << "El jugador " << jugadores[idJugadorCongelado-1]->getNombre() << " ha sido congelado." << std::endl;
 }
 
 std::string Carta::getNombreCarta() {
     return this->nombreCarta;
 }
 
-void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, int cantJugadores) {
+void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, int cantidadJugadores) {
     this->estadoCarta = USADA;
     switch (this->tipoDeCarta) {
         case BLINDAJE:
@@ -195,7 +201,7 @@ void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, in
             break;
 
         case CONGELACION:
-            this->congelacion(idJugador,jugadores);
+            this->congelacion(idJugador,jugadores,cantidadJugadores);
             break;
     }
 }

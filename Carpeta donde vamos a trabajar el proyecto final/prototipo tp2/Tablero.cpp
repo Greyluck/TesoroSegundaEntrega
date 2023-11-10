@@ -57,6 +57,8 @@ bool Tablero::esPoscionValida(unsigned int x, unsigned int y, unsigned int z)
         return true;
     }
 
+    std::cout << "Posción inválida" << std::endl;
+
     return false;
 }
 
