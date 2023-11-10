@@ -12,7 +12,8 @@ class Mazo;
 enum EstadoJugador {
         JUGANDO,
         SUSPENDIDO,
-        ELIMINADO
+        ELIMINADO,
+        CONGELADO
 };
 
 class Jugador{
@@ -28,6 +29,7 @@ private:
         int cantidadCartasGuardadas;
         Carta **cartasGuardadas; //definir cuantas cartas guardadas puede tener un jugador durante el juego
         int tiempoSuspendido;
+        int tiempoCongelado;
         bool gano;
 
         	/*
@@ -233,10 +235,41 @@ public:
         void setTesoros(Tesoro** nuevoArrayTesoros);
 
         /*
-        * pre: idTesoro debe estar en el rango de 0- cantTesoros
+        * pre: idTesoro debe estar en el rango de 0 - cantTesoros
         * post: Devuelve un puntero al tesoro con el id pasado por parametro
         * */
         Tesoro* getTesoro(int idTesoro);
+        
+        /*
+        * pre: -
+        * post: Pone el atributo tesoroBlindado con el pasado por parametro
+        * */
+        void setTesoroBlindado(Tesoro*);
+
+        /*
+        * pre: -
+        * post: Devuelve un punteoro al tesoro blindado.
+        * */
+        Tesoro* getTesoroBlindado();
+        
+        /*
+        * pre: El tiempo debe ser > 0;
+        * post: Setea el atributo tiempoCongelado por el pasado por parametro.
+        */
+        void setTiempoCongelado(int tiempo);
+        
+        /*
+        * pre: -
+        * post: Verifica si el jugador esta congelado, y disminuye 1 la cantidad de turnos congelado, en caso de que el tiempo haya llegado a 0, entonces se le pone el estado NORMAL.
+        */
+        void disminuirTurnoCongelado();
+        
+        /*
+        * pre: -
+        * post: Disminuye en uno la cantidad de turnos blindados del tesoro blindado.
+        */
+        void aumentarTurnosBlindaje();
+
 
         /*
         * pre: -

@@ -40,6 +40,11 @@ Carta::Carta() {
 
 //Protege un tesoro para que no pueda ser agarrado por el rival
 void Carta::blindaje(Tablero *tablero,Jugador* jugador) {
+    //si el usuario ya tiene un tesoro blindado, no hago nada y la carta no se gasta.
+    if (jugador->getTesoroBlindado() != nullptr){
+        this->estadoCarta = NO_USADA;
+        return;
+    }
     int x,y,z,idTesoro;
     while(true){
         std::cout << "Ingrese las coordenadas (x, y, z) del tesoro que quiere proteger." << std::endl;
@@ -57,6 +62,7 @@ void Carta::blindaje(Tablero *tablero,Jugador* jugador) {
     //metodo getter para los tesoro
     Tesoro* tesoro = jugador->getTesoro(idTesoro);
     tesoro->cambiarEstado(PROTEGIDO);
+    tesoro->setCantidadTurnosBlinadado(this->tiempoDeUso);
     std::cout<< "El tesoro " << x << "," << y << "," << z << " se ha protegido correctamente" << std::endl;
 }
 
@@ -111,6 +117,7 @@ Tesoro** reedimensionarArray(Tesoro** arrayAReedimensionar, int cantTesoros,Teso
 
 //Parte un tesoro, es decir, se le suma un tesoro mas al jugador que la utilizo
 void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
+    int x,y,z;
     int cantTesoros = jugador->getCantidadTesoros();
     Tesoro* tesoroNuevo = new Tesoro(cantTesoros+1);
     Tesoro** tesoros = reedimensionarArray(jugador->getTesoros(), cantTesoros, tesoroNuevo);
@@ -170,15 +177,31 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
     }
 }
 
-//necesito ver como preguntarle a que jugador le quisiera aplicar la congelacion
-void Carta::congelacion(int idJugador, Jugador **jugadores, int cantidadJugadores) {
-
-    // define un número al azar entre 0 y cantidadJugadores y le suma 1, para estar en el rango 1 - cantidadJugadores.
-    int idJugadorCongelado = ((std::rand() % cantidadJugadores) + 1);
-    
-    std::cout << "id jugador congelado: " << idJugadorCongelado << std::endl;
-    jugadores[idJugadorCongelado-1]->setEstado(SUSPENDIDO);
-    std::cout << "El jugador " << jugadores[idJugadorCongelado-1]->getNombre() << " ha sido congelado." << std::endl;
+//La carta congelacion, congela a un usuario que tenga como estado NORMAL, y no le deja usar cartas, durante 5 turnos
+//Puse que solamente se le pueda aplicar a jugadores con estado NORMAL, para no crear conflictos con otros estados mas importantes como
+//suspendido, etc.
+void Carta::congelacion(int idJugador, Jugador **jugadores,int cantidadJugadores) {
+    std::cout << "Elija a quien le quiere aplicar la carta congelacion";
+    for (int i = 0; i < cantidadJugadores; i++) {
+        Jugador* jugador = jugadores[i];
+        std::cout << jugador->getNombre() << ":" << jugador->getId();
+    }
+    int entrada;
+    //ver que pasaria si todos los jugadores tienen un estado != normal.
+    while(true){
+        std::cout << "Elija una jugador colocando su id: ";
+        std::cin >> entrada;
+        if (entrada > 0 && entrada < cantidadJugadores){
+            Jugador* jugadorAfectado = jugadores[entrada-1];
+            if(jugadorAfectado->getEstado() == JUGANDO){
+                jugadorAfectado->setEstado(CONGELADO);
+                jugadorAfectado->setTiempoCongelado(this->tiempoDeUso);
+                break;
+            }else{
+                continue;
+            }
+        }
+    }
 }
 
 void Carta::suspensionIndiscriminada(Jugador **jugadores, int cantidadJugadores) {
@@ -214,7 +237,7 @@ void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, in
             break;
 
         case CONGELACION:
-            this->congelacion(idJugador,jugadores,cantidadJugadores);
+            this->congelacion(idJugador,jugadores, cantidadJugadores);
             break;
         
         case SUSPENCION_INDISCRIMINADA:

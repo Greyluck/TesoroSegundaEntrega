@@ -45,6 +45,21 @@ unsigned int Tesoro::getFila()
         return this->fila;
 }
 
+int Tesoro::getCantidadTurnosBlindado(){
+        return this->tiempoBlindado;
+}
+
+void Tesoro::setCantidadTurnosBlinadado(int cantTurnos){
+        if(cantTurnos < 0){
+                throw "La cantidad de turnos debe ser > a 0";
+        }
+        this->tiempoBlindado = cantTurnos;
+}
+
+void Tesoro::disminuirCantTurnosBlindado(){
+        this->tiempoBlindado--;
+}
+
 Tesoro::~Tesoro()
 {
 }
