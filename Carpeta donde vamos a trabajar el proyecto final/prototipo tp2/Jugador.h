@@ -27,6 +27,7 @@ private:
         Tesoro *tesoroBlindado;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
         Carta *cartaActiva;
+        Tesoro* tesoroBlindado;
         int cantidadCartasGuardadas;
         Carta **cartasGuardadas; //definir cuantas cartas guardadas puede tener un jugador durante el juego
         int tiempoSuspendido;
