@@ -1,0 +1,75 @@
+17:04:08 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
+make all 
+make: No se hace nada para 'all'.
+17:04:13 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
+make all 
+make: No se hace nada para 'all'.
+17:04:15 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
+make all 
+make: No se hace nada para 'all'.
+17:04:36 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
+make all 
+make: No se hace nada para 'all'.
+17:04:51 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
+make all 
+Building file: ../src/EasyBMP/EasyBMP.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/EasyBMP/EasyBMP.d" -MT"src/EasyBMP/EasyBMP.d" -o "src/EasyBMP/EasyBMP.o" "../src/EasyBMP/EasyBMP.cpp"
+../src/EasyBMP/EasyBMP.cpp: In member function ‘bool BMP::ReadFromFile(const char*)’:
+../src/EasyBMP/EasyBMP.cpp:994:13: warning: unused variable ‘ZeroWORD’ [-Wunused-variable]
+    ebmpWORD ZeroWORD;
+             ^
+Finished building: ../src/EasyBMP/EasyBMP.cpp
+ 
+Building file: ../src/EasyBMP/prueba.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/EasyBMP/prueba.d" -MT"src/EasyBMP/prueba.d" -o "src/EasyBMP/prueba.o" "../src/EasyBMP/prueba.cpp"
+Finished building: ../src/EasyBMP/prueba.cpp
+ 
+Building file: ../src/Carta.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/Carta.d" -MT"src/Carta.d" -o "src/Carta.o" "../src/Carta.cpp"
+../src/Carta.cpp:44:5: warning: identifier ‘nullptr’ is a keyword in C++11 [-Wc++0x-compat]
+     if (jugador->getTesoroBlindado() != nullptr){
+     ^
+In file included from ../src/Carta.h:6:0,
+                 from ../src/Carta.cpp:1:
+../src/Jugador.h: In member function ‘void Jugador::setTiempoCongelado(int)’:
+../src/Jugador.h:265:9: error: only constructors take member initializers
+         void disminuirTurnoCongelado();
+         ^
+../src/Jugador.h:265:9: error: expected identifier before ‘void’
+../src/Jugador.h:265:9: error: expected ‘{’ before ‘void’
+../src/Carta.cpp: In member function ‘void Carta::blindaje(Tablero*, Jugador*)’:
+../src/Carta.cpp:44:41: error: ‘nullptr’ was not declared in this scope
+     if (jugador->getTesoroBlindado() != nullptr){
+                                         ^
+../src/Carta.cpp: In member function ‘void Carta::partirTesoro(Tablero*, Jugador*)’:
+../src/Carta.cpp:127:23: error: ‘class Tablero’ has no member named ‘esPoscionValida’
+     while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+                       ^
+../src/Carta.cpp:127:39: error: ‘filaAMover’ was not declared in this scope
+     while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+                                       ^
+../src/Carta.cpp:127:51: error: ‘columnaAMover’ was not declared in this scope
+     while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+                                                   ^
+../src/Carta.cpp:127:66: error: ‘distanciaAmover’ was not declared in this scope
+     while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+                                                                  ^
+../src/Carta.cpp:139:99: error: ‘idJugador’ was not declared in this scope
+         || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() != idJugador){
+                                                                                                   ^
+../src/Carta.cpp: In member function ‘void Carta::teletransportacion(Tablero*, int, Jugador**)’:
+../src/Carta.cpp:160:146: error: ‘class Tablero’ has no member named ‘esPoscionValida’
+         if (tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador && tablero->esPoscionValida(x, y, z)){
+                                                                                                                                                  ^
+../src/Carta.cpp:169:23: error: ‘class Tablero’ has no member named ‘esPoscionValida’
+     while (!(tablero->esPoscionValida(filaAMover, columnaAMover, distanciaAmover)
+                       ^
+../src/Carta.cpp: In member function ‘void Carta::congelacion(int, Jugador**, int)’:
+../src/Carta.cpp:210:48: error: ‘NORMAL’ was not declared in this scope
+             if(jugadorAfectado->getEstado() == NORMAL){
+                                                ^
+src/subdir.mk:42: fallo en las instrucciones para el objetivo 'src/Carta.o'
+make: *** [src/Carta.o] Error 1
