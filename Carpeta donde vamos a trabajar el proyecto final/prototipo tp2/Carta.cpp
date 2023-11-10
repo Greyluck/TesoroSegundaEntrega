@@ -143,7 +143,7 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
     }
     std::cout << "Se ha partido un tesoro de manera existosa.";
     //esconde el tesoro nuevo
-    jugador->escoderTesoro(cantTesoros+1, 0, 0, 0, tablero);
+    // jugador->escoderTesoro(cantTesoros+1, 0, 0, 0, tablero);
 }
 
 //Aplica la carta teletransportacion (puede mover el tesoro donde quiera), en caso de que donde quiera mover haya un espia
@@ -195,8 +195,8 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
     }
 }
 
-//La carta congelacion, congela a un usuario que tenga como estado NORMAL, y no le deja usar cartas, durante 5 turnos
-//Puse que solamente se le pueda aplicar a jugadores con estado NORMAL, para no crear conflictos con otros estados mas importantes como
+//La carta congelacion, congela a un usuario que tenga como estado JUGANDO, y no le deja usar cartas, durante 5 turnos
+//Puse que solamente se le pueda aplicar a jugadores con estado JUGANDO, para no crear conflictos con otros estados mas importantes como
 //suspendido, etc.
 void Carta::congelacion(int idJugador, Jugador **jugadores,int cantidadJugadores) {
     std::cout << "Elija a quien le quiere aplicar la carta congelacion";
@@ -205,7 +205,7 @@ void Carta::congelacion(int idJugador, Jugador **jugadores,int cantidadJugadores
         std::cout << jugador->getNombre() << ":" << jugador->getId();
     }
     int entrada;
-    //ver que pasaria si todos los jugadores tienen un estado != normal.
+    //ver que pasaria si todos los jugadores tienen un estado != JUGANDO.
     while(true){
         std::cout << "Elija una jugador colocando su id: ";
         std::cin >> entrada;

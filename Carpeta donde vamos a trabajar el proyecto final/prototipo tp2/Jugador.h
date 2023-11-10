@@ -24,6 +24,7 @@ private:
         int cantidadDeTesoros; //definir si sólo debe ser mayor a 0 ó debe estar dentro de un rango.
         int cantidadDeTesorosDisponibles;
         Tesoro **tesoros;
+        Tesoro *tesoroBlindado;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
         Carta *cartaActiva;
         int cantidadCartasGuardadas;

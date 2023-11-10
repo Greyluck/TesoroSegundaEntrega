@@ -440,8 +440,8 @@ void Jugador::disminuirTurnoCongelado(){
 }
 
 void Jugador::aumentarTurnosBlindaje(){
-        if(this->getTesoroBlindado != NULL){
-                if(this->getTesoroBlindado()->getCantidadTurnosBLindado() != 0){
+        if(this->getTesoroBlindado() != NULL){
+                if(this->getTesoroBlindado()->getCantidadTurnosBlindado() != 0){
                         this->getTesoroBlindado()->disminuirCantTurnosBlindado();
                 }else{
                         this->getTesoroBlindado()->cambiarEstado(NEUTRO);
