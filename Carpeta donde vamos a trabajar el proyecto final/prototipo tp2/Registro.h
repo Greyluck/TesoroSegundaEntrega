@@ -1,7 +1,7 @@
 #ifndef REGISTRO_H_
 #define REGISTRO_H_
 
-#include <iostream>
+#include "Bibliotecas.h"
 
 enum EstadoRegistro{
     OCUPADA,

@@ -1,10 +1,3 @@
-/*
- * Tablero.h
- *
- *  Created on: 05/10/2023
- *      Author: algo2
- */
-
 #ifndef TABLERO_H_
 #define TABLERO_H_
 

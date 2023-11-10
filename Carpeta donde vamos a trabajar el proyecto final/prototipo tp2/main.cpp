@@ -1,10 +1,5 @@
 #include "TesoroBinario.h"
-// #include "Tablero.h"
-// #include "Pila.h"
-// #include "Mazo.h"
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include "Bibliotecas.h"
 int main() {
 	//agrego esto, que lo necesito para generar las cartas aleatorias
 	std::srand(static_cast<unsigned int>(std::time(NULL)));

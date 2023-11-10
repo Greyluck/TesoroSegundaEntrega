@@ -1,7 +1,7 @@
 #ifndef TRABAJO_PRACTICO_2_CARTA_H
 #define TRABAJO_PRACTICO_2_CARTA_H
 
-#include <string>
+#include "Bibliotecas.h"
 #include "Tablero.h"
 #include "Jugador.h"
 
@@ -13,12 +13,12 @@ enum TipoCarta {
     RADAR,
     PARTIR_TESORO,
     TELETRANSPORTACION,
-    CONGELACION,
+    CONGELACION
 };
 
 enum EstadoCarta{
     USADA,
-    NO_USADA,
+    NO_USADA
 };
 
 class Carta {

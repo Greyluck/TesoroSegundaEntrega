@@ -1,7 +1,5 @@
 #include "Jugador.h"
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include "Bibliotecas.h"
 
 // definir cantidad maxima de cartas guardadas definitiva.
 const int CANTIDAD_MAXIMA_CARTAS_GUARDADAS = 3;

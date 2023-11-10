@@ -1,7 +1,4 @@
 #include "Carta.h"
-#include <cstdlib>
-#include <iostream>
-#include <ctime>
 const int TIEMPO_RECUPERANDO_TESORO = 5;
 Carta::Carta() {
     //devuelve un valor random del 0, 5
