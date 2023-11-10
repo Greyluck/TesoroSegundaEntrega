@@ -13,7 +13,8 @@ enum TipoCarta {
     RADAR,
     PARTIR_TESORO,
     TELETRANSPORTACION,
-    CONGELACION
+    CONGELACION,
+    SUSPENCION_INDISCRIMINADA
 };
 
 enum EstadoCarta{
@@ -36,7 +37,9 @@ private:
 
     void teletransportacion(Tablero*, int idJugador, Jugador** jugadores);
 
-    void congelacion(int idJugador, Jugador** jugadores,int cantJugadores);
+    void congelacion(int idJugador, Jugador** jugadores, int cantidadJugadores);
+
+    void suspensionIndiscriminada(Jugador** jugadores, int cantidadJugadores);
 
     //agregar otras tres
 public:

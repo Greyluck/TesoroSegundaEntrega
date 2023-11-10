@@ -10,42 +10,42 @@ Tablero::Tablero(unsigned int ancho, unsigned int alto, unsigned int largo) {
 	this->ancho = ancho;
 	this->largo = largo;
 	for(unsigned int k = 1; k <= ancho; k++){
-        Lista<Lista<Registro*>*> *algo = new Lista<Lista<Registro*>*>();
+        Lista<Lista<Registro*>*> *fila = new Lista<Lista<Registro*>*>();
         for(unsigned int i=1; i <= alto; i++) {
-            Lista<Registro*> * fila = new Lista<Registro*>();
+            Lista<Registro*> * columna = new Lista<Registro*>();
             for(unsigned int j=1; j <= largo; j++) {
-                fila->agregar(new Registro(k, i, j));
+                columna->agregar(new Registro(k, i, j));
             }
-            algo->agregar(fila);
+            fila->agregar(columna);
         }
-        this->registros->agregar(algo);
+        this->registros->agregar(fila);
 	}
 }
 
 Tablero::~Tablero() {
     this->registros->iniciarCursor();
     while(this->registros->avanzarCursor()){
-        Lista<Lista<Registro*>*> *algo = this->registros->obtenerCursor();
-        algo->iniciarCursor();
-        while(algo->avanzarCursor()){
-            Lista<Registro*> *fila = algo->obtenerCursor();
-            fila->iniciarCursor();
-            while(fila->avanzarCursor()){
-                delete fila->obtenerCursor();
+        Lista<Lista<Registro*>*> *fila = this->registros->obtenerCursor();
+        fila->iniciarCursor();
+        while(fila->avanzarCursor()){
+            Lista<Registro*> *columna = fila->obtenerCursor();
+            columna->iniciarCursor();
+            while(columna->avanzarCursor()){
+                delete columna->obtenerCursor();
             }
-            delete fila;
+            delete columna;
         }
-        delete algo;
+        delete fila;
     }
     delete this->registros;
 }
 
 Registro* Tablero::getCasillero(unsigned int x, unsigned int y, unsigned int z) {
 	if(x < 0 && y < 0 && z < 0){
-        throw "La posici�n del tablero no puede ser negativa";
+        throw "La posición del tablero no puede ser negativa";
     }
     if(x > this->ancho && y > this->alto && z > this->largo){
-        throw "La posici�n debe estar dentro del tablero";
+        throw "La posición debe estar dentro del tablero";
     }
 
 	return this->registros->obtener(x)->obtener(y)->obtener(z);

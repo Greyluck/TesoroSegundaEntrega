@@ -7,6 +7,7 @@ Tesoro::Tesoro(int id){
 
         this->id = id;
         this->estado = NEUTRO;
+        this->tiempoBlindado = 0;
         this->fila = 0;
         this->columna = 0;
         this->altura = 0;
@@ -14,7 +15,6 @@ Tesoro::Tesoro(int id){
 
 void Tesoro::definirPosicion(unsigned int fila, unsigned int columna, unsigned int altura)
 {
-        //validar?
         this->fila = fila;
         this->columna = columna;
         this->altura = altura;
@@ -49,14 +49,14 @@ int Tesoro::getCantidadTurnosBlindado(){
         return this->tiempoBlindado;
 }
 
-void Tesoro::setCantidadTurnosBlinadado(int cantTurnos){
-        if(cantTurnos < 0){
+void Tesoro::setCantidadTurnosBlinadado(int cantidadTurnos){
+        if(cantidadTurnos < 0){
                 throw "La cantidad de turnos debe ser > a 0";
         }
-        this->tiempoBlindado = cantTurnos;
+        this->tiempoBlindado = cantidadTurnos;
 }
 
-void Tesoro::disminuirCantTurnosBlindado(){
+void Tesoro::disminuirCantidadTurnosBlindado(){
         this->tiempoBlindado--;
 }
 

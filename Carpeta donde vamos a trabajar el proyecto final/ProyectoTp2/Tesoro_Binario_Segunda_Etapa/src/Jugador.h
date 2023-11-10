@@ -21,19 +21,19 @@ private:
         int id;
         std::string nombre;
         EstadoJugador estado;
-        int cantidadDeTesoros; //definir si sólo debe ser mayor a 0 ó debe estar dentro de un rango.
+        int cantidadDeTesoros;
         int cantidadDeTesorosDisponibles;
         Tesoro **tesoros;
+        Tesoro *tesoroBlindado;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
         Carta *cartaActiva;
         int cantidadCartasGuardadas;
-        Carta **cartasGuardadas; //definir cuantas cartas guardadas puede tener un jugador durante el juego
+        Carta **cartasGuardadas;
         int tiempoSuspendido;
         int tiempoCongelado;
-        bool gano;
 
-        	/*
-	* pre: -
+        /*
+	* pre: tablero no puede ser nulo
 	* post: Pide al jugador una posición que esté en el tablero.
 	* */
 	void pedirPosicion(Tablero *tablero, int &fila, int &columna, int &altura);
@@ -48,9 +48,9 @@ private:
 public:
         /*
         * pre: nombre no puede ser nulo.
-        *       cantidadDeTesoros debe ser mayor a 0.
+        *       cantidadDeTesoros y id deben ser mayores a 0.
         * post: Crea una instancia de un jugador con el nombre y la cantidad de tesoros recibida por parámetro.
-        *       El estado del jugador se inicializa en NORMAL. 
+        *       El estado del jugador se inicializa en JUGANDO. 
         */
         Jugador(int id, std::string nombre, int cantidadDeTesoros);
 
@@ -62,16 +62,6 @@ public:
         *       altura indicadas por parámetro
         * */
         void escoderTesoro(int idTesoro, int fila, int columna, int altura, Tablero *tablero);
-
-        /*
-        * pre: tablero no puede ser nulo.
-        * post: Coloca un espia en la posición indicada por el jugador.
-        *       En caso de haber un tesoro deja inhabilitado el casillero
-        *       durante 5 turnos.
-        *       En caso de haber un espía ambos son eliminados dejando el
-        *       casillero libre de nuevo.
-        * */
-        void ponerEspia(Tablero *tablero, int &idTesoroVictima, int &idVictima);
 
         /*
         * pre: tablero no puede ser nulo.
@@ -122,15 +112,6 @@ public:
 
         /*
         * pre: tablero no puede ser nulo.
-        * post: Posiciona una mina en un casillero del tablero, si no tiene un tesoro.
-        *       En caso de haber un tesoro deja inhabilitado el casillero tanto
-        *       turnos como el poder de la mina.
-        *       Si ya había una mina en esa posición, el jugador que la encontró pierde un turno.
-        * */
-       void atacarCasillero(Tablero *tablero, int &idTesoroVictima, int &idVictima);
-
-        /*
-        * pre: tablero no puede ser nulo.
         * post: Posiciona una mina o un espia según estado en un casillero del tablero, si no tiene un tesoro.
         *       En caso de haber un tesoro deja inhabilitado el casillero tanto
         *       turnos como el poder de la mina.
@@ -150,26 +131,6 @@ public:
         *       Disminuye en uno la cantidad de tesoros.
         * */
         void descartarTesoro(int idTesoro);
-
-        /*
-        * pre: fila, columna y altura deben estar dentro de los limites del tablero.
-        * post: Devuelve true si hay un espia en la fila, columna y altura 
-        *       indicadas; false sino.
-        * */
-        bool encontroEspia(int fila, int columna, int altura);
-
-        /*
-        * pre: fila, columna y altura deben estar dentro de los limites del tablero.
-        * post: Devuelve true si hay un tesoro en la fila, columna y altura 
-        *       indicadas; false sino.
-        * */
-        bool encontroTesoro(int fila, int columna, int altura);
-
-        /*
-        * pre: -
-        * post: Devuelve true si el jugador ganó el juego; false sino.
-        * */
-        bool ganoElJuego();
 
         /*
         * pre: cantidadActual debe ser mayor o igual a 0;
@@ -229,7 +190,7 @@ public:
         Tesoro** getTesoros();
 
         /*
-        * pre: -
+        * pre: nuevoArrayTesoros no puede ser nulo
         * post: Setea el array pasado por parametro como atributo de tesoros
         * */
         void setTesoros(Tesoro** nuevoArrayTesoros);
@@ -256,7 +217,7 @@ public:
         * pre: El tiempo debe ser > 0;
         * post: Setea el atributo tiempoCongelado por el pasado por parametro.
         */
-        void setTiempoCongelado(int tiempo):
+        void setTiempoCongelado(int tiempo);
         
         /*
         * pre: -

@@ -30,8 +30,8 @@ Carta::Carta() {
             this->tiempoDeUso = 5;
             break;
        case 5:
-            this->tipoDeCarta = PARTIR_TESORO;
-            this->nombreCarta = "Partir Tesoro";
+            this->tipoDeCarta = SUSPENCION_INDISCRIMINADA;
+            this->nombreCarta = "Suspención indirscriminada";
             this->tiempoDeUso = 0;
             break;
     }
@@ -108,9 +108,9 @@ Tesoro** reedimensionarArray(Tesoro** arrayAReedimensionar, int cantTesoros,Teso
     }
     nuevoArray[cantTesoros] = TesoroNuevo;
     //liberar memoria del viejo array
-    for (int i = 0; i < cantTesoros; i++) {
-        delete arrayAReedimensionar[i];
-    }
+    // for (int i = 0; i < cantTesoros; i++) {
+    //     delete arrayAReedimensionar[i];
+    // }
     delete[] arrayAReedimensionar;
     return nuevoArray;
 }
@@ -124,7 +124,7 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
     jugador->setTesoros(tesoros);
     jugador->setCantidadDeTesoros(cantTesoros+1);
     bool tesoroMovido = false;
-    while (!(tablero->esPosicionValida(filaAMover, columnaAMover, distanciaAmover)
+    while (!(tablero->esPosicionValida(x, y, z)
             && !tesoroMovido)){
         std::cout << "Ingrese las coordenadas (x, y, z) de donde quiere colocar el nuevo tesoro" << std::endl;
         std::cout << "x: ";
@@ -142,6 +142,8 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
         }
     }
     std::cout << "Se ha partido un tesoro de manera existosa.";
+    //esconde el tesoro nuevo
+    // jugador->escoderTesoro(cantTesoros+1, 0, 0, 0, tablero);
 }
 
 //Aplica la carta teletransportacion (puede mover el tesoro donde quiera), en caso de que donde quiera mover haya un espia
@@ -157,7 +159,7 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
         std::cin >> y;
         std::cout << "z: ";
         std::cin >> z;
-        if (tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador && tablero->esPosicionValida(x, y, z)){
+        if (tablero->esPosicionValida(x, y, z) && tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador){
             idTesoro = tablero->getCasillero(x,y,z)->obtenerTesoroId();
             break;
         }
@@ -179,33 +181,35 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
         || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != ESPIA
         || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() != idJugador){
             std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
-            break;
+            tesoroMovido = false;
+        }else
+        {
+            tesoroMovido = true;
         }
     }
+
     if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != TESORO){
         jugadores[idJugador-1]->escoderTesoro(idTesoro,filaAMover,columnaAMover,distanciaAmover,tablero);
-        tesoroMovido = true;
     }else{
         tablero->getCasillero(filaAMover, columnaAMover, distanciaAmover)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
-        tesoroMovido = true;
     }
 }
 
-//La carta congelacion, congela a un usuario que tenga como estado NORMAL, y no le deja usar cartas, durante 5 turnos
-//Puse que solamente se le pueda aplicar a jugadores con estado NORMAL, para no crear conflictos con otros estados mas importantes como
+//La carta congelacion, congela a un usuario que tenga como estado JUGANDO, y no le deja usar cartas, durante 5 turnos
+//Puse que solamente se le pueda aplicar a jugadores con estado JUGANDO, para no crear conflictos con otros estados mas importantes como
 //suspendido, etc.
-void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
+void Carta::congelacion(int idJugador, Jugador **jugadores,int cantidadJugadores) {
     std::cout << "Elija a quien le quiere aplicar la carta congelacion";
-    for (int i = 0; i < cantJugadores; i++) {
+    for (int i = 0; i < cantidadJugadores; i++) {
         Jugador* jugador = jugadores[i];
         std::cout << jugador->getNombre() << ":" << jugador->getId();
     }
     int entrada;
-    //ver que pasaria si todos los jugadores tienen un estado != normal.
+    //ver que pasaria si todos los jugadores tienen un estado != JUGANDO.
     while(true){
         std::cout << "Elija una jugador colocando su id: ";
         std::cin >> entrada;
-        if (entrada > 0 && entrada < cantJugadores){
+        if (entrada > 0 && entrada < cantidadJugadores){
             Jugador* jugadorAfectado = jugadores[entrada-1];
             if(jugadorAfectado->getEstado() == JUGANDO){
                 jugadorAfectado->setEstado(CONGELADO);
@@ -218,11 +222,20 @@ void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
     }
 }
 
+void Carta::suspensionIndiscriminada(Jugador **jugadores, int cantidadJugadores) {
+
+    // define un número al azar entre 0 y cantidadJugadores y le suma 1
+    int idJugadorCongelado = ((std::rand() % cantidadJugadores) + 1);
+    
+    std::cout << "El jugador " << jugadores[idJugadorCongelado-1]->getNombre() << " ha sido congelado." << std::endl;
+    jugadores[idJugadorCongelado-1]->setEstado(SUSPENDIDO);
+}
+
 std::string Carta::getNombreCarta() {
     return this->nombreCarta;
 }
 
-void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, int cantJugadores) {
+void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, int cantidadJugadores) {
     this->estadoCarta = USADA;
     switch (this->tipoDeCarta) {
         case BLINDAJE:
@@ -242,8 +255,11 @@ void Carta::aplicarCarta(Tablero* tablero,int idJugador, Jugador** jugadores, in
             break;
 
         case CONGELACION:
-            this->congelacion(idJugador,jugadores, cantJugadores);
+            this->congelacion(idJugador,jugadores, cantidadJugadores);
             break;
+        
+        case SUSPENCION_INDISCRIMINADA:
+        this->suspensionIndiscriminada(jugadores, cantidadJugadores);
     }
 }
 
