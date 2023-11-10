@@ -71,17 +71,37 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
                 std::cout << "\nTe toca jugar " << jugador->getNombre() << std::endl;
                 jugador->sacarCartaDelMazo(this->mazo, this->tablero,
                                            this->jugadores, this->cantidadDeJugadores);
+
+                //Dejar una MINA
                 jugador->atacarCasillero(MINA, this->tablero, idTesoroVictima, idVictima);
                 if(idTesoroVictima > 0 && idVictima > 0){
-                        this->interfaz->destruirTesoro(this->jugadores[idTesoroVictima-1],
-                                                        idTesoroVictima);
+                	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima);
+
+                	if(!this->jugadores[idVictima-1]->validarTesorosDisponibles()) {
+                                    	this->jugadores[idVictima-1]->setEstado(ELIMINADO);
+                	}
+                	this->revisarJuego();
+                	if(this->getEstado() == FINALIZADO) {
+                		return;
+                	}
                 }
+
+                //Dejar un ESPIA
                 jugador->atacarCasillero(ESPIA, this->tablero, idTesoroVictima, idVictima);
                 if(idTesoroVictima > 0 && idVictima > 0){
-                        this->interfaz->destruirTesoro(this->jugadores[idTesoroVictima-1],
-                                                        idTesoroVictima);
+                	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima);
+                	if(!this->jugadores[idVictima-1]->validarTesorosDisponibles()) {
+                		this->jugadores[idVictima-1]->setEstado(ELIMINADO);
+                	}
+                	this->revisarJuego();
+                	if(this->getEstado() == FINALIZADO) {
+                		return;
+                	}
                 }
+
+                //Mover tesoro
                 jugador->moverTesoro(this->tablero, idTesoroVictima, idVictima);
+
 
                 exportarEstadoTablero(jugador, jugador->getEstadoTablero());
         }
