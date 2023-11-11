@@ -138,6 +138,9 @@ public:
         * */
         void setCantidadDeTesoros(int cantidadActual);
 
+
+
+
         /*
         * pre: -
         * post: Devuelve el nombre del jugador.

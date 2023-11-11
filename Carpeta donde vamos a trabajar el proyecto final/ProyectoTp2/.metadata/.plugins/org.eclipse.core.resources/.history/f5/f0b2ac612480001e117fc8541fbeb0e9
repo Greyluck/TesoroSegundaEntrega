@@ -77,7 +77,7 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
                 if(idTesoroVictima > 0 && idVictima > 0){
                 	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima);
 
-                	if(!this->jugadores[idVictima-1]-> getCantidadTesoros()) {
+                	if(!this->jugadores[idVictima-1]->validarTesorosDisponibles()) {
                                     	this->jugadores[idVictima-1]->setEstado(ELIMINADO);
                 	}
                 	this->revisarJuego();
@@ -90,7 +90,7 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
                 jugador->atacarCasillero(ESPIA, this->tablero, idTesoroVictima, idVictima);
                 if(idTesoroVictima > 0 && idVictima > 0){
                 	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima);
-                	if(!this->jugadores[idVictima-1]->getCantidadTesoros()) {
+                	if(!this->jugadores[idVictima-1]->validarTesorosDisponibles()) {
                 		this->jugadores[idVictima-1]->setEstado(ELIMINADO);
                 	}
                 	this->revisarJuego();

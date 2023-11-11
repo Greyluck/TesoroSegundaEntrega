@@ -21,8 +21,8 @@ private:
         int id;
         std::string nombre;
         EstadoJugador estado;
-        int cantidadDeTesoros;			 	// Cantidad de tesoros iniciales con los que le el jugador comienza el juego
-        int cantidadDeTesorosDisponibles;	// Cantidad de tesoros restantes que el jugador tiene en el campoo
+        int cantidadDeTesoros;
+        int cantidadDeTesorosDisponibles;
         Tesoro **tesoros;
         Tesoro *tesoroBlindado;
         std::string estadoTablero; //archivo donde se exportará el estado del tablero del jugador
@@ -33,10 +33,10 @@ private:
         int tiempoCongelado;
 
         /*
-		* pre: tablero no puede ser nulo
-		* post: Pide al jugador una posición que esté en el tablero.
-		* */
-		void pedirPosicion(Tablero *tablero, int &fila, int &columna, int &altura);
+	* pre: tablero no puede ser nulo
+	* post: Pide al jugador una posición que esté en el tablero.
+	* */
+	void pedirPosicion(Tablero *tablero, int &fila, int &columna, int &altura);
 
 
         /*
@@ -231,12 +231,6 @@ public:
         */
         void aumentarTurnosBlindaje();
 
-
-        /*
-        * pre: -
-        * post: Verifica la cantidad de tesoros que posee un jugador y devuelve esa cifra.
-        * */
-        int validarTesorosDisponibles();
 
         /*
         * pre: -

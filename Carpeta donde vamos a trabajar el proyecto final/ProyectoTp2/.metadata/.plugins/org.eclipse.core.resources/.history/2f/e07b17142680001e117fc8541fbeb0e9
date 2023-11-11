@@ -417,6 +417,9 @@ void Jugador::aumentarTurnosBlindaje(){
         }
 }
 
+int validarTesorosDisponibles(){
+	return cantidadDeTesorosDisponibles;
+}
 
 Jugador::~Jugador()
 {

@@ -417,7 +417,6 @@ void Jugador::aumentarTurnosBlindaje(){
         }
 }
 
-
 Jugador::~Jugador()
 {
         for(int i = 0; i < CANTIDAD_MAXIMA_CARTAS_GUARDADAS; i++){
