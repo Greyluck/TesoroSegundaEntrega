@@ -4,15 +4,8 @@ Interfaz::Interfaz(int &cantidadDeJugadores, int &cantidadDeTesoros,
        		int &anchoTablero, int &altoTablero, int &largoTablero)
 {
         cout << "BIENVENIDOS A " << NOMBRE_JUEGO << endl << endl;
-
-        while (cantidadDeJugadores < 2){
-			cout << "¿Cuantas personas jugarán? (ingrese un número mayor o igual a 2)" << endl;
-			cin >> cantidadDeJugadores;
-			if (cantidadDeJugadores < 2){
-				cout << "Es no es un valor valido" << endl;
-			}
-        }
-
+        cout << "¿Cuantas personas jugarán? (ingrese un número mayor o igual a 2)" << endl;
+        cin >> cantidadDeJugadores;
         cout << "¿Cuantos tesoros tendrá cada jugador? (ingrese un número mayor a 0)" << endl;
         cin >> cantidadDeTesoros;
         cout << "¿Cuál será el ancho, el alto y el largo del tablero?" << endl;

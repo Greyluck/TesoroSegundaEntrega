@@ -1,6 +1,23 @@
-21:15:02 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
+22:35:28 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
 make all 
-make: No se hace nada para 'all'.
-21:15:03 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
+Building file: ../src/Interfaz.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/Interfaz.d" -MT"src/Interfaz.d" -o "src/Interfaz.o" "../src/Interfaz.cpp"
+../src/Interfaz.cpp: In constructor ‘Interfaz::Interfaz(int&, int&, int&, int&, int&)’:
+../src/Interfaz.cpp:8:40: error: expected primary-expression before ‘:’ token
+         while (cantidadDeJugadores < 2):
+                                        ^
+src/subdir.mk:42: fallo en las instrucciones para el objetivo 'src/Interfaz.o'
+make: *** [src/Interfaz.o] Error 1
+22:35:46 **** Incremental Build of configuration Debug for project Tesoro_Binario_Segunda_Etapa ****
 make all 
-make: No se hace nada para 'all'.
+Building file: ../src/Interfaz.cpp
+Invoking: GCC C++ Compiler
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/Interfaz.d" -MT"src/Interfaz.d" -o "src/Interfaz.o" "../src/Interfaz.cpp"
+Finished building: ../src/Interfaz.cpp
+ 
+Building target: Tesoro_Binario_Segunda_Etapa
+Invoking: GCC C++ Linker
+g++  -o "Tesoro_Binario_Segunda_Etapa"  ./src/EasyBMP/EasyBMP.o ./src/EasyBMP/prueba.o  ./src/Carta.o ./src/Interfaz.o ./src/Jugador.o ./src/Mazo.o ./src/Registro.o ./src/Tablero.o ./src/Tesoro.o ./src/TesoroBinario.o ./src/Tesoro_Binario_Segunda_Etapa.o   
+Finished building target: Tesoro_Binario_Segunda_Etapa
+ 
