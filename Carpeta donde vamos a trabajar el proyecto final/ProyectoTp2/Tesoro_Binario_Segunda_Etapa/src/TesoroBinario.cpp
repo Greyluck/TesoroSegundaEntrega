@@ -110,7 +110,7 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
 TesoroBinario::TesoroBinario()
 {
         int anchoTablero = 0, altoTablero = 0, largoTablero = 0;
-        int cantidadDeJugadores, cantidadDeTesoros;
+        int cantidadDeJugadores = 0, cantidadDeTesoros = 0;
 
         this->interfaz = new Interfaz(cantidadDeJugadores, cantidadDeTesoros, 
                             anchoTablero, altoTablero, largoTablero);

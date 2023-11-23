@@ -202,7 +202,7 @@ void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
     std::cout << "Elija a quien le quiere aplicar la carta congelacion";
     for (int i = 0; i < cantJugadores; i++) {
         Jugador* jugador = jugadores[i];
-        std::cout << jugador->getNombre() << ":" << jugador->getId();
+        std::cout << jugador->getNombre() << ":" << jugador->getId() << std::endl;
     }
     int entrada;
     //ver que pasaria si todos los jugadores tienen un estado != normal.

@@ -1,15 +1,15 @@
 CXXFLAGS = -Wall -pedantic -std=c++98 -g
 CXX = g++
 
-OBJECTS = main.o Carta.o Jugador.o Mazo.o Registro.o Tablero.o Tesoro.o TesoroBinario.o Interfaz.o prueba.o EasyBMP.o
+OBJECTS = Tesoro_Binario_Segunda_Etapa.o Carta.o Jugador.o Mazo.o Registro.o Tablero.o Tesoro.o TesoroBinario.o Interfaz.o prueba.o EasyBMP.o
 
 all: programa
 
 programa: $(OBJECTS)
 	$(CXX) -g $(OBJECTS) -o programa 
 
-main.o: main.cpp TesoroBinario.h
-	$(CXX) $(CXXFLAGS) main.cpp -c
+Tesoro_Binario_Segunda_Etapa.o: Tesoro_Binario_Segunda_Etapa.cpp TesoroBinario.h
+	$(CXX) $(CXXFLAGS) Tesoro_Binario_Segunda_Etapa.cpp -c
 	
 Carta.o: Carta.cpp Carta.h
 	$(CXX) $(CXXFLAGS) Carta.cpp -c
