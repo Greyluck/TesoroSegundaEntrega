@@ -1,7 +1,7 @@
 CXXFLAGS = -Wall -pedantic -std=c++98 -g
 CXX = g++
 
-OBJECTS = Tesoro_Binario_Segunda_Etapa.o Carta.o Jugador.o Mazo.o Registro.o Tablero.o Tesoro.o TesoroBinario.o Interfaz.o prueba.o EasyBMP.o
+OBJECTS = Tesoro_Binario_Segunda_Etapa.o Carta.o Jugador.o Mazo.o Registro.o Tablero.o Tesoro.o TesoroBinario.o Interfaz.o prueba.o EasyBMP.o Imagen.o
 
 all: programa
 
@@ -41,6 +41,8 @@ prueba.o: EasyBMP/prueba.cpp
 EasyBMP.o: EasyBMP/EasyBMP.cpp EasyBMP/EasyBMP.h
 	$(CXX) $(CXXFLAGS) EasyBMP/EasyBMP.cpp -c
 
+Imagen.o : Imagen.h Imagen.cpp
+	$(CXX) $(CXXFLAGS) Imagen.cpp -c
 
 clean:
 	rm *.o programa 

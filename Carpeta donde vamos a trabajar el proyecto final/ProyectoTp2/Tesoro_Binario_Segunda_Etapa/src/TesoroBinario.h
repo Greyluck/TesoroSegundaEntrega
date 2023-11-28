@@ -5,6 +5,7 @@
 #include "Jugador.h"
 #include "Mazo.h"
 #include "Interfaz.h"
+#include "Imagen.h"
 
 enum EstadoJuego {
         JUGABLE,
@@ -22,6 +23,7 @@ private:
         EstadoJuego estado;
         int idGanador;
         Interfaz *interfaz; //Interfaz que interactuará con los jugadores
+        Imagen *imagen;
 
         /*
         * pre: estado y jugador no pueden ser nulos. 

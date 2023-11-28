@@ -1,12 +1,12 @@
 #include "TesoroBinario.h"
 #include "Bibliotecas.h"
 
-static const std::string CELDA_LIBRE = "-";
-static const std::string CELDA_TESORO = "T";
-static const std::string CELDA_ESPIA = "E";
-static const std::string CELDA_NO_DISPONIBLE = "X";
+static const std::string CELDA_LIBRE = "EasyBMP/bitmaps/celda_libre.bmp";
+static const std::string CELDA_TESORO = "EasyBMP/bitmaps/cofre.bmp";
+static const std::string CELDA_ESPIA = "EasyBMP/bitmaps/espia.bmp";
+static const std::string CELDA_NO_DISPONIBLE = "EasyBMP/bitmaps/no_disponible.bmp";
 static const std::string CELDA_OCUPADA = "O";
-static const std::string CELDA_MINA = "M";
+static const std::string CELDA_MINA = "EasyBMP/bitmaps/mina.bmp";
 
 std::string TesoroBinario::definirEstadoCasillero(EstadoRegistro estado)
 {
@@ -37,22 +37,20 @@ std::string TesoroBinario::definirEstadoCasillero(EstadoRegistro estado)
 
 void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTablero)
 {
-        std::ofstream estado;
-        estado.open(estadoTablero.c_str());
-
-        //posible forma de imprimir el tablero con strings. Se debe imprimir como bitmap
-        //ua idea para hacerlo es sustituir los strings de los mini tableros con colores
         for(unsigned int i = 1; i <= this->tablero->getAncho(); i++){
-                std::cout<<std::endl;
-                std::cout<<"Fila "<<i<<":"<<std::endl;
+                // std::cout<<std::endl;
+                // std::cout<<"Fila "<<i<<":"<<std::endl;
                 for(unsigned int j = 1; j <= this->tablero->getAlto(); j++){
                         for(unsigned int k = 1; k <= this->tablero->getLargo(); k++){
                                 if(this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == jugador->getId() ||
                                    this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == 0){
-                                        std::cout<<definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
+                                        std::string rutaImagenACopiar = definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
+                                        this->imagen->copiarImagen(rutaImagenACopiar, k, j, estadoTablero);
+                                        // std::cout<<definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
                                 }else
                                 {
-                                        std::cout<<CELDA_LIBRE;
+                                        this->imagen->copiarImagen(CELDA_LIBRE, k, j, estadoTablero);
+                                        // std::cout<<CELDA_LIBRE;
                                 }
                         }
                         std::cout<<std::endl;
@@ -60,7 +58,30 @@ void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTa
                 
         }
 
-        estado.close();
+        // std::ofstream estado;
+        // estado.open(estadoTablero.c_str());
+
+        // //posible forma de imprimir el tablero con strings. Se debe imprimir como bitmap
+        // //ua idea para hacerlo es sustituir los strings de los mini tableros con colores
+        // for(unsigned int i = 1; i <= this->tablero->getAncho(); i++){
+        //         std::cout<<std::endl;
+        //         std::cout<<"Fila "<<i<<":"<<std::endl;
+        //         for(unsigned int j = 1; j <= this->tablero->getAlto(); j++){
+        //                 for(unsigned int k = 1; k <= this->tablero->getLargo(); k++){
+        //                         if(this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == jugador->getId() ||
+        //                            this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == 0){
+        //                                 std::cout<<definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
+        //                         }else
+        //                         {
+        //                                 std::cout<<CELDA_LIBRE;
+        //                         }
+        //                 }
+        //                 std::cout<<std::endl;
+        //         }
+                
+        // }
+
+        // estado.close();
 }
 
 void TesoroBinario::jugarTurno(Jugador * jugador)
@@ -114,8 +135,6 @@ TesoroBinario::TesoroBinario()
 
         this->interfaz = new Interfaz(cantidadDeJugadores, cantidadDeTesoros, 
                             anchoTablero, altoTablero, largoTablero);
-        // this->interfaz->pedirDatosParaJugar(cantidadDeJugadores, cantidadDeTesoros, 
-        //                     anchoTablero, altoTablero, largoTablero);
         
         //crea el tablero con las dimensiones indicadas
         this->tablero = new Tablero(anchoTablero, altoTablero, largoTablero);
@@ -132,6 +151,7 @@ TesoroBinario::TesoroBinario()
         this->mazo = new Mazo(this->cantidadDeJugadores);
         this->estado = JUGABLE;
         this->idGanador = 0;
+        this->imagen = new Imagen(100, 100);
 }
 
 void TesoroBinario::inciarJuego(){
@@ -214,4 +234,5 @@ TesoroBinario::~TesoroBinario(){
         delete this->mazo;
         delete this->tablero;
         delete this->interfaz;
+        delete this->imagen;
 }

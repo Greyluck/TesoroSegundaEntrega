@@ -2,7 +2,7 @@
 #include "Bibliotecas.h"
 
 const int CANTIDAD_MAXIMA_CARTAS_GUARDADAS = 3;
-const std::string ARCHIVO = "estadoTablero.txt";
+// const std::string ARCHIVO = "estadoTablero.bmp";
 const int TIEMPO_RECUPERANDO_TESORO = 5;
 
 void Jugador::pedirPosicion(Tablero * tablero, int & x, int & y, int & z)
@@ -98,7 +98,7 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
                 this->cartasGuardadas[i] = new Carta();
         }
 
-        this->estadoTablero = ARCHIVO;
+        this->estadoTablero = "tablero" + this->nombre + ".bmp";
 }
 
 void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura, Tablero * tablero)
