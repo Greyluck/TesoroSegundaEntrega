@@ -1,12 +1,12 @@
 #include "TesoroBinario.h"
 #include "Bibliotecas.h"
 
-static const std::string CELDA_LIBRE = "EasyBMP/bitmaps/celda_libre.bmp";
-static const std::string CELDA_TESORO = "EasyBMP/bitmaps/cofre.bmp";
-static const std::string CELDA_ESPIA = "EasyBMP/bitmaps/espia.bmp";
-static const std::string CELDA_NO_DISPONIBLE = "EasyBMP/bitmaps/no_disponible.bmp";
-static const std::string CELDA_OCUPADA = "O";
-static const std::string CELDA_MINA = "EasyBMP/bitmaps/mina.bmp";
+static const std::string CELDA_LIBRE = "EasyBMP/bitmaps/celda_libre2.bmp";
+static const std::string CELDA_TESORO = "EasyBMP/bitmaps/cofre2.bmp";
+static const std::string CELDA_ESPIA = "EasyBMP/bitmaps/espia2.bmp";
+static const std::string CELDA_NO_DISPONIBLE = "EasyBMP/bitmaps/celda_no_disponible2.bmp";
+static const std::string CELDA_OCUPADA = "EasyBMP/bitmaps/celda_ocupada.bmp";
+static const std::string CELDA_MINA = "EasyBMP/bitmaps/mina2.bmp";
 
 std::string TesoroBinario::definirEstadoCasillero(EstadoRegistro estado)
 {
@@ -38,22 +38,37 @@ std::string TesoroBinario::definirEstadoCasillero(EstadoRegistro estado)
 void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTablero)
 {
         for(unsigned int i = 1; i <= this->tablero->getAncho(); i++){
-                // std::cout<<std::endl;
-                // std::cout<<"Fila "<<i<<":"<<std::endl;
                 for(unsigned int j = 1; j <= this->tablero->getAlto(); j++){
                         for(unsigned int k = 1; k <= this->tablero->getLargo(); k++){
+                                unsigned int x = k;
+                                unsigned int y = j;
+
+                                // indica que la imagen debe imprimirse debajo de la anterior.
+                                if(j > 1){
+                                        y = 20 * (j-1);
+                                }
+
+                                // indica que la imagen debe imprimirse a la derecha de la anterior.
+                                if(k > 1){
+                                        x = 20 * (k-1);
+                                }
+                                
+                                // indica que el subtablero debe imprimirse abajo del subtablero anterior.
+                                // al tener más de 2 subtableros se genera un 
+                                // error que superpone los tabaleros siguientes con el segundo impreso
+                                if(i > 1){
+                                        y = ((20 * this->tablero->getLargo()) + i) + (20*(j-1));
+                                }
+
                                 if(this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == jugador->getId() ||
                                    this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == 0){
                                         std::string rutaImagenACopiar = definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
-                                        this->imagen->copiarImagen(rutaImagenACopiar, k, j, estadoTablero);
-                                        // std::cout<<definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
+                                        this->imagen->copiarImagen(rutaImagenACopiar, x, y, estadoTablero);
                                 }else
                                 {
-                                        this->imagen->copiarImagen(CELDA_LIBRE, k, j, estadoTablero);
-                                        // std::cout<<CELDA_LIBRE;
+                                        this->imagen->copiarImagen(CELDA_LIBRE, x, y, estadoTablero);
                                 }
                         }
-                        std::cout<<std::endl;
                 }
                 
         }
@@ -151,7 +166,7 @@ TesoroBinario::TesoroBinario()
         this->mazo = new Mazo(this->cantidadDeJugadores);
         this->estado = JUGABLE;
         this->idGanador = 0;
-        this->imagen = new Imagen(100, 100);
+        this->imagen = new Imagen((this->tablero->getAlto() * 100) / 2, (this->tablero->getLargo() * 100) / 4);
 }
 
 void TesoroBinario::inciarJuego(){

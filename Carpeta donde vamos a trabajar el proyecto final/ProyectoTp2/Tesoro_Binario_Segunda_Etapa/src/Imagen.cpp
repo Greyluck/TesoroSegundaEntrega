@@ -32,6 +32,7 @@ void Imagen::copiarImagen(string rutaImagenACopiar, int x, int y, string rutaIma
 {
         BMP auxilar;
         auxilar.ReadFromFile(rutaImagenACopiar.c_str());
+
         RangedPixelToPixelCopy(auxilar, 0, auxilar.TellWidth()-1, auxilar.TellHeight()-1, 0, *(this->imagen), x-1, y-1);
         this->imagen->WriteToFile(rutaImagenDestino.c_str()); 
 }

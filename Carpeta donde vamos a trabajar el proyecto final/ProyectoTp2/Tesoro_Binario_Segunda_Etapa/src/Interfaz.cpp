@@ -13,8 +13,16 @@ Interfaz::Interfaz(int &cantidadDeJugadores, int &cantidadDeTesoros,
 			}
         }
 
-        cout << "¿Cuantos tesoros tendrá cada jugador? (ingrese un número mayor a 0)" << endl;
-        cin >> cantidadDeTesoros;
+        while(cantidadDeTesoros <= 0){
+                cout << "¿Cuantos tesoros tendrá cada jugador? (ingrese un número mayor a 0)" << endl;
+                cin >> cantidadDeTesoros;
+                if (cantidadDeTesoros <= 0){
+			cout << "Cada jugador debe tener al menos un tesoro" << endl;
+		}                
+        }
+
+        // cout << "¿Cuantos tesoros tendrá cada jugador? (ingrese un número mayor a 0)" << endl;
+        // cin >> cantidadDeTesoros;
         cout << "¿Cuál será el ancho, el alto y el largo del tablero?" << endl;
         cout << "Ingrese el numero de cada uno por separado (el numero debe ser mayor que 0)" << endl;
         while(anchoTablero <= 0 || altoTablero <= 0 || largoTablero <= 0){
@@ -68,20 +76,32 @@ void Interfaz::esconderTesorosInciales(Jugador *jugador,
         cout << jugador->getNombre() << ": ingresá las posiciones de tus " << cantidadDeTesoros << " tesoros." << endl;
         for(int i = 0; i < cantidadDeTesoros; i++){
                 cout << "\nTesoro " << i+1 << ": " << endl;
-                cin >> x >> y >> z;
-                while(!tablero->esPosicionValida(x, y, z)){
-                        cout << "Esa posición no es válida, pruebe con otra" << endl;
+                do{
                         cout << "x: ";
                         cin >> x;
                         cout << "y: ";
                         cin >> y;
                         cout << "z: ";
                         cin >> z;
+                }while(!tablero->esPosicionValida(x, y, z) || 
+                       !tablero->getCasillero(x, y, z)->estaLibre());
+                
+                jugador->escoderTesoro(i+1, x, y, z, tablero);
+                
+                // cin >> x >> y >> z;
+                // while(!tablero->esPosicionValida(x, y, z)){
+                //         cout << "Esa posición no es válida, pruebe con otra" << endl;
+                //         cout << "x: ";
+                //         cin >> x;
+                //         cout << "y: ";
+                //         cin >> y;
+                //         cout << "z: ";
+                //         cin >> z;
 
-                }
-                while(tablero->getCasillero(x, y, z)->estaLibre()){
-                        jugador->escoderTesoro(i+1, x, y, z, tablero);
-                }
+                // }
+                // while(tablero->getCasillero(x, y, z)->estaLibre()){
+                //         jugador->escoderTesoro(i+1, x, y, z, tablero);
+                // }
         }
 }
 

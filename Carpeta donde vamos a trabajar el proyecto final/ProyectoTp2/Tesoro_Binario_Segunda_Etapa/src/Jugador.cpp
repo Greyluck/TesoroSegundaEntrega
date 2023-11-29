@@ -98,7 +98,7 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
                 this->cartasGuardadas[i] = new Carta();
         }
 
-        this->estadoTablero = "tablero" + this->nombre + ".bmp";
+        this->estadoTablero = "Tableros de jugadores/tablero" + this->nombre + ".bmp";
 }
 
 void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura, Tablero * tablero)
