@@ -1,6 +1,8 @@
 #include "TesoroBinario.h"
 #include "Bibliotecas.h"
 
+static const int ALTO_BITMAP_CELDA = 20;
+static const int ANCHO_BITMAP_CELDA = 20;
 static const std::string CELDA_LIBRE = "-";
 static const std::string BITMAP_CELDA_LIBRE = "EasyBMP/bitmaps/celda_libre2.bmp";
 static const std::string CELDA_TESORO = "T";
@@ -94,17 +96,17 @@ void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTa
 
                                 // indica que la imagen debe imprimirse debajo de la anterior.
                                 if(j > 1){
-                                        y = 20 * (j-1);
+                                        y = ALTO_BITMAP_CELDA * (j-1);
                                 }
 
                                 // indica que la imagen debe imprimirse a la derecha de la anterior.
                                 if(k > 1){
-                                        x = 20 * (k-1);
+                                        x = ANCHO_BITMAP_CELDA * (k-1);
                                 }
                                 
                                 // indica que el subtablero debe imprimirse abajo del subtablero anterior.
                                 if(i > 1){
-                                        y = (((20 * this->tablero->getAlto()) + i) * (i-1)) + (20*(j-1));
+                                        y = (((ALTO_BITMAP_CELDA * this->tablero->getAlto()) + i) * (i-1)) + (ALTO_BITMAP_CELDA*(j-1));
                                 }
 
                                 if(this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == jugador->getId() ||
@@ -185,8 +187,8 @@ TesoroBinario::TesoroBinario()
         this->mazo = new Mazo(this->cantidadDeJugadores);
         this->estado = JUGABLE;
         this->idGanador = 0;
-        this->imagen = new Imagen(((this->tablero->getAncho() * this->tablero->getAlto())+1) * 20, 
-                                  (this->tablero->getLargo()+1) * 20);
+        this->imagen = new Imagen(((this->tablero->getAncho() * this->tablero->getAlto())+1) * ALTO_BITMAP_CELDA, 
+                                  (this->tablero->getLargo()+1) * ANCHO_BITMAP_CELDA);
 }
 
 void TesoroBinario::inciarJuego(){
