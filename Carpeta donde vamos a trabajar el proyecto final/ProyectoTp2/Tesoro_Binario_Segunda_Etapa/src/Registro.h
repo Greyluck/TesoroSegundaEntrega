@@ -25,7 +25,7 @@ private:
 
     /**
     * Pre: -
-    * Post: Reduce en uno el tiempo que el registro est� inhabilitado si el registro esta inhabilitado.
+    * Post: Reduce en uno el tiempo que el registro está inhabilitado si el registro esta inhabilitado.
     **/
     void contarTiempoInhabilitado();
 
@@ -44,7 +44,7 @@ public:
 
     /**
     * Pre: -
-    * Post: Devuelve true si el registro est� libre; false sino.
+    * Post: Devuelve true si el registro está libre; false sino.
     **/
     bool estaLibre();
 
@@ -69,6 +69,8 @@ public:
     /**
     * Pre: estado debe ser OCUPADA,	TESORO, ESPIA, NO_DISPONIBLE, LIBRE ó MINA
     * Post: Cambia el estado del registro.
+    *       Si estado es igual a LIBRE setea el id del jugador y el tesoro que
+    *       tiene el registro en ID_JUGADOR_NULO Y ID_TESORO_NULO respectivamente.
     **/
     void cambiarEstado(EstadoRegistro estado);
 
@@ -98,20 +100,20 @@ public:
     void definirTesoroId(int id);
 
     /**
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: delvuelve la coordenada X del registro.
 	 */
 	unsigned int getX();
 
 	/**
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: devuelve la coordenada Y del registro
 	 */
 	unsigned int getY();
 
 	/**
     * Pre: -
-    * Post:
+    * Post: devuelve la coordenada Z del registro
     **/
 	unsigned int getz();
 };

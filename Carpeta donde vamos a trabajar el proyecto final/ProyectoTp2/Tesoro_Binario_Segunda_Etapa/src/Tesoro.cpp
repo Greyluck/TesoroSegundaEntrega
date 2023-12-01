@@ -60,6 +60,10 @@ void Tesoro::disminuirCantidadTurnosBlindado(){
         this->tiempoBlindado--;
 }
 
+unsigned int Tesoro::getId(){
+        return this->id;
+}
+
 Tesoro::~Tesoro()
 {
 }

@@ -7,15 +7,15 @@ const int TIEMPO_RECUPERANDO_TESORO = 5;
 
 void Jugador::pedirPosicion(Tablero * tablero, int & x, int & y, int & z)
 {
-        while(!tablero->esPosicionValida(x, y, z)){
+        do{
                 std::cout << "Ingrese las coordenadas (x, y, z)." << std::endl;
-                std::cout << "x:";
+                std::cout << "x: ";
                 std::cin >> x;
                 std::cout << "y: ";
                 std::cin >> y;
                 std::cout << "z: ";
                 std::cin >> z;
-        }
+        }while(!tablero->esPosicionValida(x, y, z));
 }
 
 void Jugador::definirNuevaPosicionTesoro(int idTesoro, unsigned int &fila,
@@ -83,6 +83,7 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
         this->nombre = nombre;
         this->estado = JUGANDO;
         this->tiempoSuspendido = 0;
+        this->tiempoCongelado = 0;
         
         this->cantidadDeTesoros = cantidadDeTesoros;
         this->tesoros = new Tesoro*[cantidadDeTesoros]();
@@ -257,6 +258,11 @@ void Jugador::atacarCasillero(EstadoRegistro estado, Tablero * tablero, int & id
 {
         int fila = 0, columna = 0, altura = 0;
         int poderMina = usarMina();
+        
+        //se inicializan en 0 para que cuando se quiera poner un espía después
+        //de una mina no se encuentre un tesoro que ya encontró una mina
+        idTesoroVictima = 0;
+        idVictima = 0;
 
         if(estado == MINA){
                 std::cout << "\nIngrese la posición donde pondrá la mina" << std::endl;
@@ -307,10 +313,19 @@ int Jugador::usarMina()
         return poderMina;
 }
 
+void Jugador::disminuirCantidadDeTesorosDisponibles()
+{
+        this->cantidadDeTesorosDisponibles--;
+        
+        if(this->cantidadDeTesorosDisponibles == 0){
+                this->estado = ELIMINADO;
+        }
+}
+
 void Jugador::descartarTesoro(int idTesoro)
 {
         this->tesoros[idTesoro-1]->cambiarEstado(ENCONTRADO);
-        this->cantidadDeTesorosDisponibles--;
+        disminuirCantidadDeTesorosDisponibles();
 }
 
 void Jugador::setCantidadDeTesoros(int cantidadActual)
@@ -331,6 +346,10 @@ void Jugador::setEstado(EstadoJugador estado)
                 std::cout << this->nombre << " perdiste un turno" << std::endl;
                 this->tiempoSuspendido = 1;
         }
+
+        if(estado == CONGELADO){
+                std::cout << this->nombre << " fuiste congelado" << std::endl;
+        }
 }
 
 EstadoJugador Jugador::getEstado()
@@ -350,13 +369,15 @@ std::string Jugador::getEstadoTablero()
 
 bool Jugador::estaSuspendido()
 {
-        if(this->estado != ELIMINADO && this->tiempoSuspendido == 0){
-                setEstado(JUGANDO);
-        }else
-        {
-                this->tiempoSuspendido--;
+        if(this->estado == SUSPENDIDO){
+                if(this->tiempoSuspendido == 0){
+                        setEstado(JUGANDO);        
+                }
+                else{
+                        this->tiempoSuspendido--;        
+                }
         }
-
+        
         return this->estado == SUSPENDIDO;
 }
 
@@ -416,7 +437,6 @@ void Jugador::aumentarTurnosBlindaje(){
                 }
         }
 }
-
 
 Jugador::~Jugador()
 {

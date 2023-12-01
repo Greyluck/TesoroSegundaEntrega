@@ -26,12 +26,14 @@ bool Registro::estaLibre(){
 }
 
 bool Registro::estaInhabilitado(){
-    if(this->tiempoInhabilitado > MIN_TIEMPO_INHABILITADO){
-        contarTiempoInhabilitado();
-    }
-    else
-    {
-        this->estado = LIBRE;
+    if(this->estado == NO_DISPONIBLE){
+        if(this->tiempoInhabilitado > MIN_TIEMPO_INHABILITADO){
+            contarTiempoInhabilitado();
+        }
+        else
+        {
+            this->estado = LIBRE;
+        }
     }
 
     return (this->estado == NO_DISPONIBLE);
@@ -45,6 +47,8 @@ void Registro::inhabilitarRegistro(int tiempoInhabilitado)
     
     this->estado = NO_DISPONIBLE;
     this->tiempoInhabilitado = tiempoInhabilitado;
+    this->jugadorId = ID_JUGADOR_NULO;
+    this->tesoroId = ID_TESORO_NULO;
 
 }
 
@@ -53,6 +57,11 @@ void Registro::contarTiempoInhabilitado(){
 }
 
 void Registro::cambiarEstado(EstadoRegistro estado){
+    if(estado == LIBRE){
+        this->jugadorId = ID_JUGADOR_NULO;
+        this->tesoroId = ID_TESORO_NULO;
+    }
+    
     this->estado = estado;
 }
 

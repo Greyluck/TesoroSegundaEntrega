@@ -45,6 +45,12 @@ public:
 
         /*
         * pre: -
+        * post: Devuelve el id del tesoro.
+        * */
+        unsigned int getId();
+
+        /*
+        * pre: -
         * post: Devuelve la fila en donde está el tesoro.
         * */
         unsigned int getFila();

@@ -100,17 +100,13 @@ void Carta::radar(Tablero *tablero) {
 }
 
 Tesoro** reedimensionarArray(Tesoro** arrayAReedimensionar, int cantTesoros,Tesoro* TesoroNuevo){
-    Tesoro** nuevoArray = new Tesoro*[cantTesoros+1];
+    Tesoro** nuevoArray = new Tesoro*[cantTesoros+1]();
 
     for (int i = 0; i < cantTesoros; i++) {
         //aca no va a tirar error, porque itero hasta la cantidad vieja.
         nuevoArray[i] = arrayAReedimensionar[i];
     }
     nuevoArray[cantTesoros] = TesoroNuevo;
-    //liberar memoria del viejo array
-    // for (int i = 0; i < cantTesoros; i++) {
-    //     delete arrayAReedimensionar[i];
-    // }
     delete[] arrayAReedimensionar;
     return nuevoArray;
 }
@@ -123,9 +119,10 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
     Tesoro** tesoros = reedimensionarArray(jugador->getTesoros(), cantTesoros, tesoroNuevo);
     jugador->setTesoros(tesoros);
     jugador->setCantidadDeTesoros(cantTesoros+1);
-    bool tesoroMovido = false;
-    while (!(tablero->esPosicionValida(x, y, z)
-            && !tesoroMovido)){
+    std::cout << "Se ha partido un tesoro de manera existosa.";
+    
+    bool tesoroEscondido = false;
+    do{
         std::cout << "Ingrese las coordenadas (x, y, z) de donde quiere colocar el nuevo tesoro" << std::endl;
         std::cout << "x: ";
         std::cin >> x;
@@ -133,15 +130,21 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
         std::cin >> y;
         std::cout << "z: ";
         std::cin >> z;
-        //chequear que no haya un espia para mover o una mina
-        if(tablero->getCasillero(x,y,z)->obtenerEstado() != MINA
-        || tablero->getCasillero(x,y,z)->obtenerEstado() != ESPIA
-        || tablero->getCasillero(x,y,z)->obtenerJugadorId() != jugador->getId()){
-            std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
-            break;
+
+        if(!tablero->esPosicionValida(x, y, z)){
+            continue;
         }
-    }
-    std::cout << "Se ha partido un tesoro de manera existosa.";
+
+        //chequear que no haya un espia para mover o una mina
+        if(tablero->getCasillero(x,y,z)->obtenerEstado() == MINA
+        || tablero->getCasillero(x,y,z)->obtenerEstado() == ESPIA){
+            std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
+        }
+        else{
+            jugador->escoderTesoro(tesoroNuevo->getId(), x, y, z, tablero);
+            tesoroEscondido = true;
+        }
+    }while (!tesoroEscondido);
 }
 
 //Aplica la carta teletransportacion (puede mover el tesoro donde quiera), en caso de que donde quiera mover haya un espia
@@ -199,7 +202,7 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
 //Puse que solamente se le pueda aplicar a jugadores con estado NORMAL, para no crear conflictos con otros estados mas importantes como
 //suspendido, etc.
 void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
-    std::cout << "Elija a quien le quiere aplicar la carta congelacion";
+    std::cout << "Elija a quien le quiere aplicar la carta congelacion" << std::endl;
     for (int i = 0; i < cantJugadores; i++) {
         Jugador* jugador = jugadores[i];
         std::cout << jugador->getNombre() << ":" << jugador->getId() << std::endl;
@@ -209,7 +212,7 @@ void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
     while(true){
         std::cout << "Elija una jugador colocando su id: ";
         std::cin >> entrada;
-        if (entrada > 0 && entrada < cantJugadores){
+        if (entrada > 0 && entrada <= cantJugadores){
             Jugador* jugadorAfectado = jugadores[entrada-1];
             if(jugadorAfectado->getEstado() == JUGANDO){
                 jugadorAfectado->setEstado(CONGELADO);

@@ -1,12 +1,18 @@
 #include "TesoroBinario.h"
 #include "Bibliotecas.h"
 
-static const std::string CELDA_LIBRE = "EasyBMP/bitmaps/celda_libre2.bmp";
-static const std::string CELDA_TESORO = "EasyBMP/bitmaps/cofre2.bmp";
-static const std::string CELDA_ESPIA = "EasyBMP/bitmaps/espia2.bmp";
-static const std::string CELDA_NO_DISPONIBLE = "EasyBMP/bitmaps/celda_no_disponible2.bmp";
-static const std::string CELDA_OCUPADA = "EasyBMP/bitmaps/celda_ocupada.bmp";
-static const std::string CELDA_MINA = "EasyBMP/bitmaps/mina2.bmp";
+static const std::string CELDA_LIBRE = "-";
+static const std::string BITMAP_CELDA_LIBRE = "EasyBMP/bitmaps/celda_libre2.bmp";
+static const std::string CELDA_TESORO = "T";
+static const std::string BITMAP_CELDA_TESORO = "EasyBMP/bitmaps/cofre2.bmp";
+static const std::string CELDA_ESPIA = "E";
+static const std::string BITMAP_CELDA_ESPIA = "EasyBMP/bitmaps/espia2.bmp";
+static const std::string CELDA_NO_DISPONIBLE = "X";
+static const std::string BITMAP_CELDA_NO_DISPONIBLE = "EasyBMP/bitmaps/celda_no_disponible2.bmp";
+static const std::string CELDA_OCUPADA = "O";
+static const std::string BITMAP_CELDA_OCUPADA = "EasyBMP/bitmaps/celda_ocupada.bmp";
+static const std::string CELDA_MINA = "M";
+static const std::string BITMAP_CELDA_MINA = "EasyBMP/bitmaps/mina2.bmp";
 
 std::string TesoroBinario::definirEstadoCasillero(EstadoRegistro estado)
 {
@@ -32,6 +38,49 @@ std::string TesoroBinario::definirEstadoCasillero(EstadoRegistro estado)
                 default:
                         return CELDA_LIBRE;
                         break;
+        }
+}
+
+std::string TesoroBinario::definirBitmapACopiar(EstadoRegistro estado)
+{
+        switch(estado){
+                case LIBRE:
+                        return BITMAP_CELDA_LIBRE;
+                        break;
+                case TESORO:
+                        return BITMAP_CELDA_TESORO;
+                        break;
+                case ESPIA:
+                        return BITMAP_CELDA_ESPIA;
+                        break;
+                case NO_DISPONIBLE:
+                        return BITMAP_CELDA_NO_DISPONIBLE;
+                        break;
+                case OCUPADA:
+                        return BITMAP_CELDA_OCUPADA;
+                        break;
+                case MINA:
+                        return BITMAP_CELDA_MINA;
+                        break;
+                default:
+                        return BITMAP_CELDA_LIBRE;
+                        break;
+        }
+}
+
+void TesoroBinario::mostrarTablero()
+{
+        std::cout << "TABLERO GENERAL" << std::endl;
+        for(unsigned int i = 1; i <= this->tablero->getAncho(); i++){
+                std::cout<<std::endl;
+                std::cout<<"Fila "<<i<<":"<<std::endl;
+                for(unsigned int j = 1; j <= this->tablero->getAlto(); j++){
+                        for(unsigned int k = 1; k <= this->tablero->getLargo(); k++){
+                                std::cout<<definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
+                        }
+                        std::cout<<std::endl;
+                }
+                
         }
 }
 
@@ -62,41 +111,16 @@ void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTa
 
                                 if(this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == jugador->getId() ||
                                    this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == 0){
-                                        std::string rutaImagenACopiar = definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
+                                        std::string rutaImagenACopiar = definirBitmapACopiar(this->tablero->getCasillero(i, j, k)->obtenerEstado());
                                         this->imagen->copiarImagen(rutaImagenACopiar, x, y, estadoTablero);
                                 }else
                                 {
-                                        this->imagen->copiarImagen(CELDA_LIBRE, x, y, estadoTablero);
+                                        this->imagen->copiarImagen(BITMAP_CELDA_LIBRE, x, y, estadoTablero);
                                 }
                         }
                 }
                 
         }
-
-        // std::ofstream estado;
-        // estado.open(estadoTablero.c_str());
-
-        // //posible forma de imprimir el tablero con strings. Se debe imprimir como bitmap
-        // //ua idea para hacerlo es sustituir los strings de los mini tableros con colores
-        // for(unsigned int i = 1; i <= this->tablero->getAncho(); i++){
-        //         std::cout<<std::endl;
-        //         std::cout<<"Fila "<<i<<":"<<std::endl;
-        //         for(unsigned int j = 1; j <= this->tablero->getAlto(); j++){
-        //                 for(unsigned int k = 1; k <= this->tablero->getLargo(); k++){
-        //                         if(this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == jugador->getId() ||
-        //                            this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == 0){
-        //                                 std::cout<<definirEstadoCasillero(this->tablero->getCasillero(i, j, k)->obtenerEstado());
-        //                         }else
-        //                         {
-        //                                 std::cout<<CELDA_LIBRE;
-        //                         }
-        //                 }
-        //                 std::cout<<std::endl;
-        //         }
-                
-        // }
-
-        // estado.close();
 }
 
 void TesoroBinario::jugarTurno(Jugador * jugador)
@@ -108,7 +132,7 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
                 jugador->sacarCartaDelMazo(this->mazo, this->tablero,
                                            this->jugadores, this->cantidadDeJugadores);
 
-                //Dejar una MINA
+                // Dejar una MINA
                 jugador->atacarCasillero(MINA, this->tablero, idTesoroVictima, idVictima);
                 if(idTesoroVictima > 0 && idVictima > 0){
                 	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima);
@@ -137,9 +161,6 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
 
                 //Mover tesoro
                 jugador->moverTesoro(this->tablero, idTesoroVictima, idVictima);
-
-
-                exportarEstadoTablero(jugador, jugador->getEstadoTablero());
         }
 }
 
@@ -166,7 +187,8 @@ TesoroBinario::TesoroBinario()
         this->mazo = new Mazo(this->cantidadDeJugadores);
         this->estado = JUGABLE;
         this->idGanador = 0;
-        this->imagen = new Imagen((this->tablero->getAlto() * 100) / 2, (this->tablero->getLargo() * 100) / 4);
+        this->imagen = new Imagen(((this->tablero->getAncho() * this->tablero->getAlto())+1) * 20, 
+                                  (this->tablero->getLargo()+1) * 20);
 }
 
 void TesoroBinario::inciarJuego(){
@@ -178,6 +200,7 @@ void TesoroBinario::inciarJuego(){
                                                         this->cantidadDeTesoros,
                                                         this->tablero);
                 
+                mostrarTablero();
                 exportarEstadoTablero(jugadores[i], jugadores[i]->getEstadoTablero());
         }
 }
@@ -189,9 +212,12 @@ int TesoroBinario::jugarJuego()
         while(getEstado() == JUGABLE){
                 for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
                         jugarTurno(this->jugadores[i]);
+                        exportarEstadoTablero(this->jugadores[i],
+                                              this->jugadores[i]->getEstadoTablero());
                         jugadores[i]->aumentarTurnosBlindaje();
                         jugadores[i]->disminuirTurnoCongelado();
                 }
+                mostrarTablero();
                 revisarJuego();
         }
 

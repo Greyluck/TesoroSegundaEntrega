@@ -45,6 +45,13 @@ private:
         * */
        void definirNuevaPosicionTesoro(int idTesoro, unsigned int &fila,
                                        unsigned int &columna, unsigned int &altura);
+
+        /*
+        * pre: -
+        * post: Reduce la cantidad de tesoros disponibles en uno.
+        *       Sin el jugador se queda sin tesoros disponibles le asigna el estado ELIMINADO.
+        * */
+       void disminuirCantidadDeTesorosDisponibles();
 public:
         /*
         * pre: nombre no puede ser nulo.

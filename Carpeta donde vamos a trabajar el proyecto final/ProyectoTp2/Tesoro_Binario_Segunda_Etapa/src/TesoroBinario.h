@@ -26,16 +26,28 @@ private:
         Imagen *imagen;
 
         /*
-        * pre: estado y jugador no pueden ser nulos. 
+        * pre: estado no puede ser nulo. 
         * post: Devuelve como se verá el casillero según estado.
         */
         std::string definirEstadoCasillero(EstadoRegistro estado);
 
         /*
-        * pre:
+        * pre: estado no puede ser nulo. 
+        * post: Devuelve el bitmap a copiar según estado.
+        */
+       std::string definirBitmapACopiar(EstadoRegistro estado);
+
+        /*
+        * pre: - 
         * post: exporta el estado del tablero de jugador a estadoTablero.
         * */
         void exportarEstadoTablero(Jugador *jugador, std::string estadoTablero);
+
+        /*
+        * pre:
+        * post: muestra el estado del tablero en general.
+        * */
+        void mostrarTablero();
 
         /*
         * pre: jugador no puede ser nulo.
