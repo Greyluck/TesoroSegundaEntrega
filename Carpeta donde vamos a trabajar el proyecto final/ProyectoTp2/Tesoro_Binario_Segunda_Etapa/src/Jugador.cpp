@@ -75,7 +75,7 @@ void Jugador::definirNuevaPosicionTesoro(int idTesoro, unsigned int &fila,
 Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
 {
         if(id <= 0){
-                throw "El id debe ser mayor a 0";
+                throw std::string("El id debe ser mayor a 0");
         }
 
         this->id = id;
@@ -104,7 +104,7 @@ Jugador::Jugador(int id, std::string nombre, int cantidadDeTesoros)
 void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura, Tablero * tablero)
 {
         if(idTesoro <= 0){
-                throw "El id del tesoro debe ser mayor a 0";
+                throw std::string("El id del tesoro debe ser mayor a 0");
         }
 
         this->tesoros[idTesoro-1]->definirPosicion(fila, columna, altura);
@@ -137,6 +137,9 @@ void Jugador::moverTesoro(Tablero * tablero, int & idTesoroVictima, int & idVict
         unsigned int filaAnterior = this->tesoros[idTesoro-1]->getFila();
         unsigned int columnaAnterior = this->tesoros[idTesoro-1]->getColumna();
         unsigned int alturaAnterior = this->tesoros[idTesoro-1]->getAltura();
+        tablero->getCasillero(this->tesoros[idTesoro-1]->getFila(),
+                              this->tesoros[idTesoro-1]->getColumna(),
+                              this->tesoros[idTesoro-1]->getAltura())->cambiarEstado(LIBRE);
 
         bool tesoroMovido = false;
         while(!tesoroMovido){
@@ -277,11 +280,7 @@ void Jugador::atacarCasillero(EstadoRegistro estado, Tablero * tablero, int & id
                 idTesoroVictima = tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
                 if(estado == MINA){
                         tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
-                }//else
-                // {
-                        
-                //         tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
-                // }
+                }
         }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
                 std::cout << "Encontraste una mina de otro jugador" << std::endl;
                 setEstado(SUSPENDIDO);
@@ -400,7 +399,7 @@ void Jugador::setTesoros(Tesoro **nuevoArrayTesoros) {
 
 Tesoro *Jugador::getTesoro(int idTesoro) {
     if (idTesoro < 0 || idTesoro > this->cantidadDeTesoros){
-        throw "El id del tesoro no esta dentro del rango de tesoros";
+        throw std::string("El id del tesoro no esta dentro del rango de tesoros");
     }
     return this->tesoros[idTesoro-1];
 }
@@ -415,7 +414,7 @@ Tesoro *Jugador::getTesoroBlindado() {
 
 void Jugador::setTiempoCongelado(int tiempo){
         if (tiempoCongelado < 0){
-                throw "El tiempo no puede ser negativo";
+                throw std::string("El tiempo no puede ser negativo");
         }
         this->tiempoCongelado = tiempo;
 }

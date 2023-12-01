@@ -83,8 +83,8 @@ void Interfaz::esconderTesorosInciales(Jugador *jugador,
                         cin >> y;
                         cout << "z: ";
                         cin >> z;
-                }while(!tablero->esPosicionValida(x, y, z) || 
-                       !tablero->getCasillero(x, y, z)->estaLibre());
+                }while(!(tablero->esPosicionValida(x, y, z)) || 
+                       !(tablero->getCasillero(x, y, z)->estaLibre()));
                 
                 jugador->escoderTesoro(i+1, x, y, z, tablero);
         }
