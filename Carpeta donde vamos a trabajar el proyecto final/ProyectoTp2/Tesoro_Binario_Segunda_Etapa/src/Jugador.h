@@ -147,6 +147,12 @@ public:
 
         /*
         * pre: -
+        * post: Aumenta en uno la cantidad de tesoros disponibles del jugador.
+        * */
+       void aumentarCantidadDeTesorosDisponibles();
+
+        /*
+        * pre: -
         * post: Devuelve el nombre del jugador.
         * */
         std::string getNombre();

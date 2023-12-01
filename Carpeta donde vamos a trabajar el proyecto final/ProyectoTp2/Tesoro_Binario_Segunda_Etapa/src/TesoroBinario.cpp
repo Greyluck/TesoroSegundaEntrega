@@ -103,10 +103,8 @@ void TesoroBinario::exportarEstadoTablero(Jugador *jugador, std::string estadoTa
                                 }
                                 
                                 // indica que el subtablero debe imprimirse abajo del subtablero anterior.
-                                // al tener más de 2 subtableros se genera un 
-                                // error que superpone los tabaleros siguientes con el segundo impreso
                                 if(i > 1){
-                                        y = ((20 * this->tablero->getLargo()) + i) + (20*(j-1));
+                                        y = (((20 * this->tablero->getAlto()) + i) * (i-1)) + (20*(j-1));
                                 }
 
                                 if(this->tablero->getCasillero(i, j, k)->obtenerJugadorId() == jugador->getId() ||
@@ -135,7 +133,7 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
                 // Dejar una MINA
                 jugador->atacarCasillero(MINA, this->tablero, idTesoroVictima, idVictima);
                 if(idTesoroVictima > 0 && idVictima > 0){
-                	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima);
+                	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima, this->tablero);
 
                 	if(!this->jugadores[idVictima-1]-> getCantidadTesoros()) {
                                     	this->jugadores[idVictima-1]->setEstado(ELIMINADO);
@@ -149,7 +147,7 @@ void TesoroBinario::jugarTurno(Jugador * jugador)
                 //Dejar un ESPIA
                 jugador->atacarCasillero(ESPIA, this->tablero, idTesoroVictima, idVictima);
                 if(idTesoroVictima > 0 && idVictima > 0){
-                	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima);
+                	this->interfaz->destruirTesoro(this->jugadores[idVictima-1], idTesoroVictima, this->tablero);
                 	if(!this->jugadores[idVictima-1]->getCantidadTesoros()) {
                 		this->jugadores[idVictima-1]->setEstado(ELIMINADO);
                 	}

@@ -55,12 +55,12 @@ public:
 	void mensajeDeDespedida(Jugador *ganador);
 
 	/*
-	* pre: victima no puede ser nulo.
+	* pre: victima y tablero no pueden ser nulos.
 	*	idTesoroVictima debe ser mayor a 0.
-	* post: Marca el tesoro idTesoroVictima de victima como
+	* post: Si el tesoro idTesoroVictima de victima no está protegido, lo marca como
         *       ENCONTRADO y lo descuenta de su cantidad de tesoros.
 	* */
-	void destruirTesoro(Jugador *victima, int idTesoroVictima);
+	void destruirTesoro(Jugador *victima, int idTesoroVictima, Tablero *tablero);
 };
 
 #endif //INTERFAZ_H_

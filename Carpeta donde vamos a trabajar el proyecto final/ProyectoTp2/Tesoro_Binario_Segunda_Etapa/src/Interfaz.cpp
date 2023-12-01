@@ -1,5 +1,7 @@
 #include "Interfaz.h"
 
+const int TIEMPO_RECUPERANDO_TESORO = 5;
+
 Interfaz::Interfaz(int &cantidadDeJugadores, int &cantidadDeTesoros, 
        		int &anchoTablero, int &altoTablero, int &largoTablero)
 {
@@ -21,8 +23,6 @@ Interfaz::Interfaz(int &cantidadDeJugadores, int &cantidadDeTesoros,
 		}                
         }
 
-        // cout << "¿Cuantos tesoros tendrá cada jugador? (ingrese un número mayor a 0)" << endl;
-        // cin >> cantidadDeTesoros;
         cout << "¿Cuál será el ancho, el alto y el largo del tablero?" << endl;
         cout << "Ingrese el numero de cada uno por separado (el numero debe ser mayor que 0)" << endl;
         while(anchoTablero <= 0 || altoTablero <= 0 || largoTablero <= 0){
@@ -87,21 +87,6 @@ void Interfaz::esconderTesorosInciales(Jugador *jugador,
                        !tablero->getCasillero(x, y, z)->estaLibre());
                 
                 jugador->escoderTesoro(i+1, x, y, z, tablero);
-                
-                // cin >> x >> y >> z;
-                // while(!tablero->esPosicionValida(x, y, z)){
-                //         cout << "Esa posición no es válida, pruebe con otra" << endl;
-                //         cout << "x: ";
-                //         cin >> x;
-                //         cout << "y: ";
-                //         cin >> y;
-                //         cout << "z: ";
-                //         cin >> z;
-
-                // }
-                // while(tablero->getCasillero(x, y, z)->estaLibre()){
-                //         jugador->escoderTesoro(i+1, x, y, z, tablero);
-                // }
         }
 }
 
@@ -111,8 +96,15 @@ void Interfaz::mensajeDeDespedida(Jugador *ganador){
         cout << "El juego ha finalizado con éxito" << endl;
 }
 
-void Interfaz::destruirTesoro(Jugador *victima, int idTesoroVictima)
+void Interfaz::destruirTesoro(Jugador *victima, int idTesoroVictima, Tablero *tablero)
 {
-        cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " fue destruido" << endl;
-        victima->descartarTesoro(idTesoroVictima);
+        if(victima->getTesoro(idTesoroVictima)->obtenerEstado() == PROTEGIDO){
+                cout << "Ese tesoro está protegido y no puede ser capturado" << endl;
+        }
+        else{
+                cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " fue destruido" << endl;
+                Tesoro *tesoro = victima->getTesoro(idTesoroVictima);
+                tablero->getCasillero(tesoro->getFila(), tesoro->getColumna(), tesoro->getAltura())->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
+                victima->descartarTesoro(idTesoroVictima);
+        }
 }

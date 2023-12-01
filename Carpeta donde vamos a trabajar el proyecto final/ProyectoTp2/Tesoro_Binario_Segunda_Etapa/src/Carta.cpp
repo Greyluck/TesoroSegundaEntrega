@@ -119,7 +119,8 @@ void Carta::partirTesoro(Tablero *tablero,Jugador* jugador) {
     Tesoro** tesoros = reedimensionarArray(jugador->getTesoros(), cantTesoros, tesoroNuevo);
     jugador->setTesoros(tesoros);
     jugador->setCantidadDeTesoros(cantTesoros+1);
-    std::cout << "Se ha partido un tesoro de manera existosa.";
+    jugador->aumentarCantidadDeTesorosDisponibles();
+    std::cout << "Se ha partido un tesoro de manera existosa." << std::endl;
     
     bool tesoroEscondido = false;
     do{
@@ -160,46 +161,47 @@ void Carta::teletransportacion(Tablero* tablero,int idJugador,Jugador** jugadore
         std::cin >> y;
         std::cout << "z: ";
         std::cin >> z;
-        if (tablero->esPosicionValida(x, y, z) && tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador){
+        if (tablero->esPosicionValida(x, y, z) && tablero->getCasillero(x,y,z)->obtenerEstado() == TESORO && 
+            tablero->getCasillero(x,y,z)->obtenerJugadorId() == idJugador){
             idTesoro = tablero->getCasillero(x,y,z)->obtenerTesoroId();
             break;
         }
-
     }
 
     int filaAMover = 0, columnaAMover = 0, distanciaAmover = 0;
     bool tesoroMovido = false;
-    while (!(tablero->esPosicionValida(filaAMover, columnaAMover, distanciaAmover)
-            && !tesoroMovido)){
+    do{
         std::cout << "Ingrese la fila de a donde quiere mover el tesoro" << std::endl;
         std::cin >> filaAMover;
         std::cout << "Ingrese la columna de a donde quiere mover el tesoro" << std::endl;
         std::cin >> columnaAMover;
         std::cout << "Ingrese la distancia de a donde quiere mover el tesoro" << std::endl;
         std::cin >> distanciaAmover;
-        //chequear que no haya un espia para mover o una mina
-        if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != MINA
-        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != ESPIA
-        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerJugadorId() != idJugador){
+
+        if(!tablero->esPosicionValida(filaAMover, columnaAMover, distanciaAmover)){
+            continue;
+        }
+
+        //chequear que no haya un espia o una mina para mover
+        if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() == MINA
+        || tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() == ESPIA){
             std::cout << "Donde se queria telestransportar el tesoro habia una mina o un espia, busque unas nuevas coordenas" << std::endl;
-            break;
-            tesoroMovido = false;
         }else
         {
             tesoroMovido = true;
         }
-    }
+    }while (!tesoroMovido);
+    
     if(tablero->getCasillero(filaAMover,columnaAMover,distanciaAmover)->obtenerEstado() != TESORO){
         jugadores[idJugador-1]->escoderTesoro(idTesoro,filaAMover,columnaAMover,distanciaAmover,tablero);
-        tesoroMovido = true;
+        tablero->getCasillero(x, y, z)->cambiarEstado(LIBRE);
     }else{
         tablero->getCasillero(filaAMover, columnaAMover, distanciaAmover)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
-        tesoroMovido = true;
     }
 }
 
-//La carta congelacion, congela a un usuario que tenga como estado NORMAL, y no le deja usar cartas, durante 5 turnos
-//Puse que solamente se le pueda aplicar a jugadores con estado NORMAL, para no crear conflictos con otros estados mas importantes como
+//La carta congelacion, congela a un usuario que tenga como estado JUGANDO, y no le deja usar cartas, durante 5 turnos
+//Puse que solamente se le pueda aplicar a jugadores con estado JUGANDO, para no crear conflictos con otros estados mas importantes como
 //suspendido, etc.
 void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
     std::cout << "Elija a quien le quiere aplicar la carta congelacion" << std::endl;
@@ -208,7 +210,7 @@ void Carta::congelacion(int idJugador, Jugador **jugadores,int cantJugadores) {
         std::cout << jugador->getNombre() << ":" << jugador->getId() << std::endl;
     }
     int entrada;
-    //ver que pasaria si todos los jugadores tienen un estado != normal.
+    //ver que pasaria si todos los jugadores tienen un estado != jugando.
     while(true){
         std::cout << "Elija una jugador colocando su id: ";
         std::cin >> entrada;

@@ -278,10 +278,11 @@ void Jugador::atacarCasillero(EstadoRegistro estado, Tablero * tablero, int & id
                 idTesoroVictima = tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
                 if(estado == MINA){
                         tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
-                }else
-                {
-                        tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
-                }
+                }//else
+                // {
+                        
+                //         tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
+                // }
         }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
                 std::cout << "Encontraste una mina de otro jugador" << std::endl;
                 setEstado(SUSPENDIDO);
@@ -331,6 +332,11 @@ void Jugador::descartarTesoro(int idTesoro)
 void Jugador::setCantidadDeTesoros(int cantidadActual)
 {
         this->cantidadDeTesoros = cantidadActual;
+}
+
+void Jugador::aumentarCantidadDeTesorosDisponibles()
+{
+        this->cantidadDeTesorosDisponibles++;
 }
 
 std::string Jugador::getNombre()
