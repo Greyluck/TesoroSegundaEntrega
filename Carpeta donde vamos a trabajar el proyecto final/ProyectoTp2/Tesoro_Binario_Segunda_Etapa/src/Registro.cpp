@@ -31,7 +31,7 @@ EstadoRegistro Registro::obtenerEstado()
 bool Registro::estaLibre()
 {
     if(this->estado != LIBRE){
-        std::cout << "Ese casillero no está libre" << std::endl;
+        std::cout << "Ese casillero está ocupado. Intente nuevamente" << std::endl;
     }
 
     return (this->estado == LIBRE);
