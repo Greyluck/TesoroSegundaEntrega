@@ -254,6 +254,7 @@ void TesoroBinario::revisarJuego(){
                 for(unsigned int i = 0; i < this->cantidadDeJugadores; i++){
                         if(this->jugadores[i]->getEstado() != ELIMINADO){
                                 this->idGanador = this->jugadores[i]->getId();
+                                break;
                         }
                 }
                 setEstado(FINALIZADO);

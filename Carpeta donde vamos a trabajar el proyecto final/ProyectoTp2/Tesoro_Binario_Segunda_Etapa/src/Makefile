@@ -48,7 +48,7 @@ clean:
 	rm *.o programa 
 	
 cleanTXT:
-	#rm *.txt
+	rm *.txt
 
 
 #valgrind --leak-check=yes ./programa
