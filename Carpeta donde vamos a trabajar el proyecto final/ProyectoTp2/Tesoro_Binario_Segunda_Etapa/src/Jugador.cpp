@@ -115,6 +115,10 @@ void Jugador::escoderTesoro(int idTesoro, int fila, int columna, int altura, Tab
 }
 
 void Jugador::moverTesoro(Tablero * tablero, int & idTesoroVictima, int & idVictima){
+        if(this->estado == ELIMINADO || this->estado == SUSPENDIDO){
+                return;
+        }
+        
         int idTesoro;
         unsigned int nuevaFila, nuevaColumna, nuevaAltura;
 
@@ -131,7 +135,7 @@ void Jugador::moverTesoro(Tablero * tablero, int & idTesoroVictima, int & idVict
         std::cin >> idTesoro;
         while(!(idTesoro > 0 && idTesoro <= this->cantidadDeTesorosDisponibles)){
         	std::cout << "Ese tesoro no es válido, pruebe con otro" << std::endl;
-            std::cin >> idTesoro;
+                std::cin >> idTesoro;
         }
 
         unsigned int filaAnterior = this->tesoros[idTesoro-1]->getFila();
@@ -259,8 +263,7 @@ void Jugador::verCartasGuardadas()
 void Jugador::atacarCasillero(EstadoRegistro estado, Tablero * tablero, int & idTesoroVictima, int & idVictima)
 {
         int fila = 0, columna = 0, altura = 0;
-        int poderMina = usarMina();
-        
+
         //se inicializan en 0 para que cuando se quiera poner un espía después
         //de una mina no se encuentre un tesoro que ya encontró una mina
         idTesoroVictima = 0;
@@ -278,9 +281,6 @@ void Jugador::atacarCasillero(EstadoRegistro estado, Tablero * tablero, int & id
         if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == TESORO){
                 idVictima = tablero->getCasillero(fila, columna, altura)->obtenerJugadorId();
                 idTesoroVictima = tablero->getCasillero(fila, columna, altura)->obtenerTesoroId();
-                if(estado == MINA){
-                        tablero->getCasillero(fila, columna, altura)->inhabilitarRegistro(poderMina);
-                }
         }else if(tablero->getCasillero(fila, columna, altura)->obtenerEstado() == MINA){
                 std::cout << "Encontraste una mina de otro jugador" << std::endl;
                 setEstado(SUSPENDIDO);
@@ -317,7 +317,7 @@ void Jugador::disminuirCantidadDeTesorosDisponibles()
         this->cantidadDeTesorosDisponibles--;
         
         if(this->cantidadDeTesorosDisponibles == 0){
-                this->estado = ELIMINADO;
+                setEstado(ELIMINADO);
         }
 }
 
@@ -345,6 +345,10 @@ std::string Jugador::getNombre()
 void Jugador::setEstado(EstadoJugador estado)
 {
         this->estado = estado;
+
+        if(estado == ELIMINADO){
+                std::cout << this->nombre << " has sido eliminado" << std::endl;
+        }
 
         if(estado == SUSPENDIDO){
                 std::cout << this->nombre << " perdiste un turno" << std::endl;

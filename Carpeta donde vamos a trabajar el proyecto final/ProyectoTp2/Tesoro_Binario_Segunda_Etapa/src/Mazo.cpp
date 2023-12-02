@@ -25,7 +25,7 @@ Carta *Mazo::desapilarCarta() {
 
 Mazo::~Mazo() {
     //al ser una pila ya tiene su metodo de descontructor
-    while(!mazo->estaVacia()){
+    while(!(mazo->estaVacia())){
         delete this->mazo->desapilar();
     }
     

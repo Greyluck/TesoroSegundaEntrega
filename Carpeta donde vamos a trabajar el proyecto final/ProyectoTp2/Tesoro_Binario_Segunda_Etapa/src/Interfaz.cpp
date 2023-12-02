@@ -96,15 +96,23 @@ void Interfaz::mensajeDeDespedida(Jugador *ganador){
         cout << "El juego ha finalizado con éxito" << endl;
 }
 
-void Interfaz::destruirTesoro(Jugador *victima, int idTesoroVictima, Tablero *tablero)
+void Interfaz::destruirTesoro(Jugador *victima, int idTesoroVictima, 
+                              Tablero *tablero, EstadoRegistro estado, int poderMina)
 {
         if(victima->getTesoro(idTesoroVictima)->obtenerEstado() == PROTEGIDO){
                 cout << "Ese tesoro está protegido y no puede ser capturado" << endl;
         }
         else{
-                cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " fue destruido" << endl;
                 Tesoro *tesoro = victima->getTesoro(idTesoroVictima);
-                tablero->getCasillero(tesoro->getFila(), tesoro->getColumna(), tesoro->getAltura())->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
+
+                if(estado == MINA){
+                        cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " fue destruido" << endl;
+                        tablero->getCasillero(tesoro->getFila(), tesoro->getColumna(), tesoro->getAltura())->inhabilitarRegistro(poderMina);
+                }
+                else{
+                        cout << "El tesoro " << idTesoroVictima << " de " << victima->getNombre() << " ha sido encontrado" << endl;
+                        tablero->getCasillero(tesoro->getFila(), tesoro->getColumna(), tesoro->getAltura())->inhabilitarRegistro(TIEMPO_RECUPERANDO_TESORO);
+                }
                 victima->descartarTesoro(idTesoroVictima);
         }
 }

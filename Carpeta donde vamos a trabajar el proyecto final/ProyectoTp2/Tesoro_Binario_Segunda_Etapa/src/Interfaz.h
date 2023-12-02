@@ -60,7 +60,7 @@ public:
 	* post: Si el tesoro idTesoroVictima de victima no está protegido, lo marca como
         *       ENCONTRADO y lo descuenta de su cantidad de tesoros.
 	* */
-	void destruirTesoro(Jugador *victima, int idTesoroVictima, Tablero *tablero);
+	void destruirTesoro(Jugador *victima, int idTesoroVictima, Tablero *tablero, EstadoRegistro estado, int poderMina);
 };
 
 #endif //INTERFAZ_H_
